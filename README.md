@@ -8,7 +8,7 @@ incomplete. A more complete version is in development, in parallell
 with a scientific paper describing the algorithm and performance on
 real data.
 
-------------------------------------------------------------------------- 
+======================================================================
 Copyright (C) 2013 Martin Lindén, bmelinden@gmail.com
 
 This program is free software: you can redistribute it and/or modify
