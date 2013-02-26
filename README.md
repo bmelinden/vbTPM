@@ -4,7 +4,7 @@ program runs on Matlab, but uses compiled C-code to speed up the most
 computer intensive loops.
 
 This is still a beta version, where especially the documentation is
-incomplete. A more complete version is in development, in parallell
+incomplete. A more complete version is in development, in parallel
 with a scientific paper describing the algorithm and performance on
 real data.
 
