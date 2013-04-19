@@ -26,12 +26,13 @@ function gfig=VB7_batch_postprocess(runinputfile,xtrastates,savefile)
 %                     Not completed, and deactivated by default.
 % M.L. 2012-05-04   : made viterbi/sMaxP paths extend all the way to the
 %                     last time point
+% M.L. 2013-04-19   : added non-looping state as a default extra state
 
 % to do-list:
 % - be able to deal with fast clicking
 % - parallellize viterbi path calculations
 % 
-% - add command lineoptions to get rid of popup menus
+% - add command line options to get rid of popup menus
 % - fix analysis file name: load and save different file names in GUI
 % - converge dual HMM and save dwell sequences as part of analysis
 %
@@ -103,13 +104,19 @@ h.Yf=2; % B-values
 eval(runinputfile);
 % filename for analysis file
 if(exist('savefile','var') && ~isempty(savefile))
-    if(strcmp(savefile(end-3:end),'.mat')==0)
+    if(length(savefile)>4)
+        if(strcmp(savefile(end-3:end),'.mat')==0)
         savefile=[savefile '.mat'];
+        end
+    else
+        savefile=[savefile '.mat'];        
     end
     HMManalysisfile_wpath=savefile;
 else
     HMManalysisfile_wpath=[HMMresultsfile(1:end-4) '_analyzed.mat'];    
 end
+disp(['Saving results in ' HMManalysisfile_wpath ])
+
 [HMManalysisfile,HMManalysispath]=dirFileSplit(HMManalysisfile_wpath);
 h.HMManalysisfile=HMManalysisfile;
 h.HMManalysispath=HMManalysispath;
@@ -183,7 +190,7 @@ else
     R=doDefaultAnalysis(trj,cal,h.RMSmin);
     % xtrastates & plot symbols
     if(~exist('xtrastates','var') || isempty(xtrastates) || (islogical(xtrastates) && extrastates==true))
-        xtrastates={'M','B'};
+        xtrastates={'M','B','NL'};
     elseif((isnumeric(xtrastates) && xtrastates==0) || (islogical(xtrastates) && extrastates==false) || sum(strcmp(xtrastates,'none'))>0)
         xtrastates={};
     end
