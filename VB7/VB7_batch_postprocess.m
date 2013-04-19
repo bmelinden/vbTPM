@@ -661,12 +661,12 @@ fprintf('\n')
 %R.Wcal=Wcal;
 R.trj=trj;
 R.cal=cal;
-save([h.HMManalysispath h.HMManalysisfile],...
+save([h.HMManalysispath filesep h.HMManalysisfile],...
     '-struct','R');
-disp(['wrote analysis to '  [h.HMManalysispath h.HMManalysisfile]]);
+disp(['wrote analysis to '  [h.HMManalysispath filesep h.HMManalysisfile]]);
 cc=menu('create factorial models?','yes','no');
 if(cc==1)
-    VB7_kineticAnalysis(h.runinputfile,[h.HMManalysispath h.HMManalysisfile],false,true);
+    VB7_kineticAnalysis(h.runinputfile,[h.HMManalysispath filesep h.HMManalysisfile],false,true);
 end
 
 

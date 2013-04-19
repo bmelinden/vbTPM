@@ -83,7 +83,7 @@ else
     disp([loadfile ' already sorted.'])
 end
 %% construct aggregated models and histograms
-pstates=2:8;         % states to use for property histograms
+pstates=2:length(R.statelabels);         % states to use for property histograms
 res.pstates=pstates;
 %res.pstatelabels={R.statelabels{pstates}};
 res.pstatelabels=R.statelabels(pstates);
