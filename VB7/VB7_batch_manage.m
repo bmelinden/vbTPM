@@ -5,6 +5,9 @@ function [resultFile,cal,trj]=VB7_batch_manage(varargin)
 % runinputfile, by performing actions a1,a2,... 
 % 
 % actions:
+% 'reconverge'      : reconverge all models before saving results, and also
+%                     rewrite the reconverged models (good for small
+%                     parameter changes or bugfixes).
 % 'collect'         : read analysis results and collect them in cell
 %                     vectors that are saved to the resultFile
 % 'cleanup'         : look through the list of result files, and delete those
@@ -33,7 +36,9 @@ function [resultFile,cal,trj]=VB7_batch_manage(varargin)
 % M.L. 2011-07-25   : corrected the auto-clean function to actually remove
 %                     unfinished result files
 % M.L. 2011-10-28   : control the amount of output
-% M.L. 2011-11-12   : add fields to the trj anc cal structures.
+% M.L. 2011-11-12   : add fields to the trj and cal structures.
+% M.L. 2013-04-25   : option to reconverge models finished before collecting
+
 %% call runinput file
 resultFile=[];
 if(nargin>0)
@@ -59,7 +64,7 @@ if(isempty(target_path))
 elseif(~strcmp(target_path(end),filesep))
     target_path=[target_path filesep];
 end
-%% file names
+%% file names - same convetion as used by VB7_batch_run
 calSaveName=@(k)(sprintf('%s%s_bead%03d_cal.mat',target_path,PIDprefix,k));
 calTmpName =@(k)(sprintf('%s%s_bead%03d_calTMP.mat',target_path,PIDprefix,k));
 calLogName =@(k)(sprintf('%s%s_bead%03d_calLOG.txt',target_path,PIDprefix,k));
@@ -78,6 +83,7 @@ cleanup=false;
 autoclean=false;
 minimalSave=true;
 saveresults=true;
+reconverge=false;
 % default output destination
 save_path=target_path;
 save_name=[PIDprefix '_result.mat'];
@@ -102,7 +108,7 @@ while(na<=nargin)
     elseif(strcmp(parameter,'save'))
         na=na+1;
         saveresults=varargin{na};        
-        saveresults && true;
+        saveresults && true; % error if saveresults is a boolean
     elseif(strcmp(parameter,'file'))
         na=na+1;
         save_name=varargin{na};
@@ -138,7 +144,8 @@ while(na<=nargin)
                 otherwise
                     error(['VB7_batch_manage : ' varargin{na} ' not a valid displaylevel'])
             end
-    
+    elseif(strcmp(parameter,'reconverge'))
+        reconverge=true;
     end
     na=na+1;
 
@@ -159,12 +166,12 @@ for k=1:max(length(looping_filename),length(calibration_filename))
         calFileExist=exist(calSaveFile,'file');
         calFileIsFinished=false;
         if(calFileExist)
-            caltmp=load(calSaveFile);
+            caltmp=load(calSaveFile); % load ananlysis of single calibration trajectory
             calfields=fieldnames(caltmp);
             if(length(calfields)>1) % then analysis is finished
                 calFileIsFinished=true;
             end
-        end
+        end        
         if(calFileExist && cleanup && ~calFileIsFinished)
             dodelete=false;
             if(autoclean)
@@ -181,16 +188,21 @@ for k=1:max(length(looping_filename),length(calibration_filename))
                 delete(calTmpFile);
             end
         end
-        
+        if(calFileExist && reconverge && calFileIsFinished)
+            [~,caldat]=VB7_getTrjData(runinputfile,k,1); % possible error if trj k bead 1 does not exist.
+            caltmp.Wcal=VB7iterator(caltmp.Wcal,caldat.data);
+            save(calSaveFile,'-struct','caltmp');
+            disp(['wrote reconverged calibration model to ' calSaveFile])
+        end
         if(calFileExist && collect && calFileIsFinished)
             cal{1,k}=load(calSaveFile);
-                % check that all fields are present, and try to add them if
-                % not
-                for mm=1:length(calVariableList)
-                   if(~isfield(cal{k},calVariableList{mm}) && exist(calVariableList{mm},'var'))
-                        cal{k}.(calVariableList{mm})=eval(calVariableList{mm});
-                   end
+            % check that all fields are present, and try to add them if
+            % not
+            for mm=1:length(calVariableList)
+                if(~isfield(cal{k},calVariableList{mm}) && exist(calVariableList{mm},'var'))
+                    cal{k}.(calVariableList{mm})=eval(calVariableList{mm});
                 end
+            end
             
         end
         if(calFileIsFinished)
@@ -235,7 +247,12 @@ for k=1:max(length(looping_filename),length(calibration_filename))
                     delete(trjTmpFile);
                 end
             end
-            
+            if(trjFileExist && reconverge && trjFileIsFinished(j))
+                [trjdat,~]=VB7_getTrjData(runinputfile,k,j); % possible error if trj k bead 1 does not exist.
+                trjtmp.Wtrj=VB7iterator(trjtmp.Wtrj,trjdat.data);
+                save(trjSaveFile,'-struct','trjtmp');
+            disp(['wrote reconverged looping model to ' trjSaveFile])
+            end
             if(trjFileExist && collect && trjFileIsFinished(j))
                 trj{k}{j}=load(trjSaveFile);
                 % check that all fields are present, and try to add them if
