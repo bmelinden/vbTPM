@@ -10,6 +10,7 @@ function gfig=VB7_batch_postprocess(runinputfile,xtrastates,savefile)
 %                 It is possible to load and continue an old analysis, but
 %                 the savefile must have been created with the same
 %                 runinput file.
+
 % M.L. 2011-10-21   : started GUI for postprocessing of single data set
 %                      (all beads anayzed in a single runinput file).
 % M.L. 2011-11-12   : % Removed unused states from standard analysis.
@@ -27,9 +28,9 @@ function gfig=VB7_batch_postprocess(runinputfile,xtrastates,savefile)
 % M.L. 2012-05-04   : made viterbi/sMaxP paths extend all the way to the
 %                     last time point
 % M.L. 2013-04-19   : added non-looping state as a default extra state
-
+% M.L. 2013-04-25   : better GUI stability by disallowing callback
+%                     interruption and qeueing 
 % to do-list:
-% - be able to deal with fast clicking
 % - parallellize viterbi path calculations
 % 
 % - add command line options to get rid of popup menus
@@ -138,7 +139,8 @@ if(continueoldanalysis)
     cal=R.cal;
 end
     
-for k=1:length(trj) % debug trick to daw faster
+for k=1:length(trj)
+%%%%%%%for k=1:3 % debug trick to draw faster
     for b=1:length(trj{k})
         if(~isempty(trj{k}{b}) && ~isempty(cal{k}))
             tic
@@ -402,6 +404,16 @@ myhandle.R=R;
 myhandle.trj=trj;
 myhandle.cal=cal;
 guidata(gfig,myhandle);
+
+% make all callback functions uninterruptible
+cp=get(gfig,'Children'); % all panels
+for np=1:length(cp)
+    cc=get(cp,'Children'); % all panel component
+    for nc=1:length(cc)
+        set(cc{nc},'interruptible','off')
+        set(cc{nc},'busyaction','cancel')
+    end
+end
 end
 %% callback functions
 function toggleRMS(hObject,eventdata)
