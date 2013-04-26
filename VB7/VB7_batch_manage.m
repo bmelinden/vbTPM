@@ -191,6 +191,8 @@ for k=1:max(length(looping_filename),length(calibration_filename))
         if(calFileExist && reconverge && calFileIsFinished)
             [~,caldat]=VB7_getTrjData(runinputfile,k,1); % possible error if trj k bead 1 does not exist.
             caltmp.Wcal=VB7iterator(caltmp.Wcal,caldat.data);
+            caltmp.calDataFile=calDataFile;
+            caltmp.calLogFile=calLogFile;
             save(calSaveFile,'-struct','caltmp');
             disp(['wrote reconverged calibration model to ' calSaveFile])
         end
@@ -250,6 +252,8 @@ for k=1:max(length(looping_filename),length(calibration_filename))
             if(trjFileExist && reconverge && trjFileIsFinished(j))
                 [trjdat,~]=VB7_getTrjData(runinputfile,k,j); % possible error if trj k bead 1 does not exist.
                 trjtmp.Wtrj=VB7iterator(trjtmp.Wtrj,trjdat.data);
+                trjtmp.trjDataFile=trjDataFile;
+                trjtmp.trjLogFile=trjLogFile;                
                 save(trjSaveFile,'-struct','trjtmp');
             disp(['wrote reconverged looping model to ' trjSaveFile])
             end
