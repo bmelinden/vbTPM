@@ -13,12 +13,18 @@ function [trjdat,caldat]=VB7_getTrjData(runinputfile,k,b)
 
 % change-log
 % ML 2012-06-01 : handle runinput filenames ending with .m
+% ML 2013-05-11 : handle runinput files in different folders
 
 % get settings for this runinput file
 if(strcmp(runinputfile(end-1:end),'.m'))
     runinputfile=runinputfile(1:end-2);
 end
-eval(runinputfile);
+[VB7tmp_path,VB7tmp_file]=fileparts(runinputfile);
+VB7tmp_dir0=pwd;
+cd(VB7tmp_path)
+eval(VB7tmp_file);
+cd(VB7tmp_dir0)
+clear VB7tmp_path VB7tmp_file VB7tmp_dir0
 
 % determine data file names and load data
 caldat.name=[source_path calibration_filename{k}];
