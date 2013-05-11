@@ -12,7 +12,8 @@ function U=VB7_EBupdate_dirichlet(w,zpattern)
 %
 % If present, zpattern specifices columns to ignore; only columns with
 % zpattern>0 are included in the analysis. For columns with zpattern<=0,
-% the corresponding entries of u are set to zero as well.
+% the corresponding entries of u are set to zero as well. By default, all
+% columns are included.
 % 
 % ML 2012-05-02
 

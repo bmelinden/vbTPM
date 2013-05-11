@@ -44,7 +44,7 @@ T=T+Twu;
 
 N=length(K);
 Nc=length(Kc);
-if(Nc==1)
+if(Nc<=1)
     Rc=1;
     Asc=ones(N,1);
 end
