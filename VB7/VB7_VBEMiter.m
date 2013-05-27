@@ -477,7 +477,7 @@ W.est.sKBcov=W.est.sKaverage.*W.est.sBaverage; % <K*B>
 
 W.est.sRMS=sqrt(1./W.est.sBaverage./(1-W.est.sKaverage.^2));
 W.est.sTC=-1./log(W.M.mu)/(X.fSample0); % real time units; correction for downsampling not needed
-W.est.sNC=-1./log(W.M.mu);                              % sampling time units
+W.est.sNC=-1./log(W.M.mu);              % sampling time units
 
 W.est.cKaverage=[0 W.Mc.mu(2:end)];
 W.est.cBaverage=[0 ... %sum(W.est.sBaverage.*W.est.sAverage) ... % better plot if Bc(1)>0
