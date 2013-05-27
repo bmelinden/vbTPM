@@ -1,3 +1,40 @@
+/*
+ VBviterbi_log.c
+ =========================================================================
+ 
+ Copyright (C) 2012 Martin Lind??n, E-mail: bmelinden@gmail.com
+
+ This program is free software: you can redistribute it and/or modify it
+ under the terms of the GNU General Public License as published by the
+ Free Software Foundation, either version 3 of the License, or any later
+ version.   
+ This program is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ Public License for more details.
+
+ Additional permission under GNU GPL version 3 section 7
+ 
+ If you modify this Program, or any covered work, by linking or combining it
+ with Matlab or any Matlab toolbox, the licensors of this Program grant you 
+ additional permission to convey the resulting work.
+ 
+ You should have received a copy of the GNU General Public License along
+ with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/*
+ Matlab function definition:
+ function s=VBviterbi_log(lnQ,lnqst) 
+
+ most likely trajectory by the Viterbi algorithm for a trajectory
+ where Q is the transition matrix, not necessarily normalized,
+ lnQ=log(Q), and qst is the emission likelihood, and lnqst=log(qst). 
+ Constructed for use with ensemble learning of Hidden Markov models. 
+ M.L. 2011-12-20
+
+ */
+
 #include <math.h>
 #include "mex.h"
 #include "matrix.h"
@@ -61,7 +98,7 @@ void mexFunction(int nlhs, mxArray *plhs[],
     for(k=0;k<N;k++){
         lnp1[k]=lnqst[k]-Z;
     }
-    for(t=0;t<T;t++){
+    for(t=1;t<T;t++){
         for(k=0;k<N;k++){/*lnP0=lnP1;lnP1=zeros(1,N);*/
             lnp0[k]=lnp1[k];
             lnp1[k]=0.0;
@@ -111,6 +148,14 @@ void mexFunction(int nlhs, mxArray *plhs[],
     for(t=0;t<T;t++){
         s[t]=s[t]+1;
     }
+    /* display MaxPrev 
+    for(t=0;t<T-1;t++){        
+        for(k=0;k<N;k++){
+            printf("%d ",(int)maxPrev[t+1+T*k]+1);
+        }
+        printf("\n");
+    } */
+    
     /* destroy temporary arrays */
     mxDestroyArray(mxp0);
     mxDestroyArray(mxp1);
