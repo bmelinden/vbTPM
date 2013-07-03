@@ -2,8 +2,9 @@ function [n0,c0,v0,mu0]=VB7_EBupdate_KB(n,c,v,mu)
 % [n0,c0,v0,mu0]=VB7_EBupdate_KB(n,c,v,mu)
 % perform the hierarchical prior update steps on the KB-distribution in the
 % Gaussian TPM model, with emission probability parameters n,c,v,mu.
+% PM is an optional prior structure (with fields n,c,mu,v) used as initial
+% guess in the numerical optimization procedure.
 
-% M.L. 2012-05-02
 
 % ML 2012-07-04 : inserted more check-points, caught output bug, and inactivated the numerical
 % refinement, which only seems to make things worse.

@@ -1,4 +1,5 @@
 function est=VB7_Mestimates(M,fSample,downSampling)
+% est=VB7_Mestimates(M,fSample,downSampling)
 % Compute some estimates based on variational distribution
 % parametrers (no hyper-parameters substracted).
 %
