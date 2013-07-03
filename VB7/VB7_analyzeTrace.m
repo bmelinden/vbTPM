@@ -34,14 +34,14 @@ function [Wbest,NF,NFiMax,rndState0]=VB7_analyzeTrace(data,Wparent,initFun,N0,re
 %% reset random numbers and save starting state
 if(exist('rndState0','var'))
     rst = RandStream.create('mt19937ar','seed',sum(100*clock));
-    RandStream.setDefaultStream(rst);
+    RandStream.setGlobalStream(rst);
     global random_number_generator_reset_this_session;
     rst.State=rndState0;
     clear rst
 end
 if(~exist('random_number_generator_reset_this_session','var'))
     rst = RandStream.create('mt19937ar','seed',sum(100*clock));
-    RandStream.setDefaultStream(rst);
+    RandStream.setGlobalStream(rst);
     global random_number_generator_reset_this_session;
     rndState0=rst.State;
     clear rst
