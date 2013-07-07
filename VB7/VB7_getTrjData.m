@@ -19,25 +19,29 @@ if(strcmp(runinputfile(end-1:end),'.m'))
     runinputfile=runinputfile(1:end-2);
 end
 eval(runinputfile);
-
-% determine data file names and load data
-caldat.name=[source_path calibration_filename{k}];
-trjdat.name=[source_path looping_filename{k}{b}];
+% add file separator to source path if absent
 if(~strcmp(source_path(end),filesep))
-    caldat.name=[source_path filesep calibration_filename{k}];
-    trjdat.name=[source_path filesep looping_filename{k}{b}];
+    source_path=[source_path filesep]
 end
-caldat=load(caldat.name);
-trjdat=load(trjdat.name);
-
-% rename the coordinate field to 'x'
-if(~strcmp('x',calibration_xyfield))
-    caldat.x=caldat.(calibration_xyfield);
-    caldat=rmfield(caldat,calibration_xyfield);
+% determine data file names and load data
+caldat=struct;
+if(include_calibration)
+    caldat.name=[source_path calibration_filename{k}];
+    caldat=load(caldat.name);
+    % rename the coordinate field to 'x'
+    if(~strcmp('x',calibration_xyfield))
+        caldat.x=caldat.(calibration_xyfield);
+        caldat=rmfield(caldat,calibration_xyfield);
+    end
 end
-if(~strcmp('x',looping_xyfield))
-    trjdat.x=trj.(looping_xyfield);
-    trjdat=rmfield(trjdat,looping_xyfield);
+trjdat=struct;
+if(include_looping)
+    trjdat.name=[source_path looping_filename{k}{b}];
+    trjdat=load(trjdat.name);
+    if(~strcmp('x',looping_xyfield))
+        trjdat.x=trj.(looping_xyfield);
+        trjdat=rmfield(trjdat,looping_xyfield);
+    end
 end
 
 % driftcorrect by lowpass fileter, if specified in the runinputfile
