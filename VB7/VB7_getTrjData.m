@@ -23,6 +23,8 @@ eval(runinputfile);
 if(~strcmp(source_path(end),filesep))
     source_path=[source_path filesep]
 end
+
+%% calibration data
 % determine data file names and load data
 caldat=struct;
 if(include_calibration)
@@ -33,6 +35,19 @@ if(include_calibration)
         caldat.x=caldat.(calibration_xyfield);
         caldat=rmfield(caldat,calibration_xyfield);
     end
+    % driftcorrect by lowpass filter, if specified in the runinputfile
+    if(driftcorrection)
+        caldat.x=BWdriftcorrect(caldat.x,fCut,fSample);
+        caldat.fCut=fCut;
+    end
+    % preprocessed data
+    caldat.data=VB7_preprocess(caldat.x,downSample,fSample);
+    % RMS trace
+    caldat.RMS=RMSKBgaussfilter(caldat.x,tSigma,fSample);
+    caldat.tSigma=tSigma;
+    % useful information
+    caldat.fSample=fSample;
+    caldat.downSample=downSample;
 end
 trjdat=struct;
 if(include_looping)
@@ -42,30 +57,20 @@ if(include_looping)
         trjdat.x=trj.(looping_xyfield);
         trjdat=rmfield(trjdat,looping_xyfield);
     end
+    % driftcorrect by lowpass filter, if specified in the runinputfile
+    if(driftcorrection)
+        trjdat.x=BWdriftcorrect(trjdat.x,fCut,fSample);
+        trjdat.fCut=fCut;
+    end
+
+    % preprocessed data
+    trjdat.data=VB7_preprocess(trjdat.x,downSample,fSample);
+    % RMS trace
+    trjdat.RMS=RMSKBgaussfilter(trjdat.x,tSigma,fSample);
+    trjdat.tSigma=tSigma;
+    % useful information
+    trjdat.fSample=fSample;
+    trjdat.downSample=downSample;
 end
-
-% driftcorrect by lowpass fileter, if specified in the runinputfile
-if(driftcorrection)
-    caldat.x=BWdriftcorrect(caldat.x,fCut,fSample);
-    trjdat.x=BWdriftcorrect(trjdat.x,fCut,fSample);
-    caldat.fCut=fCut;
-    trjdat.fCut=fCut;
-end
-
-% preprocessed data
-caldat.data=VB7_preprocess(caldat.x,downSample,fSample);
-trjdat.data=VB7_preprocess(trjdat.x,downSample,fSample);
-
-% RMS trace
-caldat.RMS=RMSKBgaussfilter(caldat.x,tSigma,fSample);
-trjdat.RMS=RMSKBgaussfilter(trjdat.x,tSigma,fSample);
-caldat.tSigma=tSigma;
-trjdat.tSigma=tSigma;
-
-% useful information
-trjdat.fSample=fSample;
-trjdat.downSample=downSample;
-caldat.fSample=fSample;
-caldat.downSample=downSample;
 
 
