@@ -1,0 +1,67 @@
+\subsection{Diffusive hidden Markov model}
+We model the looping dynamics by a discrete Markov process $s_t$ with
+$N$ states, a transition probability matrix $\matris{A}$, and initial
+state distribution $\vec{\pi}$,
+\begin{equation}\label{eq:eoms}
+  p(s_t|s_{t-1},\matris{A})=A_{s_{t-1}s_t},\quad p(s_1)=\pi_{s_t}.
+\end{equation}
+This is the standard hidden part of an HMM, and the physics of TPM
+goes into the emission model, that describes the restricted Brownian
+motion of the bead. We use a discrete time model of over-damped 2D
+diffusion in a harmonic potential, that has been suggested as a
+simplified model for TPM \cite{beausang2007b,lindner2013},
+\begin{equation}\label{eq:eomx}
+  \x_t=K_{s_t}\x_{t-1}+\vec{w}_t/(2B_{s_t})^{1/2},
+\end{equation}
+where the index $s_t$ indicate parameters that depend on the hidden
+state.  Thermal noise enters through the uncorrelated Gaussian random
+vectors $\vec{w}_t$ with unit variance. The unintuitive
+parametrization is chosen for computational convenience; $K_j$ and
+$B_j$ are related to the spring and diffusion constant of the bead,
+and some insight into their physical meaning can be gained by noting
+that with a single hidden state, Eq.~\ref{eq:eomx} describes a
+Gaussian process with zero mean and
+\begin{align}
+RMS&=\sqrt{\mean{\x^2}}=(B(1-K^2))^{-1/2},\nonumber\\
+\frac{\mean{\x_{t+m}\cdot\x_t}}{\mean{\x^2}}&
+=K^m\equiv e^{-m\Delta t/\tau},\label{eq:1state}
+\end{align}
+where $\Delta t$ is the sampling time, and $\tau$ is a bead
+correlation time.  This model thus captures the diffusive character of
+the bead motion, while still retaining enough simplicity to allow
+efficient variational algorithms
+\cite{mackay1997,bishop2006}.
+
+The integrand in the evidence, \Eq{eq:evidencedef}, requires an
+explicit expression for the probability of a sequence of bead
+positions and hidden states. This expression factorizes in the usual
+HMM fashion, as
+\begin{multline}\label{eq:evidencintegrand}
+ p(\x_{1:T},s_{1:T}|N)%\matris{A},\vec{\pi},\vec{K},\vec{B},N)
+=
+p(\x_1)p(s_1|\vec{\pi})\\
+\times
+\prod_{t=2}^{T}p(\x_t|\x_{t-1},s_t,\vec{K},\vec{B})p(s_t|s_{t-1},\matris{A})\\
+\times
+p(\vec{\pi}|N)
+\prod_{j=1}^Np(K_j,B_j|N)p(A_{j,:}|N),
+\end{multline}
+where \mbox{\textit{1:T}} is a compact way to denote a whole time
+series, and $A_{j,:}$ denote row $j$ of the matrix $\matris{A}$.  The
+first right hand side line in \Eq{eq:evidencintegrand} describes the
+initial state and bead position. We will neglect the factor $p(\x_1)$
+from now on, but the initial state $p(s_1|\vec\pi)$ and transition
+probabilities $p(s_t|s_{t-1},\matris{A})$ are given by
+\Eq{eq:eoms}, and the bead motion follows from \Eq{eq:eomx},
+\begin{equation}
+ p(\x_t|\x_{t-1},s_t,\vec{K},\vec{B})
+ =\frac{B_{s_t}}{\pi}
+ e^{-B_{s_t}(\x_t-K_{s_t}\x_{t-1})^2}.
+\end{equation}
+Finally, the last line of \Eq{eq:evidencintegrand} contains prior
+distributions over parameters conditional on the number of states. We
+use conjugate priors, parameterized to have minimal impact on the
+inference results (see SI).
+
+\subsection{Factorial model}
+\cite{vbTPM_model:describefactorialmodel}

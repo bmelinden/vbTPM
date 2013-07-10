@@ -1,0 +1,367 @@
+\cite{someintroductionghere}
+\subsection{The variational approximation}
+An exact computation of the Bayesian evidence is impractical or
+impossible for most interesting models, and clever approximations are
+needed. The approximation we use here is variously known as ensemble
+learning, variational Bayes, or (in statistical physics jargong) mean
+field theory \cite{mackay2003,bishop2006}, has previously been applied
+to biophysical time-series of FRET data
+\cite{bronson2009,vandemeent_manuscript,okamoto2012} and \textit{in
+  vivo} single particle tracking \cite{persson2013}.  The idea is to
+approximate the log evidence by a lower bound, $\ln p(x|N)\geq F_N$,
+with
+\begin{equation}
+  F_N= \int d\theta\sum_{s} q(s)q(\theta)
+  \ln\frac{p(x,s|\theta)p(\theta|N)}{q(s)q(\theta)},
+\end{equation}
+where $q(s)$ and $q(\theta)$ are arbitrary probability distributions
+over the hidden states and parameters respectively.  These are
+optimized to make the bound as tight as possible for each model, the
+model that achieves the highest lower bound wins, and the
+corresponding optimal distributions $q(s)q(\theta)$ can be used for
+approximate inference about parameter values and hidden states. In
+particular, optimizing $F_N$ with respect to the variational
+distributions leads to
+\begin{align}
+  \ln q(\theta)=&-\ln Z_\theta+ \ln p(\theta|N)
+  +\mean{\ln p(x,s|\theta)}_{q(s)},\label{seq:qparam}\\
+  \ln q(s)=&-\ln Z_s+\mean{\ln p(x,s|\theta)}_{q(\theta)},\label{seq:sparam}
+\end{align}
+where the $Z$'s are Lagrange multipliers to enforce normalization, and
+$\mean{\cdot}_{q(\cdot)}$ denotes an average over $q(\cdot)$. We solve
+these equations iteratively until the lower bound converges, repeating
+the analysis many times with independent initial conditions in order
+to find a global maximum.  The iterative solution approach results in
+an EM-type variational algorithm, detailed below.  We refer to
+Refs.~\cite{mackay1997,beal2003,persson2013} for details on how to
+derive variational algorithms for HMMs, and
+Refs.~\cite{beal2003,mackay2003,bishop2006} for more general
+discussion of variational inference methods.
+
+\subsubsection{Parameter distributions}
+The results of plugging our diffusinve HMM into the parameter update
+equation \eqref{seq:qparam} are as follows.  The initial state
+probability vector, and each row in the transition matrix (denoted
+$A_{j,:}$), are Dirichlet distributed,
+\begin{align}
+q(\vec{\pi})=&\Dir(\vec{\pi}|\vec{w}^{(\vec{\pi})}),\\
+w_j^{(\vec{\pi})}=&\tilde w_j^{(\vec{\pi})}+\mean{\delta_{j,s_1}}_{q(s_{1:T})},
+\label{seq:VBMpi}\\
+%\end{align}\begin{align}
+q(A_{i,:})=&\Dir(A_{i,:}|\vec{w}^{(\matris{A})}),\\
+w_{ij}^{(\matris{A})}=&\tilde w_{ij}^{(\matris{A})}
++\sum_{t=2}^T\mean{\delta_{i,s_{t-1}}\delta_{j,s_t}}_{q(s_{1:T})}.\label{seq:VBMAj}
+\end{align}
+Here, variables under tilde's ($\tilde{~}$) are hyperparameters that
+parameterize the prior distributions, and can be interpreted as
+pseudo-observations. The Dirichlet density function is
+\begin{equation}
+  \Dir(\vec \pi | \vec u)=\frac{\Gamma(u_0)}{\prod_j\Gamma(u_j)}
+  \prod_j \pi_j^{u_j-1},\quad u_j>1,
+\end{equation}
+where $u_0=\sum_j u_j$ is called the strength, and the density is
+non-zero in the region $0\le\pi_j\le1$, $\sum_j\pi_j=1$ . Before
+moving on, we quote some useful expectation values for future
+reference,
+\begin{align}
+  \mean{\ln\pi_i}_{q(\vec{\pi})}=&\psi(w_i^{(\vec{\pi})})-\psi(w_0^{(\vec{\pi})}),
+  \label{seq:mlogpi}\\
+  \mean{\ln A_{ij}}_{q(\matris{A})}=&\psi(w_{ij}^{(\matris{A})})
+  -\psi(w_{i0}^{(\matris{A})}),\label{seq:mlogA}
+\end{align}
+where $\psi(x)$ is the digamma function, and
+\begin{align}
+  \mean{\pi_i}_{q(\vec{\pi})}=&\frac{w_i^{(\vec{\pi})}}{w_0^{(\vec{\pi})}},\\
+  \Var[\pi_i]_{q(\vec{\pi})}=&
+  \frac{w_i^{(\vec{\pi})}\big((1-w_i^{(\vec{\pi})}\big)}{
+    (w_0^{(\vec{\pi})})^2\big(1+w_0^{(\vec{\pi})}\big)},\\
+  \mean{A_{ij}}_{q(\matris{A})}=&\frac{w_{ij}^{(\matris{A})}}{w_{i0}^{(\matris{A})}},\\
+  \Var[A_{ij}]_{q(\matris{A})}=&
+  \frac{w_{ij}^{(\matris{A})}\big(1-w_{ij}^{(\matris{A})}\big)}{
+    (w_{i0}^{(\matris{A})})^2\big(1+w_{i0}^{(\matris{A})}\big)}.
+\end{align}
+The bead motion parameters have the following variational distributions
+\begin{align}\label{seq:KBtrial}
+  q(K_j,B_j)=&\frac{B_j^{n_j}}{W_j}e^{-B_j\big(v_j(K_j-\mu_j)^2+c_j\big)},\\
+  W_j=&\frac{c^{-(n_j+\frac 12)}\Gamma(n_j+\frac 12)}{\sqrt{v_j/\pi}},
+\end{align}
+with the range $B_j\ge 0$, $-\infty<K_j<\infty$. Physically, we might
+rather expect $0<K_j<1$, but the extended range for $K_j$ simplifies
+the calculations a lot. The VBM equations are
+\begin{align}
+  n_j=& n_j^0+M_j,\\
+  c_j=& c_j^0+C_j+v_j^0(\mu_j^0)^2
+  -\frac{\big(v_j^0\mu_j^0+U_j\big)^2}{v_j^0+V_j},\\
+  v_j=&v_j^0+V_j,\\
+  \mu_j=&\frac{v_j^0\mu_j^0+U_j}{v_j^0+V_j},
+\end{align}
+with
+\begin{align}
+  M_j=&\sum_{t=2}^T\mean{\delta_{s_t,j}},\\
+  C_j=&\sum_{t=2}^T\mean{\delta_{s_t,j}}\x_t^2,\\
+  U_j=&\sum_{t=2}^T\mean{\delta_{s_t,j}}\x_t\cdot\x_{t-1},\\
+  V_j=&\sum_{t=2}^T\mean{\delta_{s_t,j}}\x_{t-1}^2.
+\end{align}
+Some useful expectation values for future reference are
+\begin{align}
+  \mean{\ln B_j}_{q(\vec{B},\vec{K})}=&\psi\big(n_j+\frac 12\big)-\ln c_j,
+  \label{seq:meanBlogB}\\
+  \mean{B_j}_{q(\vec{B},\vec{K})}=&\frac{n_j+\frac 12}{c_j},\\
+  \mean{B_jK_j^2}_{q(\vec{B},\vec{K})}=&\frac{1}{2v_j}
+  +\mu_j^2\frac{n_j+\frac 12}{c_j},\\
+  \mean{B_jK_j}_{q(\vec{B},\vec{K})}=&\mu_j\frac{n_j+\frac 12}{c_j},
+  \label{seq:meanbK2BK}\\
+  \text{Var}[B_j]_{q(\vec{B},\vec{K})}=&\frac{n_j+\frac 12}{c_j^2},\\
+  \mean{K_j}_{q(\vec{B},\vec{K})}=&\mu_j,\\ 
+  \text{Var}[K_j]_{q(\vec{B},\vec{K})}=&\frac{c_j}{2v_j(n_j-\frac 12)}.
+\end{align}
+\subsubsection{Hidden state distribution}
+The variational distribution has a simple form,
+\begin{equation}\label{seq:qgt}
+  \ln q(s_{1:T})=-\ln Z+\sum_{t=1}^T\ln h_{s_t}(t)+\sum_{t=2}^T\ln J_{s_{t-1},s_t},
+\end{equation}
+i.e., an initial state distribution, a point-wise term that depends on
+the initial conditions and the data, and a transition
+probability. The point-wise 
+\begin{equation}
+  \ln q(s_{1:T})=-\ln Z+\sum_{t=1}^T\ln h_{s_t}(t)+\sum_{t=2}^T\ln J_{s_{t-1},s_t},
+\end{equation}
+i.e., an initial state distribution, point-wise terms that depends on
+the initial conditions and the data, and transition terms. The
+mathematical form of this expression is the same as encountered in
+maximum-likelihood optimization of hidden Markov Models, and hence the
+normalization constant and expectation values needed for the parameter
+update equations can be computed by the Baum-Welch algorithm
+\cite{baum1970}, which resembles the transfer matrix solution for spin
+models in statistical physics. 
+
+Similarly, and the most likely sequence of hidden states can be
+computed by the Viterbi algorithm \cite{viterbi1967}.
+
+Specifically, the initial term is given by
+\begin{equation}
+  \ln h_j(1)=
+  \mean{p(s_1=j|\vec{\pi})}_{q(\vec{\pi})}
+  =\psi(w_{j}^{(\vec{\pi})})-\psi(w_0^{(\vec{\pi})}),
+\end{equation}
+the point-wise contributions for $t>1$ are
+\begin{multline}
+  \ln h_j(t)=
+  \psi\big(n_j+\frac12\big)-\ln(\pi c_j)-\frac{\x_{t-1}^2}{2v_j}\\
+-\frac{n_j+\frac12}{c_j}\Bigg(
+\x_{t-1}^2\bigg(\mu_j-\frac{\x_t\cdot\x_{t-1}}{\x_{t-1}^2}\bigg)^2\\
++\x_t^2-\frac{\big(\x_t\cdot\x_{t-1}\big)^2}{\x_{t-1}^2}\Bigg),
+\end{multline}
+and the transition terms are given by
+\begin{equation}
+    \ln J_{ji}=\psi\big(w_{j,i}^{(\matris{A})}\big)
+    -\psi\big(\sum_{k=1}^Nw_{j,k}^{(\matris{A})}\big).
+\end{equation}
+\subsection{VBEM iterations and model search}
+The iterative optimization of the variational distributions are done
+as follows. To start with, an initial guess for the variational
+parameter distributions are generated. We then alternate between VBE
+step, in which we construct the hidden state distribution and compute
+the averages $\mean{\delta_{j,s_t}}_{q(s)}$ and
+$\mean{\delta_{j,s_t}\delta_{k,s_{t+1}}}_{q(s)}$ in a Baum-Welch
+forward-backward sweep, and a VBM step, in which we use these averages
+to update the parameter variational distributions, until the lower
+bound converges.
+
+The variational approach has the additional useful tendency to
+penalizing overfitting already during the VBEM iterations, by
+depopulating superfluous states
+\cite{mackay1997,beal2003,persson2013}. We exploit this property by
+using a greedy search algorithm to explore the model space. The basic
+strategy is to start by fitting a model with many states from random
+initial conditions, and then exploring less complex models by
+gradually removing the least populated states. This saves computing
+time by supplying good initial guesses for the low complexity models
+(which therefore converge quickly), and by lowering the number of
+independent restarts, since it is easier to construct a good initial
+guess for a model with many states.
+
+\subsection{The lower bound}
+has an especially simple form just after the VBE step
+\cite{mackay1997,beal2003,persson2013}, given by the normalization
+constant $\ln Z$ of the variational hidden state distribution, minus
+the Kullback-Leibler divergences between the variational and prior
+parameter distributions,
+\begin{multline}
+  F=\ln Z
+  -\int d\vec{\pi} q(\vec{\pi}) \ln\frac{q(\vec{\pi})}{p(\vec{\pi})}\\
+  -\sum_{j=1}^N\Bigg[
+  \int d^NA_{j,:}\;q(A_{j,:})\ln\frac{q(A_{j,:})}{p_0(A_{j,:})}\\
+  +\int dB_jdK_j\;q(B_j,K_j)\ln\frac{q(B_j,K_j)}{p_0(B_j,K_j)}
+  \Bigg].
+\end{multline}
+The Kullback-Leibler terms can be expressed in terms of the
+expectation values computed above. For the initial state distribution,
+we get
+\begin{multline}
+  \int d\vec{\pi} q(\vec{\pi}) \ln\frac{q(\vec{\pi})}{p_0(\vec{\pi})}
+  =\ln\tilde w_0^{(\vec{\pi})}
+    -\psi(\tilde w_0^{(\vec{\pi})})-\frac{1}{\tilde w_0^{(\vec{\pi})}}\\
+    +\sum_{j=1}^N\left[
+      \big(w_j^{(\vec{\pi})}-\tilde w_j^{(\vec{\pi})}\big)\psi(w_j^{(\vec{\pi})})
+      -\ln\frac{\Gamma(w_j^{(\vec{\pi})})}{\Gamma(\tilde w_j^{(\vec{\pi})})}
+      \right].
+\end{multline}
+To get this simple form, we used that $w_0^{(\vec{\pi})}=1+\tilde
+w_0^{(\vec{\pi})}$ (since $\sum_j\mean{\delta_{j,s_1}}=1$), and the
+identities $\Gamma(x+1)=x\Gamma(x)$ and $\psi(x+1)=\psi(x)+\frac 1x$.
+Furthermore, each row of the transition probability matrix contributes
+\begin{multline}
+  \int d^NA_{j,:}\;q(A_{j,:})\ln\frac{q(A_{j,:})}{p_0(A_{j,:})}\\
+  =\ln\frac{\Gamma(w_{j0}^{(\matris{A})})}{\Gamma(\tilde w_{j0}^{(\matris{A})})}
+    -(w_{j0}^{(\matris{A})}-\tilde w_{j0}^{(\matris{A})})\psi(w_{j0}^{(\matris{A})})\\
+    -\sum_{k=1}^N\bigg[
+      \ln\frac{\Gamma(w_{jk}^{(\matris{A})})}{\Gamma(\tilde w_{jk}^{(\matris{A})})}
+      -\big(w_{jk}^{(\matris{A})}-\tilde w_{jk}^{(\matris{A})}\big)
+      \psi(w_{jk}^{(\matris{A})})\bigg].
+\end{multline}
+Finally, the emission parameter of each state contributes
+\begin{multline}\label{seq:KBKL}
+  \int dB_j\int d^NK_j\;q(B_j,K_j)
+  \ln\frac{q(B_j,K_j)}{p(B_j,K_j)}=\ldots\\
+  =-\frac{n_j+\frac 12}{c_j}
+    \Big(c_j-\tilde c_j-\tilde v_j(\mu_j-\tilde \mu_j)^2\Big)\\
+    +\frac 12\ln\frac{v_j}{\tilde v_j}
+    +(\tilde n_j+\frac 12)\ln\frac{c_j}{\tilde c_j}
+    -\ln\frac{\Gamma\big(n_j+\frac 12\big)}{\Gamma\big(\tilde n_j+\frac 12\big)}\\
+    +(n_j-\tilde n_j)\psi\big(n_j+\frac 12\big)
+    +\frac{\tilde v_j}{2v_j}
+    -\frac 12.
+\end{multline}
+
+\subsection{Two types of states}
+The above algorithm is readily extended to treat the model where
+genuine and spurious states are separated into two different hidden
+processes. We implemented a brute force approach to this problem,
+where we define new composite hidden states $\hat s_t=(s_t,c_t)$ and
+run the above algorithm on this composite model. This has a
+significant computational cost, since a simple model with $N_{gen.}$
+genuine states and $N_{sp.}$ spurious ones gets
+$N_{gen.}\times(1+N_{sp.})$ states after conversion. However, since we
+do not perform exhaustive model search in this representation and can
+utilize the simpler model to make good initial guesses, this is not a
+significant problem.
+
+\subsection{Choice of prior distributions}
+We would like to choose uninformative prior distributions in order to
+let the data speak for itself as much as possible. This is
+unproblematic for the emission parameters $K,B$, since the amount of
+data in all states is large enough to overwhelm any prior
+influence. We use
+\begin{align}
+  \tilde\mu_j=&0.6, &
+  \tilde n_j=&1,\\
+  \tilde v_j =&5.56\text{ nm$^2$},&
+  \tilde c_j=&30000\text{ nm$^2$},
+\end{align}
+which corresponds to 
+\begin{align}
+  \mean{K_j}=&0.6,&
+  \mean{B_j}=&5\times 10^{-5}\text{ nm$^{-2}$},\\
+  \mathrm{std}(K_j)=&0.3,&
+  \mathrm{std}(B_j)=&141.4\times 10^{-5}\text{ nm$^{-2}$}.
+\end{align}
+The initial state prior is unproblematic for the opposite reason: the
+long length of the trajectories makes the initial state relatively
+unimportant to describe the data. We use a constant prior strength of
+5,
+\begin{equation}
+  \tilde w_j^{(\vec\pi)}=5/N,
+\end{equation}
+where $N$ is the number of hidden states.
+
+The transition probabilities needs more care, because the potentially
+low number of transitions per trajectory makes the prior relatively
+more influential.  Following \citet{persson2013}, we parameterize this
+prior in terms of an expected mean dwell time and an overall number of
+pseudocounts (prior strength) for each hidden state.  In particular,
+we define a transition \textit{rate} matrix Q with mean dwell time
+$t_D$,
+\begin{equation}
+  Q_{ij}=\frac{1}{t_D}\left(-\delta_{ij}
+  +\frac{1-\delta_{ij}}{N-1}\right),
+\end{equation}
+and then construct the prior based on the transition probability
+propagator per unit time step,
+\begin{equation}
+  \tilde w_{ij}^{(\matris{A})}=\frac{t_Af_{sample}}{n_{downsample}}
+  e^{\Delta tQ}.
+\end{equation}
+Here, $t_A$ is the prior strength; both $t_A$ and $t_D$ is specified
+in time units to be invariant a change of sampling frequency. Further,
+the timestep is given by $\Delta t=n_{downsample}/f_{sample}$, where
+$f_{sample}$ is the sampling frequency (30 Hz in our case), and
+$n_{downsample}$ is the downsampling factor (we use 3).  
+
+Numerical experiments by \citet{persson2013} show that choosing the
+strength too low compared to the mean dwell time produces a bias
+towards sparse transition matrices. This is not desireable in our
+case, and we therefore use $t_D=1$ s, and $t_A=5$ s throughout this
+work.
+
+
+{\bf Prior for factorial model: TBA}.\cite{factorialmodelprior}
+
+\subsection{Empirical Bayes update equations}
+The empirical Bayes update equations optimizes the lower bound with
+respect to the hyperparameters in the prior distribution. This means
+optimizing sums of Kullback-Leibler divergence terms. 
+
+The initial state probability, and the rows of the transition
+probability matrix, are both Dirichlet distributed. Thus, for $M$
+trajectories with Dirichlet parameters $u_j^{(i)}$, $i=1,2,\ldots,M$,
+and hyperparameters $\tilde{u}_j$ ($u = w^{(\vec\pi)},u^{(\matris{A})}$),
+we need to solve
+\begin{multline}
+\frac{d}{d \tilde u_j} \sum_i\Bigg( 
+ \ln\frac{\Gamma(u_0^{(i)})}{\Gamma(\tilde u_0)}
+    -(u_0^{(i)}-\tilde u_0)\psi(u_0^{(i)})\\
+    -\sum_{k=1}^N\bigg[
+      \ln\frac{\Gamma(u_k^{(i)})}{\Gamma(\tilde u_k^{(i)})}
+      -\big(u_k^{(i)}-\tilde u_k\big)
+      \psi(u_k^{(i)})\bigg]\Bigg)=0,
+\end{multline}
+where $u_0^{(i)}=\sum_ku_k^{(i)}$ and similar for $\tilde u_0$. This
+leads to the update equations
+\begin{equation}
+  \psi(\tilde u_0)-\psi(\tilde u_j)
+=\frac{1}{M}\sum_i\bigg(
+  \psi(u_0^{(i)})-\psi(u_j^{(i)})\bigg).
+\end{equation}
+A numerical solution turned out to be easier using the variables
+$\tilde U_j=\ln \tilde u_j$ (to numerically enforce $\tilde u_j>0$).
+
+For the emission parameters, the update equations are instead derived
+from minimizing \Eq{seq:KBKL} summed over $M$ trajectories,
+\begin{multline}
+  f_{KB}=\sum_i\Bigg(
+  -\frac{n^{(i)}+\frac 12}{c^{(i)}} \Big(c^{(i)}-\tilde c-\tilde v(\mu^{(i)}-\tilde
+  \mu)^2\Big)\\ +\frac 12\ln\frac{v^{(i)}}{\tilde v} +(\tilde
+  n+\frac 12)\ln\frac{c^{(i)}}{\tilde c}
+  -\ln\frac{\Gamma\big(n^{(i)}+\frac 12\big)}{\Gamma\big(\tilde n+\frac
+    12\big)}\\ +(n^{(i)}-\tilde n)\psi\big(n^{(i)}+\frac 12\big)
+  +\frac{1}{2}\Big(\frac{\tilde v}{v^{(i)}} -1\Big)\Bigg).
+\end{multline}
+Minimizing with respect to $\tilde\mu$ and $\tilde v$ leads to
+\begin{align}
+   \tilde\mu=&\frac{1}{M}\sum_i\mu^{(i)},\\
+   \frac{1}{\tilde v}=&
+   \frac{1}{M}\sum_i\Big(\frac{1}{v^{(i)}}+2(\tilde\mu-\mu^{(i)})^2\Big).
+\end{align}
+The remaining $\tilde c$ and $\tilde n$ lead to
+\begin{align}
+  \frac{\tilde n+\frac 12}{\tilde c}=&
+  \frac{1}{M}\sum_i\frac{n^{(i)}+\frac 12}{c^{(i)}},\\
+  \ln\tilde c-\psi\big(\tilde n+\frac 12\big)=&
+  \frac{1}{M}\sum_i\bigg(
+\ln c^{(i)}-\psi\big(n^{(i)}+\frac 12\big)\bigg),
+\end{align}
+which we solve numerically. This gets easier by defining
+$\alpha=\frac{\tilde n+\frac 12}{\tilde c}$, then solve the second
+equation for $\tilde c$ numerically, and finally compute $\tilde
+n=\alpha\tilde c-\frac 12$.

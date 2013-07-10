@@ -1,0 +1,70 @@
+\documentclass[11pt,letterpaper,twocolumn]{article}
+\usepackage[dvips]{graphicx}
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+\usepackage{amsmath}
+\usepackage[numbers,sort&compress,round]{natbib}
+\usepackage{url}
+%\usepackage{epstopdf}
+\usepackage{MLHMM}
+
+\usepackage{color}
+\usepackage[usenames,dvipsnames]{xcolor}
+\newcommand{\jwm}[1]{\textcolor{MidnightBlue}{#1}}
+\newcommand{\ml}[1]{\textcolor{BrickRed}{#1}}
+
+\usepackage{ulem}
+\newcommand{\del}[1]{\sout{#1}}
+
+\newcommand{\comment}[1]{{\bf [#1]}}
+
+
+\title{vbTPM user guide and manual} 
+
+\author{\ml{Martin Lind\'en}, Stephanie Johnson, \jwm{Jan-Willem van
+    de Meent}, Rob Phillips, and Chris H Wiggins} 
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+% some information that is useful for running the VB7 software for
+% analyzing TPM traces.
+
+\section{Getting started with vbTPM}
+\subsection{Installation}
+Get the source code, and make sure VB7, HMMcore, and tools are in your
+matlab path.
+
+Make sure that HMMcore/ contains binaries for your systems. If not, a
+simple matlab compilation script can be found in HMMcore/.
+
+\subsection{Hardware requirements}
+Tethered particle motion often produces large data sets of many long
+trajectories, which makes the HMM analysis computer intensive. As an
+example, one parameter point in our test data sets, about 90
+trajectories averaging 45 min, downsampled to 10 Hz, took about 24 h
+to go through on two 6 core Intel Xeon E5645 2.40GHz processors. The
+analysis time increases sharply with the number of (spurious) states.
+
+\subsection{A small test problem}
+\section{Diffusive model for TPM}
+\input{vbTPM_model.tex}
+\section{The VB-algorithm}
+\input{vbTPM_algorithm.tex}
+\subsection{Factorial model}
+\subsection{Notation and symbols}
+\subsection{Large data sets}
+Parallellization is achieved by running external scripts that starts
+multiple independent Matlab runs, and use the presence of various~.mat
+files to coordinate the computations. Repeated restarts of Matlab also
+avoids problems with memory performance.
+
+\subsection{Doing empirical Bayes}
+Our empirical Bayes analysis of hierarchical models used tailored
+scripts\ldots
+
+\bibliographystyle{unsrtnat}
+\bibliography{references}%,jwm_single_molecule,jwm_machine_learning}
+
+\end{document}
