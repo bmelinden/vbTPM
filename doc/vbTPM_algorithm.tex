@@ -1,4 +1,79 @@
 \cite{someintroductionghere}
+\subsection{Model selection by maximum evidence}
+Our analysis aims not only to extract parameter values from TPM data,
+but also to learn the number of hidden states $N$, corresponding to
+different DNA-protein conformations. This means that we need to
+compare models with different number of unknown parameters.  We take a
+Bayesian approach to this problem.
+
+A distinguishing feature of Bayesian data analysis is the treatment of
+random variables and unknown parameters on an equal footing
+\cite{eddy2004,mackay2003}. 
+Hence, given some data $\x_{1:T}$ and a set of competing models with
+different number of states $N=1,2,\ldots$ (and \mbox{\textit{1:T}} is
+a compact way to denote a whole time series), we can use the laws
+of probability to express our confidence about those models in terms
+of conditional probabilities,
+\begin{equation}
+  p(N|\x_{1:T})=p(\x_{1:T}|N)p(N)/p(\x_{1:T}),
+\end{equation}
+where $p(N)$ expresses our beliefs about the different models prior to
+seeing the data, and $p(\x_{1:T})$ is a normalization constant. A
+Bayesian rule for model selection is therefore to prefer the model
+that maximizes $p(\x_{1:T}|N)$, a quantity known as the evidence. For
+our more complex model, parameters and hidden states will have to be
+integrated out,
+\begin{equation}\label{eq:evidencedef}
+  p(\x_{1:T}|N)=\int d\theta\sum_{s_{1:T}} p(\x_{1:T},s_{1:T}|\theta)p(\theta|N),
+\end{equation}
+where the first factor in the integrand describes the model, and the
+second expresses our prior beliefs about the parameters (see
+below).
+
+The integrand in the evidence, \Eq{eq:evidencedef}, requires an
+explicit expression for the probability of a sequence of bead
+positions and hidden states. This expression can be written down based
+on the above model, and factorizes in the usual HMM fashion, as
+\begin{multline}\label{eq:evidencintegrand}
+ p(\x_{1:T},s_{1:T}|\theta)p(\theta|N)%\matris{A},\vec{\pi},\vec{K},\vec{B},N)
+=
+p(\x_1)p(s_1|\vec{\pi})\\
+\times
+\prod_{t=2}^{T}p(\x_t|\x_{t-1},s_t,\vec{K},\vec{B})p(s_t|s_{t-1},\matris{A})\\
+\times
+p(\vec{\pi}|N)
+\prod_{j=1}^Np(K_j,B_j|N)p(A_{j,:}|N),
+\end{multline}
+where $A_{j,:}$ denote row $j$ of the matrix $\matris{A}$.  The first
+right hand side line in \Eq{eq:evidencintegrand} describes the initial
+state and bead position. We will neglect the factor $p(\x_1)$ from now
+on, but the initial state $p(s_1|\vec\pi)$ and transition
+probabilities $p(s_t|s_{t-1},\matris{A})$ are given by
+\Eq{eq:eoms}, and the bead motion follows from \Eq{eq:eomx},
+\begin{equation}
+ p(\x_t|\x_{t-1},s_t,\vec{K},\vec{B})
+ =\frac{B_{s_t}}{\pi}
+ e^{-B_{s_t}(\x_t-K_{s_t}\x_{t-1})^2}.
+\end{equation}
+Finally, the last line of \Eq{eq:evidencintegrand} contains prior
+distributions over parameters conditional on the number of states. We
+use conjugate priors, parameterized to have minimal impact on the
+inference results (see SI).
+
+
+%The maximum evidence criterion balances model complexity versus
+%goodness of fit in an optimal way, but is expensive to compute
+%exactly. Instead, we use an approximation variously known as ensemble
+%learning, variational Bayes, or mean field
+%theory \cite{mackay2003,bishop2006}, which has previously been applied
+%successfully to single molecule FRET data
+%\cite{bronson2009,vandemeent_manuscript,okamoto2012} and \textit{in
+%  vivo} single particle tracking \cite{persson2013}.  
+%Further details are given in the SI.
+
+%\paragraph{Parameters and hidden states}
+%{\bf Explain what parameter values and hidden states we plot}. 
+
 \subsection{The variational approximation}
 An exact computation of the Bayesian evidence is impractical or
 impossible for most interesting models, and clever approximations are

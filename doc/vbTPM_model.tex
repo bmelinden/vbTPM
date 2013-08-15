@@ -32,36 +32,5 @@ the bead motion, while still retaining enough simplicity to allow
 efficient variational algorithms
 \cite{mackay1997,bishop2006}.
 
-The integrand in the evidence, \Eq{eq:evidencedef}, requires an
-explicit expression for the probability of a sequence of bead
-positions and hidden states. This expression factorizes in the usual
-HMM fashion, as
-\begin{multline}\label{eq:evidencintegrand}
- p(\x_{1:T},s_{1:T}|N)%\matris{A},\vec{\pi},\vec{K},\vec{B},N)
-=
-p(\x_1)p(s_1|\vec{\pi})\\
-\times
-\prod_{t=2}^{T}p(\x_t|\x_{t-1},s_t,\vec{K},\vec{B})p(s_t|s_{t-1},\matris{A})\\
-\times
-p(\vec{\pi}|N)
-\prod_{j=1}^Np(K_j,B_j|N)p(A_{j,:}|N),
-\end{multline}
-where \mbox{\textit{1:T}} is a compact way to denote a whole time
-series, and $A_{j,:}$ denote row $j$ of the matrix $\matris{A}$.  The
-first right hand side line in \Eq{eq:evidencintegrand} describes the
-initial state and bead position. We will neglect the factor $p(\x_1)$
-from now on, but the initial state $p(s_1|\vec\pi)$ and transition
-probabilities $p(s_t|s_{t-1},\matris{A})$ are given by
-\Eq{eq:eoms}, and the bead motion follows from \Eq{eq:eomx},
-\begin{equation}
- p(\x_t|\x_{t-1},s_t,\vec{K},\vec{B})
- =\frac{B_{s_t}}{\pi}
- e^{-B_{s_t}(\x_t-K_{s_t}\x_{t-1})^2}.
-\end{equation}
-Finally, the last line of \Eq{eq:evidencintegrand} contains prior
-distributions over parameters conditional on the number of states. We
-use conjugate priors, parameterized to have minimal impact on the
-inference results (see SI).
-
 \subsection{Factorial model}
 \cite{vbTPM_model:describefactorialmodel}
