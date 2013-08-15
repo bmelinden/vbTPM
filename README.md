@@ -1,6 +1,6 @@
 vbTPM is a program suite for analysis of tethered particle motion data, using a variational Bayes approach to Hidden Markov models. The program runs on Matlab, but uses compiled C-code to speed up the most computer intensive loops.
 
-This a beta version; the code is complete, but the documentation is still in progress, in parallel with a scientific paper describing the algorithm and performance on real data. 
+This a beta version; the code is quite complete and useable, but the documentation is still in progress, in parallel with a scientific paper describing the algorithm and performance on real data. 
 
 ======================================================================
 Copyright (C) 2013 Martin Lindén, bmelinden@gmail.com
