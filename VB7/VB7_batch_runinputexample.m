@@ -16,7 +16,7 @@ fSample    =30;     % Hz
 downSample =10;     % downsampling factor
 
 driftcorrection=false;      % true = do drift-correction with Butterworth filter
-fCut=0.01;                  % filter cut-off frequency for [Hz]
+fCut=0.05;                  % filter cut-off frequency for [Hz]
 include_calibration=true; % include calibration traces in the analysis
 include_looping=true;     % include looping traces in the analysis
 
@@ -35,7 +35,7 @@ KBscaling=2; % 1) total emission strength constant
 fBc=[];
 Bc0=5e-5;
 Kc0=0.6;KcStd=0.5;
-tDc0=10;
+tDc0=10;    % average dwell time of spurious state 0 (the non-spurious state). 
 
 % construction initial guess 
 tau0=5;  % typical dwell times for genuine 

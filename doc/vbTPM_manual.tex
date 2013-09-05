@@ -45,9 +45,20 @@ trajectories, which makes the HMM analysis computer intensive. As an
 example, one parameter point in our test data sets, about 90
 trajectories averaging 45 min, downsampled to 10 Hz, took about 24 h
 to go through on two 6 core Intel Xeon E5645 2.40GHz processors. The
-analysis time increases sharply with the number of (spurious) states.
-
+analysis time increases sharply with the number of states (including
+spurious ones, like transient sticking events).
 \subsection{A small test problem}
+A small test problem, with examples of data and runinput files, can be
+found in example1/.
+
+Various runinput files with the same input data.\\ 
+
+runinput1.m, runscript1.sh: Basic HMM analysis, already done.\\
+
+runinput2a.m etc: same as above, but needs to be run by
+user. Illustrate various parallelization schemes, scripting etc.
+
+
 \section{Diffusive model for TPM}
 \input{vbTPM_model.tex}
 \section{The VB-algorithm}

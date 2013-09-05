@@ -1,15 +1,8 @@
 function W=VB7_priorParent(fSample,ds,fPi,tD,tA,tDc0,fB,B0,fBc,Bc0,K0,Kstd,Kc0,KcStd,KBscaling)
-% use 1:
+% use 1: create an empty model object from scratch
 % Wparent=VB7_priorParent(fSample,ds,fPi,tD,tA,tDc0,fB,B0,fBc,Bc0,K0,Kstd,Kc0,KcStd,KBscaling)
 % creates a VB7 parent structure with prior distribution parameters only,
 % from which new objects with prior parameter fields can be created.
-%
-% use 2:
-% W=VB7_priorParent(Wparent,N,Nc)
-% creates a new VB7 object with N states and Nc dirt states, with prior
-% parameters according to the options in Wparent.priorParameterOptions. The
-% created object inherits the prior options, and can in turn be used to
-% generate new onjects.
 %
 % fSample : sampling frequency, used to convert dwell
 %           times to pseudo counts (i.e., K,B values not affected). 
@@ -31,7 +24,16 @@ function W=VB7_priorParent(fSample,ds,fPi,tD,tA,tDc0,fB,B0,fBc,Bc0,K0,Kstd,Kc0,K
 %             parameters scales with number of states.
 %           1: total strength held constant
 %           2: individual state strength held constant (default)
-
+%
+% use 2: create models with prior parameters and specified number of
+% states, based on parameters in another model object (possibly onme
+% created by use 1 above).
+%
+% W=VB7_priorParent(Wparent,N,Nc)
+% creates a new VB7 object with N states and Nc dirt states, with prior
+% parameters according to the options in Wparent.priorParameterOptions. The
+% created object inherits the prior options, and can in turn be used to
+% generate new onjects.
 %% change-log
 % M.L. 2011-01-05   : started translation to VB5, added a downSample parameter
 % M.L. 2011-02-02   : started translation to VB7, removed zeros in Rc prior
@@ -45,7 +47,6 @@ function W=VB7_priorParent(fSample,ds,fPi,tD,tA,tDc0,fB,B0,fBc,Bc0,K0,Kstd,Kc0,K
 % M.L. 2012-03-15   : default KBscaling=2, not 1.
 % M.L. 2012-05-02   : changed how wPi scales with number of states (equal
 %                     weight on both spurious and genuine states).
-
 
 %% determine if the call is to create a new parent or a new VB7 object
 % use 1: VB7_priorParent(fSample,ds,fPi,...)
