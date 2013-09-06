@@ -48,15 +48,50 @@ to go through on two 6 core Intel Xeon E5645 2.40GHz processors. The
 analysis time increases sharply with the number of states (including
 spurious ones, like transient sticking events).
 \subsection{A small test problem}
-A small test problem, with examples of data and runinput files, can be
-found in example1/.
+A small test problem, which runs on a (fast) laptop in about one hour,
+with examples of data and runinput files, can be found in example1/,
+with the actual data in example1/lacdata/.  The data set has one
+calibration (cal) and one production (trj) trajectory for each bead.
 
-Various runinput files with the same input data.\\ 
+\paragraph{Runinput files} 
+contain all parameters to run the analysis and access the results. The
+meaning of the parameters are documentet in the help text of
+\verb+VB7_batch_run.m+, and commented in those files.
+\verb+runinput1.m+ refers to an already completed analysis (results in
+example1/HMMresults1/), while \verb+runinput2.m+ has not yet run.
 
-runinput1.m, runscript1.sh: Basic HMM analysis, already done.\\
+\paragraph{Run basic analysis.}
+To start analyzing the test data set, type
+\verb+VB7_batch_run('runinput2')+ in the Matab command prompt. Since
+the runinput file has \verb+one_at_a_time=true;+ this will analyze one
+trajectory in the data set. Several calls are needed to complete the
+analysis, in our experience, matlab tend to hoard
+memory if several large data sets are analyzed consecutively. 
 
-runinput2a.m etc: same as above, but needs to be run by
-user. Illustrate various parallelization schemes, scripting etc.
+To work around that, one can use scripts that starts several matlab
+sessions with a single trajectory in each. An example for the bash
+shell is \verb+runscript1.sh+, which calls \verb+runinput1.m+. To
+parallellize, run several instances of the script at once. Since the
+program keeps track of which trajectories have already been 'checked
+out', it is also possible to run on several computers, it the results
+folder is synced regularly.
+
+\paragraph{Manage the analysis.}
+\verb+VB7_batch_manage+ is a tool for managing the basic analysis. It
+can collect the results and write them to a file, count how many
+trajectories in a data set has been analyzed, and also clean up
+temporary files from unfinished trajectories, which is useful if an
+analysis run is interrupted.
+
+\paragraph{Look at the results\\}
+\verb+VB7_batch_postprocess()+ starts the GUI for manual state
+classification and inspection of the results, and can also convert the
+simple HMM models to factorial models for further analysis. To try it
+out, use the runinput file \verb+runinput1.m+, which is already
+analyzed. To access the fitted models directly, use
+\verb+VB7_batch_manage+ with the collect option. 
+
+\subsection{Other useful scripts}
 
 
 \section{Diffusive model for TPM}
