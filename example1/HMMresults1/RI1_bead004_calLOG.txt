@@ -1,0 +1,26 @@
+checking out HMMresults1/RI1_bead004_cal.mat
+-----------------------------------------
+VB7_initialGuess_KBregion emission parameter fractions:1         1
+initialized N = 10, T = 5480, round 1 of 10
+Round 1 finished in 0.111 min. (average 0.111 min./round). Best fit so far : 1 states, from round 1.
+initialized N = 10, T = 5480, round 2 of 10
+Round 2 finished in 0.104 min. (average 0.108 min./round). Best fit so far : 1 states, from round 1.
+initialized N = 10, T = 5480, round 3 of 10
+Round 3 finished in 0.144 min. (average 0.12 min./round). Best fit so far : 1 states, from round 1.
+initialized N = 10, T = 5480, round 4 of 10
+Round 4 finished in 0.136 min. (average 0.124 min./round). Best fit so far : 1 states, from round 1.
+initialized N = 10, T = 5480, round 5 of 10
+Round 5 finished in 0.108 min. (average 0.121 min./round). Best fit so far : 1 states, from round 1.
+initialized N = 10, T = 5480, round 6 of 10
+Round 6 finished in 0.102 min. (average 0.117 min./round). Best fit so far : 1 states, from round 1.
+initialized N = 10, T = 5480, round 7 of 10
+Round 7 finished in 0.122 min. (average 0.118 min./round). Best fit so far : 1 states, from round 1.
+initialized N = 10, T = 5480, round 8 of 10
+Round 8 finished in 0.109 min. (average 0.117 min./round). Best fit so far : 1 states, from round 1.
+initialized N = 10, T = 5480, round 9 of 10
+Round 9 finished in 0.138 min. (average 0.119 min./round). Best fit so far : 1 states, from round 1.
+initialized N = 10, T = 5480, round 10 of 10
+Round 10 finished in 0.141 min. (average 0.122 min./round). Best fit so far : 1 states, from round 1.
+saved intermediate results: 0.122 s.
+saved analysis result to HMMresults1/RI1_bead004_cal.mat
+-----------------------------------------

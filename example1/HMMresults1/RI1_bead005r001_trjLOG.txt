@@ -1,0 +1,92 @@
+checking out HMMresults1/RI1_bead005r001_trj.mat
+-----------------------------------------
+VB7_initialGuess_KBregion emission parameter fractions:1         1
+initialized N = 20, T = 9000, round 1 of 40
+Round 1 finished in 0.409 min. (average 0.409 min./round). Best fit so far : 3 states, from round 1.
+initialized N = 20, T = 9000, round 2 of 40
+Round 2 finished in 0.393 min. (average 0.401 min./round). Best fit so far : 3 states, from round 1.
+initialized N = 20, T = 9000, round 3 of 40
+Round 3 finished in 0.257 min. (average 0.353 min./round). Best fit so far : 3 states, from round 3.
+initialized N = 20, T = 9000, round 4 of 40
+Round 4 finished in 0.459 min. (average 0.38 min./round). Best fit so far : 3 states, from round 3.
+initialized N = 20, T = 9000, round 5 of 40
+Round 5 finished in 0.251 min. (average 0.354 min./round). Best fit so far : 3 states, from round 3.
+initialized N = 20, T = 9000, round 6 of 40
+Round 6 finished in 0.2 min. (average 0.328 min./round). Best fit so far : 3 states, from round 3.
+initialized N = 20, T = 9000, round 7 of 40
+Round 7 finished in 0.362 min. (average 0.333 min./round). Best fit so far : 3 states, from round 3.
+saved intermediate results: 0.145 s.
+initialized N = 20, T = 9000, round 8 of 40
+Round 8 finished in 0.414 min. (average 0.343 min./round). Best fit so far : 3 states, from round 3.
+initialized N = 20, T = 9000, round 9 of 40
+Round 9 finished in 0.366 min. (average 0.346 min./round). Best fit so far : 3 states, from round 3.
+initialized N = 20, T = 9000, round 10 of 40
+Round 10 finished in 0.536 min. (average 0.365 min./round). Best fit so far : 3 states, from round 3.
+initialized N = 20, T = 9000, round 11 of 40
+Round 11 finished in 0.251 min. (average 0.355 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 12 of 40
+Round 12 finished in 0.139 min. (average 0.337 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 13 of 40
+Round 13 finished in 0.203 min. (average 0.326 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 14 of 40
+Round 14 finished in 0.395 min. (average 0.331 min./round). Best fit so far : 3 states, from round 11.
+saved intermediate results: 0.186 s.
+initialized N = 20, T = 9000, round 15 of 40
+Round 15 finished in 0.5 min. (average 0.343 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 16 of 40
+Round 16 finished in 0.422 min. (average 0.348 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 17 of 40
+Round 17 finished in 0.415 min. (average 0.352 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 18 of 40
+Round 18 finished in 0.366 min. (average 0.352 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 19 of 40
+Round 19 finished in 0.4 min. (average 0.355 min./round). Best fit so far : 3 states, from round 11.
+saved intermediate results: 0.188 s.
+initialized N = 20, T = 9000, round 20 of 40
+Round 20 finished in 0.566 min. (average 0.366 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 21 of 40
+Round 21 finished in 0.308 min. (average 0.363 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 22 of 40
+Round 22 finished in 0.498 min. (average 0.369 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 23 of 40
+Round 23 finished in 0.359 min. (average 0.369 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 24 of 40
+Round 24 finished in 0.296 min. (average 0.366 min./round). Best fit so far : 3 states, from round 11.
+saved intermediate results: 0.137 s.
+initialized N = 20, T = 9000, round 25 of 40
+Round 25 finished in 0.503 min. (average 0.371 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 26 of 40
+Round 26 finished in 0.129 min. (average 0.362 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 27 of 40
+Round 27 finished in 0.237 min. (average 0.357 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 28 of 40
+Round 28 finished in 0.354 min. (average 0.357 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 29 of 40
+Round 29 finished in 0.392 min. (average 0.358 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 30 of 40
+Round 30 finished in 0.216 min. (average 0.354 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 31 of 40
+Round 31 finished in 0.412 min. (average 0.356 min./round). Best fit so far : 3 states, from round 11.
+saved intermediate results: 0.139 s.
+initialized N = 20, T = 9000, round 32 of 40
+Round 32 finished in 0.404 min. (average 0.357 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 33 of 40
+Round 33 finished in 0.4 min. (average 0.358 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 34 of 40
+Round 34 finished in 0.264 min. (average 0.356 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 35 of 40
+Round 35 finished in 0.411 min. (average 0.357 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 36 of 40
+Round 36 finished in 0.387 min. (average 0.358 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 37 of 40
+Round 37 finished in 0.411 min. (average 0.359 min./round). Best fit so far : 3 states, from round 11.
+saved intermediate results: 0.156 s.
+initialized N = 20, T = 9000, round 38 of 40
+Round 38 finished in 0.424 min. (average 0.361 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 39 of 40
+Round 39 finished in 0.51 min. (average 0.365 min./round). Best fit so far : 3 states, from round 11.
+initialized N = 20, T = 9000, round 40 of 40
+Round 40 finished in 0.436 min. (average 0.367 min./round). Best fit so far : 3 states, from round 11.
+saved intermediate results: 0.142 s.
+saved analysis result to HMMresults1/RI1_bead005r001_trj.mat
+-----------------------------------------
