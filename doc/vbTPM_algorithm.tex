@@ -118,7 +118,7 @@ equation \eqref{seq:qparam} are as follows.  The initial state
 probability vector, and each row in the transition matrix (denoted
 $A_{j,:}$), are Dirichlet distributed,
 \begin{align}
-q(\vec{\pi})=&\Dir(\vec{\pi}|\vec{w}^{(\vec{\pi})}),\\
+q(\vec{\pi})=&\Dir(\vec{\pi}|\vec{w}^{(\vec{\pi})}),\label{seq:VBpi}\\
 w_j^{(\vec{\pi})}=&\tilde w_j^{(\vec{\pi})}+\mean{\delta_{j,s_1}}_{q(s_{1:T})},
 \label{seq:VBMpi}\\
 %\end{align}\begin{align}
@@ -163,11 +163,11 @@ with the range $B_j\ge 0$, $-\infty<K_j<\infty$. Physically, we might
 rather expect $0<K_j<1$, but the extended range for $K_j$ simplifies
 the calculations a lot. The VBM equations are
 \begin{align}
-  n_j=& n_j^0+M_j,\\
-  c_j=& c_j^0+C_j+v_j^0(\mu_j^0)^2
-  -\frac{\big(v_j^0\mu_j^0+U_j\big)^2}{v_j^0+V_j},\\
-  v_j=&v_j^0+V_j,\\
-  \mu_j=&\frac{v_j^0\mu_j^0+U_j}{v_j^0+V_j},
+  n_j=& \tilde n_j+M_j,\label{seq:nj}\\
+  c_j=& \tilde c_j+C_j+\tilde v_j\tilde\mu_j^2
+  -\frac{\big(\tilde v_j\tilde\mu_j+U_j\big)^2}{\tilde v_j+V_j},\label{seq:cj}\\
+  v_j=&\tilde v_j+V_j,\label{seq:vj}\\
+  \mu_j=&\frac{\tilde v_j\tilde\mu_j+U_j}{\tilde v_j+V_j},\label{seq:muj}\\
 \end{align}
 with
 \begin{align}

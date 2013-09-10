@@ -18,6 +18,9 @@
 
 \newcommand{\comment}[1]{{\bf [#1]}}
 
+\newcommand{\vbparbox}[1]{\parbox[t]{0.4\columnwidth}{
+    \rule[5pt]{0pt}{5pt} #1 \rule[-3pt]{0pt}{5pt}}}
+
 
 \title{vbTPM user guide and manual} 
 
@@ -32,68 +35,59 @@
 % analyzing TPM traces.
 
 \section{Getting started with vbTPM}
-\subsection{Installation}
-Get the source code, and make sure VB7, HMMcore, and tools are in your
-matlab path.
+\input{vbTPM_getstarted.tex}
+\begin{table}
+\caption{Meaning of the fields in a model W. }
+  \begin{tabular}{|l|l|l|}
+    \hline
+    Field & Meaning & Eq.\\
+    \hline\hline
+%    \verb+W.N+& \vbparbox{$N$, number of (genuine) states.}& \\
+%    \hline
+%    \verb+W.Nc+& \vbparbox{       
+%      $N_c$, number of indicator states. $N_c=1$ means no spurious
+%      states, i.e., the simple HMM.}& \eqref{eq:Nc}\\ \hline
+%    \verb+W.PM+& \vbparbox{ Prior parameters for genuine states.}& \\ \hline
 
-Make sure that HMMcore/ contains binaries for your systems. If not, a
-simple matlab compilation script can be found in HMMcore/.
+    \verb+W.M.wPi(j)+& $ w_j^{(\vec{\pi})}$    & \eqref{seq:VBMpi}\\ \hline
+    \verb+W.PM.wPi(j)+& $\tilde w_j^{(\vec{\pi})}$    & \eqref{seq:VBMpi}\\ \hline
+    \verb+W.E.wPi(j)+& $\mean{\delta_{j,s_1}}_{q(s_{1:T})}$ & \eqref{seq:VBMpi}\\ 
+    \hline
+    
+    \verb+W.PM.wA(i,j)+& $\tilde w_{ij}^{(\matris{A})}$& \eqref{seq:VBMAj}\\ \hline
+    \verb+W.M.wA(i,j)+& $w_{ij}^{(\matris{A})}$& \eqref{seq:VBMAj}\\ \hline
+    \verb+W.E.wA(i,j)+& $\sum_{t=2}^T\mean{\delta_{i,s_{t-1}}\delta_{j,s_t}}_{q(s_{1:T})}$
+    & \eqref{seq:VBMAj}\\ 
+    \hline
 
-\subsection{Hardware requirements}
-Tethered particle motion often produces large data sets of many long
-trajectories, which makes the HMM analysis computer intensive. As an
-example, one parameter point in our test data sets, about 90
-trajectories averaging 45 min, downsampled to 10 Hz, took about 24 h
-to go through on two 6 core Intel Xeon E5645 2.40GHz processors. The
-analysis time increases sharply with the number of states (including
-spurious ones, like transient sticking events).
-\subsection{A small test problem}
-A small test problem, which runs on a (fast) laptop in about one hour,
-with examples of data and runinput files, can be found in example1/,
-with the actual data in example1/lacdata/.  The data set has one
-calibration (cal) and one production (trj) trajectory for each bead.
+    \verb+W.PM.n(j)+& $\tilde n_j$& \eqref{seq:nj}\\ \hline
+    \verb+W.PM.c(j)+& $\tilde c_j$& \eqref{seq:cj}\\ \hline
+    \verb+W.PM.v(j)+& $\tilde v_j$& \eqref{seq:vj}\\ \hline
+    \verb+W.PM.n(j)+& $\tilde \mu_j$& \eqref{seq:muj}\\ \hline
+    \verb+W.x+& \vbparbox{       
+      $x$.}& \eqref{eq:x}\\ \hline
+    \verb+W.x+& \vbparbox{       
+      $x$.}& \eqref{eq:x}\\ \hline
+    \verb+W.x+& \vbparbox{       
+      $x$.}& \eqref{eq:x}\\ \hline
+    \verb+W.x+& \vbparbox{       
+      $x$.}& \eqref{eq:x}\\ \hline
+    \verb+W.x+& \vbparbox{       
+      $x$.}& \eqref{eq:x}\\ \hline
+    \verb+W.x+& \vbparbox{       
+      $x$.}& \eqref{eq:x}\\ \hline
+    \verb+W.x+& \vbparbox{       
+      $x$.}& \eqref{eq:x}\\ \hline
+    \verb+W.x+& \vbparbox{       
+      $x$.}& \eqref{eq:x}\\ \hline
+    \verb+W.x+& \vbparbox{       
+      $x$.}& \eqref{eq:x}\\ \hline
+    \verb+W.x+& \vbparbox{       
+      $x$.}& \eqref{eq:x}\\ \hline
+  \end{tabular}
+    W.priorParameterOptions
 
-\paragraph{Runinput files} 
-contain all parameters to run the analysis and access the results. The
-meaning of the parameters are documentet in the help text of
-\verb+VB7_batch_run.m+, and commented in those files.
-\verb+runinput1.m+ refers to an already completed analysis (results in
-example1/HMMresults1/), while \verb+runinput2.m+ has not yet run.
-
-\paragraph{Run basic analysis.}
-To start analyzing the test data set, type
-\verb+VB7_batch_run('runinput2')+ in the Matab command prompt. Since
-the runinput file has \verb+one_at_a_time=true;+ this will analyze one
-trajectory in the data set. Several calls are needed to complete the
-analysis, in our experience, matlab tend to hoard
-memory if several large data sets are analyzed consecutively. 
-
-To work around that, one can use scripts that starts several matlab
-sessions with a single trajectory in each. An example for the bash
-shell is \verb+runscript1.sh+, which calls \verb+runinput1.m+. To
-parallellize, run several instances of the script at once. Since the
-program keeps track of which trajectories have already been 'checked
-out', it is also possible to run on several computers, it the results
-folder is synced regularly.
-
-\paragraph{Manage the analysis.}
-\verb+VB7_batch_manage+ is a tool for managing the basic analysis. It
-can collect the results and write them to a file, count how many
-trajectories in a data set has been analyzed, and also clean up
-temporary files from unfinished trajectories, which is useful if an
-analysis run is interrupted.
-
-\paragraph{Look at the results\\}
-\verb+VB7_batch_postprocess()+ starts the GUI for manual state
-classification and inspection of the results, and can also convert the
-simple HMM models to factorial models for further analysis. To try it
-out, use the runinput file \verb+runinput1.m+, which is already
-analyzed. To access the fitted models directly, use
-\verb+VB7_batch_manage+ with the collect option. 
-
-\subsection{Other useful scripts}
-
-
+\end{table}
 \section{Diffusive model for TPM}
 \input{vbTPM_model.tex}
 \section{The VB-algorithm}
