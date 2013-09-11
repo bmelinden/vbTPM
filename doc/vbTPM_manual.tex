@@ -36,11 +36,11 @@
 
 \section{Getting started with vbTPM}
 \input{vbTPM_getstarted.tex}
-\begin{table}
+\begin{table*}
 \caption{Meaning of the fields in a model W. }
-  \begin{tabular}{|l|l|l|}
+  \begin{tabular}{|l|c|c|}
     \hline
-    Field & Meaning & Eq.\\
+    field & symbol & Eq.\\
     \hline\hline
 %    \verb+W.N+& \vbparbox{$N$, number of (genuine) states.}& \\
 %    \hline
@@ -49,18 +49,33 @@
 %      states, i.e., the simple HMM.}& \eqref{eq:Nc}\\ \hline
 %    \verb+W.PM+& \vbparbox{ Prior parameters for genuine states.}& \\ \hline
 
-    \verb+W.M.wPi(j)+& $ w_j^{(\vec{\pi})}$    & \eqref{seq:VBMpi}\\ \hline
-    \verb+W.PM.wPi(j)+& $\tilde w_j^{(\vec{\pi})}$    & \eqref{seq:VBMpi}\\ \hline
-    \verb+W.E.wPi(j)+& $\mean{\delta_{j,s_1}}_{q(s_{1:T})}$ & \eqref{seq:VBMpi}\\ 
+    \verb+W.M.wPi(j)+& $ w_j^{(\vec{\pi})}$    & \\ 
+    \verb+W.PM.wPi(j)+& $\tilde w_j^{(\vec{\pi})}$    & \eqref{seq:VBMpi}\\ 
+    \verb+W.E.wPi(j)+& $\mean{\delta_{j,s_1}}_{q(s_{1:T})}$ & \\ 
     \hline
     
-    \verb+W.PM.wA(i,j)+& $\tilde w_{ij}^{(\matris{A})}$& \eqref{seq:VBMAj}\\ \hline
-    \verb+W.M.wA(i,j)+& $w_{ij}^{(\matris{A})}$& \eqref{seq:VBMAj}\\ \hline
+    \verb+W.PM.wA(i,j)+& $\tilde w_{ij}^{(\matris{A})}$& \\ 
+    \verb+W.M.wA(i,j)+& $w_{ij}^{(\matris{A})}$& \eqref{seq:VBMAj}\\ 
     \verb+W.E.wA(i,j)+& $\sum_{t=2}^T\mean{\delta_{i,s_{t-1}}\delta_{j,s_t}}_{q(s_{1:T})}$
-    & \eqref{seq:VBMAj}\\ 
+    & \\ 
+    \hline
+    \verb+W.PM.n(j)+& $\tilde n_j$& \eqref{seq:nj}\\ 
+    \verb+W.M.n(j)+& $n_j$& \eqref{seq:nj}\\ 
+    \verb+W.E.M(j)+& $M_j$& \eqref{seq:Mj}\\ 
+    \hline
+    \verb+W.PM.c(j)+& $\tilde c_j$& \eqref{seq:cj}\\ 
+    \verb+W.M.c(j)+& $c_j$& \eqref{seq:cj}\\ 
+    \verb+W.E.C(j)+& $C_j$&\eqref{seq:Cj}\\
+    \hline
+    \verb+W.PM.v(j)+& $\tilde v_j$& \eqref{seq:vj}\\ 
+    \verb+W.M.v(j)+& $v_j$& \eqref{seq:vj}\\ 
+    \verb+W.E.V(j)+& $V_j$& \eqref{seq:Vj}\\ 
+    \hline
+    \verb+W.PM.mu(j)+& $\tilde \mu_j$& \eqref{seq:muj}\\
+    \verb+W.M.mu(j)+& $\mu_j$& \eqref{seq:muj}\\  
+    \verb+W.E.U(j)+& $U_j$&\eqref{seq:Uj}\\
     \hline
 
-    \verb+W.PM.n(j)+& $\tilde n_j$& \eqref{seq:nj}\\ \hline
     \verb+W.PM.c(j)+& $\tilde c_j$& \eqref{seq:cj}\\ \hline
     \verb+W.PM.v(j)+& $\tilde v_j$& \eqref{seq:vj}\\ \hline
     \verb+W.PM.n(j)+& $\tilde \mu_j$& \eqref{seq:muj}\\ \hline
@@ -87,7 +102,7 @@
   \end{tabular}
     W.priorParameterOptions
 
-\end{table}
+\end{table*}
 \section{Diffusive model for TPM}
 \input{vbTPM_model.tex}
 \section{The VB-algorithm}
