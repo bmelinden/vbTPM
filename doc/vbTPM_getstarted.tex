@@ -1,0 +1,69 @@
+\subsection{Installation}
+Get the source code, and make sure VB7, HMMcore, and tools are in your
+matlab path, for example by running the script \verb+vbTPMstart+ from
+the matlab command prompt. (To add these paths permanently to your
+matlab path, see the matlab documentation).
+
+Make sure that HMMcore/ contains binaries for your systems. If not, a
+simple matlab compilation script can be found in HMMcore/.
+
+\subsection{Hardware requirements}
+Tethered particle motion often produces large data sets of many long
+trajectories, which makes the HMM analysis computer intensive. As an
+example, one parameter point in our test data sets, about 90
+trajectories averaging 45 min, downsampled to 10 Hz, took about 24 h
+to go through on two 6 core Intel Xeon E5645 2.40GHz processors. The
+analysis time increases sharply with the number of states (including
+spurious ones, like transient sticking events).
+\subsection{A small test problem}
+A small test problem, which runs on a (fast) laptop in about one hour,
+with examples of data and runinput files, can be found in example1/,
+with the actual data in example1/lacdata/.  The data set has one
+calibration (cal) and one production (trj) trajectory for each bead.
+
+\paragraph{Runinput files} 
+contain all parameters to run the analysis and access the results. The
+meaning of the parameters are documentet in the help text of
+\verb+VB7_batch_run.m+, and commented in those files.
+\verb+runinput1.m+ refers to an already completed analysis (results in
+example1/HMMresults1/), while \verb+runinput2.m+ has not yet run.
+
+\paragraph{Run basic analysis.}
+To start analyzing the test data set, type
+\verb+VB7_batch_run('runinput2')+ in the Matab command prompt. Since
+the runinput file has \verb+one_at_a_time=true;+ this will analyze one
+trajectory in the data set. Several calls are needed to complete the
+analysis. 
+
+In our experience, matlab tends to hoard memory if several large data
+sets are analyzed consecutively.  To work around that, one can use
+scripts that starts several matlab sessions with a single trajectory
+in each. An example for the bash shell is \verb+runscript1.sh+, which
+calls \verb+runinput1.m+. To parallellize, run several instances of
+the script at once. \verb+VB7_batch_run+ keeps track of which
+trajectories have already been 'checked out', so it is also possible
+to run on several computers, it the results folder is synced regularly
+(if the same trajectory is checked out multiple times, old results are
+simply overwritten).
+
+
+\paragraph{Manage the analysis.}
+\verb+VB7_batch_manage+ is a tool for managing the basic analysis. It
+can collect the results and write them to a file, count how many
+trajectories in a data set has been analyzed, and also clean up
+temporary files from unfinished trajectories, which is useful if an
+analysis run is interrupted.
+
+\paragraph{Access the results.} 
+The GUI for manual state classification is called
+\verb+VB7_batch_postprocess()+. The GUI can be used to inspect the
+analysis results in detail, and can also convert the simple HMM models
+to factorial models for further analysis. To try it out, use the
+runinput file \verb+runinput1.m+, which is already analyzed. To access
+the fitted models directly, use \verb+VB7_batch_manage+ with the
+'collect' option. The results are returned as cell vectors for
+calibration and production trajectories, with the same index structure
+as the filenames in the runinput file.
+
+
+\subsection{Other useful scripts}
