@@ -33,4 +33,31 @@ efficient variational algorithms
 \cite{mackay1997,bishop2006}.
 
 \subsection{Factorial model}
+We would like to filter out experimental artifacts such as transient
+sticking events and tracking errors from the data. To do this, we
+introduce a second hidden state $c_t$ that works like an indicator
+variable: $c_t=1$ indicates genuine TPM, with bead motion described by
+$K_{s_t},B_{s_t}$, but when $c_t>1$, the bead motion is instead
+described by parameters $\hat K_{c_t},\hat B_{c_t}$, while $s_t$
+evolves completely unseen.  We also allow the transition probabilities
+from $c_t=1$ to $c_t>1$ to depend on $s_t$, to allow for the
+possibility that sticking events happen more easily in looped than
+unlooped states for example. Thus, the hidden states evolve according
+to
+\begin{equation}
+  p(s_{t+1},c_{t+1}|s_t,c_t)=p(s_{t+1}|s_t)p(c_{t+1}|s_t,c_t),
+\end{equation}
+with $p(s_{t+1}|s_t)=A_{s_ts_{t+1}}$ as usual, and 
+\begin{equation}
+  p(c_{t+1}|s_t,c_t)=\left\{
+  \begin{array}{ll}
+    \hat A_{s_tc_{t+1}},&\text{if $c_t=1$,}\\
+    \hat R_{c_tc_{t+1}},&\text{if $c_t>1$,}    
+  \end{array}\right.
+\end{equation}
+and initial probabilities 
+
+
+
+
 \cite{vbTPM_model:describefactorialmodel}

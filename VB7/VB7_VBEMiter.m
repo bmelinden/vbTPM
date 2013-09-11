@@ -508,22 +508,8 @@ if(do_estimates)
      W.est2.sMaxP=uint8(sMap(W.est2.zMaxP));
      W.est2.cMaxP=uint8(cMap(W.est2.zMaxP));
     
-     % remnants of some tests to track down Viterbi weirdness: it looks like
-     % to weak prioor is the problem, but I should really reimplement a
-     % Viterbi algorithm that uses log(Q) and log(qst) instead, to avoid
-     % problems with non-normalizeable distributions.
-     % W.est2.zViterbi=uint8(sViterbi(Q,qst)); % Viterbi path
-     % W.est2.zViterbi=uint8(VBviterbi(Q,qst)); % Viterbi path, faster algo     
-     % [W.est2.zViterbi,s_lin,tw,t0]=VBlogViterbi(lnQ,lnqst,Q,qst);
-     % if(~isempty(t0))
-     %    clf, hold on
-     %    plot(W.est2.zViterbi,'b')
-     %   plot(s_lin+0.02,'m--')
-     %    plot(W.est2.zMaxP+0.04,'k')
-     %    plot(tw,s_lin(tw),'bx','markersize',10)
-     %    keyboard
-     % end
-     %W.est2.zViterbi=uint8(VBlogViterbi(lnQ,lnqst,Q,qst));
+     % Viterbi paths. 
+     % W.est2.zViterbi=uint8(VBlogViterbi(lnQ,lnqst,Q,qst));
      W.est2.zViterbi=uint8(VBviterbi_log(lnQ,lnqst)); % faster!     
      W.est2.sViterbi=uint8(sMap(W.est2.zViterbi));
      W.est2.cViterbi=uint8(cMap(W.est2.zViterbi));

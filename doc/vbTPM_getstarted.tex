@@ -68,9 +68,45 @@ as the filenames in the runinput file.
 For details on how vbTPM represents the models etc., we refer to
 section \ref{sec:notation}.
 
-\subsection{Some useful scripts}
+\subsection{Other useful scripts}
+\subsubsection{Data and options}
+\paragraph{VB7\_getOptions} 
+reads a runinput file and return all variables in a struct.
+\paragraph{VB7\_preprocess} 
+Converts trajectory data to a format that the analysis code
+uses. Input trajectory should be drift-corrected.
+\paragraph{BWdriftcorrect}
+applies driftcorrection to a position trajectory using a Butterworth-filter.
+\paragraph{RMSKBgaussfilter}
+computes running averages of RMS and other things, using a Gaussian
+kernel filter for smoothing.
+\paragraph{VB7\_getTrjData} 
+returns the data for a single trajectory in a runinput file in various
+formats.
 
+\subsubsection{Models}
+\paragraph{VB7\_priorParent} 
+A tool to initiate models of various sizes with consistent prior
+distributions.
+\paragraph{VB7\_initialGuess\_KBregion} 
+is a rather complicated function to generate an initial guess for a
+model struct (e.g., fill out the M and Mc fields) based on analyzing
+the data.
+\paragraph{VB7\_GSconversion}
+is a tool to create factorial models, by converting genuine states
+into spurious ones.
+\paragraph{VB7\_removeState}
+removes states from a model object.
+\paragraph{VB7\_findGenuine}
+applies a simple set of rules to determine which states in a given
+model are genuine and spurious. An analyzed model for the
+corresponding calibration trace i also needed to provide a baseline.
+\paragraph{VB7\_inspectStates} 
+is a simple tool to navigate in the raw data with the help of a
+converged model, for example to take a closer look at hard-to-classify
+states.
 
+\subsubsection{VB-EM iterations}
 \paragraph{VB7\_VBEMiter} 
 is the computational core of vbTPM, and runs a single VB-EM iteration.
 \paragraph{VB7iterator} 

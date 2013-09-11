@@ -77,48 +77,4 @@ disp([' nres log: ' num2str(res1,3)])
 % generally use the logarithmic equation
 n0=n1;
 
-% choose smallest residual:
-% if this is necessary, then there is probably something wrong with the
-% input models
-%for m=1:length(lnb0)
-%        if(abs(res1(m))<abs(res(m)))
-%            n0(m)=n1(m);
-%        end
-%        
-%    %if(n0(m)>0 && n1(m)>0)%
-%
-%    elseif(n1(m)>0 && n0(m)<0)
-%        n0(m)=n1(m);
-%    elseif(n0(m)<0 && n1(m) <0)
-%       save foo
-%       error('negative n found for both equations')
-%    end
-%end
-
 c0=(n0+0.5)./a0;
-
-
-
-
-if(0) % numerical refinement: this actually seems to make things worse...
-    
-    for m=1:size(n,2)
-        %disp(['state : ' int2str(m)])
-        f=@(x)(sum(KL_KBdist(n(:,m),c(:,m),mu(:,m),v(:,m),x(1),x(2),x(3),x(4))));
-        x0=[n0(m) c0(m) mu0(m) v0(m)];
-        x=fminsearch(f,x0,opt2);
-        n1(m) =x(1);
-        c1(m) =x(2);
-        mu1(m)=x(3);
-        v1(m) =x(4);
-        
-        df(m)=f(x)-f(x0);
-        disp(['state : ' int2str(m) ', [dF dF/|F| ] = ' num2str([df(m) df(m)/abs(f(x))])])
-        disp('----------')
-    end
-    
-    disp(['dn : ' num2str(n1./n0-1)])
-    disp(['dc : ' num2str(c1./c0-1)])
-    disp(['dmu: ' num2str(mu1./mu0-1)])
-    disp(['dv : ' num2str(v1./v0-1)])
-end
