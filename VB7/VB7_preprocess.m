@@ -2,7 +2,7 @@ function data=VB7_preprocess(x,d,fSample,comment)
 % data=VB7_preprocess(x,d,fSample,comment)
 % 
 % Preprocessing step including downsampling for the VB3-VB5,VB7 family of analysis
-% code. Each new block of size
+% code. 
 % x is the position trajectory
 % d is the downsampling factor (default 1= do downsampling)
 % fSample is the native sampling frequency (only for later use). Default 30
