@@ -36,9 +36,20 @@
 
 \section{Getting started with vbTPM}
 \input{vbTPM_getstarted.tex}
-\begin{table*}
-\caption{Meaning of the fields in a model W. }
-  \begin{tabular}{|l|c|c|}
+\section{Diffusive model for TPM}
+\input{vbTPM_model.tex}
+\section{The VB-algorithm}
+\input{vbTPM_algorithm.tex}
+\subsection{Factorial model}
+\subsection{Notation and symbols}\label{sec:notation}
+\begin{table}
+\caption{Fields in a model object named $W$.}
+\begin{center}\begin{tabular}{|l|c|c|}
+   \end{tabular}\end{center}\end{table}
+\begin{table}
+\caption{Representration of variational distributions for genuine
+  states in a model object named $W$.}
+\begin{center}\begin{tabular}{|l|c|c|}
     \hline
     field & symbol & Eq.\\
     \hline\hline
@@ -51,12 +62,12 @@
 
     \verb+W.M.wPi(j)+& $ w_j^{(\vec{\pi})}$    & \\ 
     \verb+W.PM.wPi(j)+& $\tilde w_j^{(\vec{\pi})}$    & \eqref{seq:VBMpi}\\ 
-    \verb+W.E.wPi(j)+& $\mean{\delta_{j,s_1}}_{q(s_{1:T})}$ & \\ 
+    \verb+W.E.ds_1(j)+& $\mean{\delta_{j,s_1}}$ & \\ 
     \hline
     
     \verb+W.PM.wA(i,j)+& $\tilde w_{ij}^{(\matris{A})}$& \\ 
     \verb+W.M.wA(i,j)+& $w_{ij}^{(\matris{A})}$& \eqref{seq:VBMAj}\\ 
-    \verb+W.E.wA(i,j)+& $\sum_{t=2}^T\mean{\delta_{i,s_{t-1}}\delta_{j,s_t}}_{q(s_{1:T})}$
+    \verb+W.E.wA(i,j)+& $\sum_{t=2}^T\mean{\delta_{i,s_{t-1}}\delta_{j,s_t}}$
     & \\ 
     \hline
     \verb+W.PM.n(j)+& $\tilde n_j$& \eqref{seq:nj}\\ 
@@ -75,40 +86,37 @@
     \verb+W.M.mu(j)+& $\mu_j$& \eqref{seq:muj}\\  
     \verb+W.E.U(j)+& $U_j$&\eqref{seq:Uj}\\
     \hline
-
-    \verb+W.PM.c(j)+& $\tilde c_j$& \eqref{seq:cj}\\ \hline
-    \verb+W.PM.v(j)+& $\tilde v_j$& \eqref{seq:vj}\\ \hline
-    \verb+W.PM.n(j)+& $\tilde \mu_j$& \eqref{seq:muj}\\ \hline
-    \verb+W.x+& \vbparbox{       
-      $x$.}& \eqref{eq:x}\\ \hline
-    \verb+W.x+& \vbparbox{       
-      $x$.}& \eqref{eq:x}\\ \hline
-    \verb+W.x+& \vbparbox{       
-      $x$.}& \eqref{eq:x}\\ \hline
-    \verb+W.x+& \vbparbox{       
-      $x$.}& \eqref{eq:x}\\ \hline
-    \verb+W.x+& \vbparbox{       
-      $x$.}& \eqref{eq:x}\\ \hline
-    \verb+W.x+& \vbparbox{       
-      $x$.}& \eqref{eq:x}\\ \hline
-    \verb+W.x+& \vbparbox{       
-      $x$.}& \eqref{eq:x}\\ \hline
-    \verb+W.x+& \vbparbox{       
-      $x$.}& \eqref{eq:x}\\ \hline
-    \verb+W.x+& \vbparbox{       
-      $x$.}& \eqref{eq:x}\\ \hline
-    \verb+W.x+& \vbparbox{       
-      $x$.}& \eqref{eq:x}\\ \hline
+  \end{tabular}\end{center}\end{table}
+\begin{table}
+\caption{Representration of variational distributions for indicator
+  states $c_t$ in a model object named $W$. Fields relating to the
+  emission model (.n, .c, .v, .mu, etc.) have the same meaning as for
+  the genuine states $s_t$, except that their first element is not
+  used, since $c_t=1$ indicate a genuine state.}
+\begin{center}  
+  \begin{tabular}{|l|c|c|}
+    \hline
+    field & symbol & Eq.\\
+    \hline\hline
+%
+    \hline
+    \verb+W.Mc.wPi(j)+& $w_j^{(\vec{\pi})}$    & \\ 
+    \verb+W.PcM.wPi(j)+& $\tilde w_j^{(\vec{\pi})}$    & \eqref{seq:VBMcpi}\\ 
+    \verb+W.Ec.ds_1(j)+& $\mean{\delta_{j,c_1}}$ & \\ 
+    \hline
+     \verb+W.PMc.wA(j)+& & \\ 
+    \verb+W.Mc.wA(j)+& & \eqref{seq:VBMcAj}\\ 
+    \verb+W.Ec.wA(j)+& &\\
+    \hline
+     \verb+W.PMc.wR(i,j)+& & \\ 
+    \verb+W.Mc.wR(i,j)+& & \eqref{seq:VBMcRj}\\ 
+    \verb+W.Ec.wR(i,j)+&& \\
+    \hline
   \end{tabular}
-    W.priorParameterOptions
+\end{center}
+\end{table}
+   
 
-\end{table*}
-\section{Diffusive model for TPM}
-\input{vbTPM_model.tex}
-\section{The VB-algorithm}
-\input{vbTPM_algorithm.tex}
-\subsection{Factorial model}
-\subsection{Notation and symbols}
 \subsection{Large data sets}
 Parallellization is achieved by running external scripts that starts
 multiple independent Matlab runs, and use the presence of various~.mat

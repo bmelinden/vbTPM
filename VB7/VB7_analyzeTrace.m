@@ -22,15 +22,6 @@ function [Wbest,NF,NFiMax,rndState0]=VB7_analyzeTrace(data,Wparent,initFun,N0,re
 %             model of each size, and on which NF line it is.
 % rndState0 : Optional. State of RandStream.getDefaultStream before
 %             starting analysis. (for debugging). 
-%% change-log
-% M.L. 2010-10-20   : translated from VBE1 -> VB3
-% M.L. 2010-11-08   : improved error handling
-% m.l. 2011-02-04   : translated from VB3 -> VB7, removed CC objects for
-%                     memory reasons.
-% M.L. 2011-02-08   : improved time reporting
-% M.L. 2011-02-14   : changed name of error message
-% M.L. 2011-02-18   : change error handling so that just that round is
-%                     aborted upon encountering an error
 %% reset random numbers and save starting state
 if(exist('rndState0','var'))
     rst = RandStream.create('mt19937ar','seed',sum(100*clock));
@@ -53,7 +44,7 @@ tolPar=[];
 maxIter=[]; 
 outputLevel=0;
 GtoS=false;
-% wrapper for greedy search function
+% wrapper for greedy search function, with correct parameters
 % [Wbest,N1,F1,C1]=VB7_greedySearch(W0,data,maxIter,relTolF,tolPar,outputLevel,GtoS)
 searchFun=@(W,data)(VB7_greedySearch(W,data,maxIter,relTolF,tolPar,outputLevel,GtoS));
 %% run VBEM iterations for various model sizes

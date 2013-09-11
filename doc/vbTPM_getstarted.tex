@@ -21,14 +21,14 @@ with examples of data and runinput files, can be found in example1/,
 with the actual data in example1/lacdata/.  The data set has one
 calibration (cal) and one production (trj) trajectory for each bead.
 
-\paragraph{Runinput files} 
-contain all parameters to run the analysis and access the results. The
-meaning of the parameters are documentet in the help text of
-\verb+VB7_batch_run.m+, and commented in those files.
+\subsubsection*{Runinput files} 
+Runinput files contain all parameters to run the analysis and access
+the results. The meaning of the parameters are documentet in the help
+text of \verb+VB7_batch_run.m+, and commented in those files.
 \verb+runinput1.m+ refers to an already completed analysis (results in
 example1/HMMresults1/), while \verb+runinput2.m+ has not yet run.
 
-\paragraph{Run basic analysis.}
+\subsubsection*{Run basic analysis}
 To start analyzing the test data set, type
 \verb+VB7_batch_run('runinput2')+ in the Matab command prompt. Since
 the runinput file has \verb+one_at_a_time=true;+ this will analyze one
@@ -47,14 +47,14 @@ to run on several computers, it the results folder is synced regularly
 simply overwritten).
 
 
-\paragraph{Manage the analysis.}
+\subsubsection*{Manage the analysis}
 \verb+VB7_batch_manage+ is a tool for managing the basic analysis. It
 can collect the results and write them to a file, count how many
 trajectories in a data set has been analyzed, and also clean up
 temporary files from unfinished trajectories, which is useful if an
 analysis run is interrupted.
 
-\paragraph{Access the results.} 
+\subsubsection*{Access the results} 
 The GUI for manual state classification is called
 \verb+VB7_batch_postprocess()+. The GUI can be used to inspect the
 analysis results in detail, and can also convert the simple HMM models
@@ -65,5 +65,20 @@ the fitted models directly, use \verb+VB7_batch_manage+ with the
 calibration and production trajectories, with the same index structure
 as the filenames in the runinput file.
 
+For details on how vbTPM represents the models etc., we refer to
+section \ref{sec:notation}.
 
-\subsection{Other useful scripts}
+\subsection{Some useful scripts}
+
+
+\paragraph{VB7\_VBEMiter} 
+is the computational core of vbTPM, and runs a single VB-EM iteration.
+\paragraph{VB7iterator} 
+runs VB-EM iteratons of a model until convergence.
+\paragraph{VB7\_greedySearch}
+runs a model search on a single trace from a given initial
+guess. Briefly, the search strategy is to systematically remove
+low-occupancy states until the lower bound $F$ stops increasing.
+\paragraph{VB7\_analyzeTrace}
+runs several greedy model searches on single traces. 
+

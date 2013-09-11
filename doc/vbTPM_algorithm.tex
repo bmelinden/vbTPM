@@ -367,10 +367,11 @@ propagator per unit time step,
   e^{\Delta tQ}.
 \end{equation}
 Here, $t_A$ is the prior strength; both $t_A$ and $t_D$ is specified
-in time units to be invariant a change of sampling frequency. Further,
-the timestep is given by $\Delta t=n_{downsample}/f_{sample}$, where
-$f_{sample}$ is the sampling frequency (30 Hz in our case), and
-$n_{downsample}$ is the downsampling factor (we use 3).  
+in time units to be invariant under a change of sampling
+frequency. Further, the timestep is given by $\Delta
+t=n_{downsample}/f_{sample}$, where $f_{sample}$ is the sampling
+frequency (30 Hz in our case), and $n_{downsample}$ is the
+downsampling factor (we use 3).
 
 Numerical experiments by \citet{persson2013} show that choosing the
 strength too low compared to the mean dwell time produces a bias
