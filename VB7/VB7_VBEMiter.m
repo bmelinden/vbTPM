@@ -232,18 +232,6 @@ Q=exp(lnQ-lnQmax);
 %% forward sweep  (depends only on Q and qst)
 [Za,alpha,~,beta,qt]=VBforwback(Q,qst);
 %% compute quantities for next M-steps, same as VB5
-% ML: problems with numerical underflow in Q or qst can manifest itself as
-% zero elements in qt. a cheap fix (not implemented yet), is to add a very
-% small number ( sqrt(realmin) ?) to all elements.
-%qt=alpha.*beta;  % qt(t,j) = <(z(t)> = P(z(t)=j)
-%qtZ=sum(qt,2);
-%isNanInf=(~isempty(find(qtZ==0,1))); % check that qt is normalizable 
-%if(isNanInf)
-%        error('VB7_VBEMiter:qt_not_normalizeable','non-overlapping alpha(t,:) and beta(t,:) generated in VBE step.')
-%end
-%for j=1:NN
-%   qt(1:end,j)=qt(1:end,j)./qtZ(1:end,1); % add realmin to avoid qt=0? 
-%end
 %% transition counts
 % helper matrices
 Ms=zeros(NN,W.N); % integrates out (c,s) -> s 

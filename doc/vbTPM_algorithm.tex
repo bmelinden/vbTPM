@@ -1,3 +1,5 @@
+We will start by discussing the statistical analysis of the simple HMM
+in detail, and then discuss generalization to the factorial model.
 \subsection{Model selection by maximum evidence}
 Our analysis aims not only to extract parameter values from TPM data,
 but also to learn the number of hidden states $N$, corresponding to
@@ -169,26 +171,38 @@ the calculations a lot. The VBM equations are
   v_j=&\tilde v_j+V_j,\label{seq:vj}\\
   \mu_j=&\frac{\tilde v_j\tilde\mu_j+U_j}{\tilde v_j+V_j},\label{seq:muj}\\
 \end{align}
-with
+where hyperparameters describing the prior distribution are again
+indicated by $\tilde{\phantom{n}}$, and the (conjugate) prior
+distributions are recovered by setting $M_j=C_j=U_j=V_j=0$. These
+data-dependent terms are given by
 \begin{align}
   M_j=&\sum_{t=2}^T\mean{\delta_{s_t,j}},\label{seq:Mj}\\
   C_j=&\sum_{t=2}^T\mean{\delta_{s_t,j}}\x_t^2,\label{seq:Cj}\\
   V_j=&\sum_{t=2}^T\mean{\delta_{s_t,j}}\x_{t-1}^2.\label{seq:Vj}\\
-  U_j=&\sum_{t=2}^T\mean{\delta_{s_t,j}}\x_t\cdot\x_{t-1},\label{seq:Uj}
+  U_j=&\sum_{t=2}^T\mean{\delta_{s_t,j}}\x_t\cdot\x_{t-1}.\label{seq:Uj}
 \end{align}
+
 Some useful expectation values for future reference are
 \begin{align}
-  \mean{\ln B_j}_{q(\vec{B},\vec{K})}=&\psi\big(n_j+\frac 12\big)-\ln c_j,
-  \label{seq:meanBlogB}\\
-  \mean{B_j}_{q(\vec{B},\vec{K})}=&\frac{n_j+\frac 12}{c_j},\\
-  \mean{B_jK_j^2}_{q(\vec{B},\vec{K})}=&\frac{1}{2v_j}
-  +\mu_j^2\frac{n_j+\frac 12}{c_j},\\
-  \mean{B_jK_j}_{q(\vec{B},\vec{K})}=&\mu_j\frac{n_j+\frac 12}{c_j},
-  \label{seq:meanbK2BK}\\
-  \text{Var}[B_j]_{q(\vec{B},\vec{K})}=&\frac{n_j+\frac 12}{c_j^2},\\
-  \mean{K_j}_{q(\vec{B},\vec{K})}=&\mu_j,\\ 
+  \mean{K_j}_{q(\vec{B},\vec{K})}=&\mu_j,  \label{seq:meanK}\\
   \text{Var}[K_j]_{q(\vec{B},\vec{K})}=&\frac{c_j}{2v_j(n_j-\frac 12)}.
+  \label{seq:varK}\\
+  \mean{B_j}_{q(\vec{B},\vec{K})}=&\frac{n_j+\frac 12}{c_j},  \label{seq:meanB}\\
+  \text{Var}[B_j]_{q(\vec{B},\vec{K})}=&\frac{n_j+\frac 12}{c_j^2},  
+  \label{seq:varB}\\
+  \mean{\ln B_j}_{q(\vec{B},\vec{K})}=&\psi\big(n_j+\frac 12\big)-\ln c_j,
+  \label{seq:meanlogB}\\
+  \mean{B_jK_j^2}_{q(\vec{B},\vec{K})}=&\frac{1}{2v_j}
+  +\mu_j^2\frac{n_j+\frac 12}{c_j},  \label{seq:meanBK2}\\
+  \mean{B_jK_j}_{q(\vec{B},\vec{K})}=&\mu_j\frac{n_j+\frac 12}{c_j},
+  \label{seq:meanBK}
 \end{align}
+
+In addition to being needed during the algorithm, these averages can
+be used to translate prior knowledge in terms of means and standard
+deviations of $K_j,B_j$ into prior parameters $\tilde n_j, \tilde c_j,
+\tilde \mu_j, \tilde v_j$
+
 \subsubsection{Hidden state distribution}
 The variational distribution has a simple form,
 \begin{equation}\label{seq:qgt}
@@ -308,79 +322,72 @@ Finally, the emission parameter of each state contributes
     -\frac 12.
 \end{multline}
 
-\subsection{Two types of states}
-The above algorithm is readily extended to treat the model where
-genuine and spurious states are separated into two different hidden
-processes. We implemented a brute force approach to this problem,
-where we define new composite hidden states $\hat s_t=(s_t,c_t)$ and
-run the above algorithm on this composite model. This has a
-significant computational cost, since a simple model with $N_{gen.}$
-genuine states and $N_{sp.}$ spurious ones gets
+
+\subsection{Extension to factorial model}
+The above algorithm is readily extended to treat the factorial model
+where genuine and spurious states are separated into two different
+hidden processes. We implemented a brute force approach to this
+problem, where we define new composite hidden states $\hat
+s_t=(s_t,c_t)$ and modify the above algorithm to run this composite
+model, which mainly involves book-keeping to 
+
+This has a significant computational cost, since a simple model with
+$N_{gen.}$ genuine states and $N_{sp.}$ spurious ones gets
 $N_{gen.}\times(1+N_{sp.})$ states after conversion. However, since we
 do not perform exhaustive model search in this representation and can
 utilize the simpler model to make good initial guesses, this is not a
 significant problem.
 
-\subsection{Choice of prior distributions}
-We would like to choose uninformative prior distributions in order to
-let the data speak for itself as much as possible. This is
-unproblematic for the emission parameters $K,B$, since the amount of
-data in all states is large enough to overwhelm any prior
-influence. We use
-\begin{align}
-  \tilde\mu_j=&0.6, &
-  \tilde n_j=&1,\\
-  \tilde v_j =&5.56\text{ nm$^2$},&
-  \tilde c_j=&30000\text{ nm$^2$},
-\end{align}
-which corresponds to 
-\begin{align}
-  \mean{K_j}=&0.6,&
-  \mean{B_j}=&5\times 10^{-5}\text{ nm$^{-2}$},\\
-  \mathrm{std}(K_j)=&0.3,&
-  \mathrm{std}(B_j)=&141.4\times 10^{-5}\text{ nm$^{-2}$}.
-\end{align}
-The initial state prior is unproblematic for the opposite reason: the
-long length of the trajectories makes the initial state relatively
-unimportant to describe the data. We use a constant prior strength of
-5,
-\begin{equation}
-  \tilde w_j^{(\vec\pi)}=5/N,
-\end{equation}
-where $N$ is the number of hidden states.
 
-The transition probabilities needs more care, because the potentially
-low number of transitions per trajectory makes the prior relatively
-more influential.  Following \citet{persson2013}, we parameterize this
-prior in terms of an expected mean dwell time and an overall number of
-pseudocounts (prior strength) for each hidden state.  In particular,
-we define a transition \textit{rate} matrix Q with mean dwell time
-$t_D$,
+{\bf Prior for factorial model: TBA}.\cite{factorialmodelprior}
+
+
+\subsection{Specification of prior distributions}
+We specify priors for the emission parameters $K,B$ in terms of the
+the mean values $\mean{K_j}$, $\mean{B_j}$, the standard deviation of
+$K_j$, and the number of pseudo-counts $\tilde n_j$, and then solve
+for the remaining hyper-parameters $\tilde c_j, \tilde \mu_j,\tilde
+v_j$ using Eqs.~(\ref{seq:meanK}-\ref{seq:varB}).  We take the same
+hyperparameters for all states, and independent of the number of
+states $N$. Priors for spurious states are specified analogously.
+
+The initial state probability vector has a Dirichlet prior with
+weights $\tilde\vec w^{(\vec{\pi})}$ (see \Eq{seq:VBMpi}). We choose a
+constant total strength $f^{(\vec\pi)}$, i.e.,
+\begin{equation}
+  \tilde w_j^{(\vec{\pi})}=f^{(\vec\pi)}/N.
+\end{equation}
+
+The prior for the transition matrix is independent Dirichlet
+distributions for each row (see \Eq{seq:VBMAj}), with pseudo-count
+matrix $\tilde w_{ij}^{(\matris{A})}$. Following \citet{persson2013},
+we parameterize this prior in terms of an expected mean dwell time and
+an overall number of pseudocounts (prior strength) for each hidden
+state. To make the definition invariant under changes of sampling
+time, we specify the strength $t_A$ and prior mean dwell time $t_D$ in
+time units. We then construct a transition \textit{rate} matrix Q with
+mean dwell time $t_D$,
 \begin{equation}
   Q_{ij}=\frac{1}{t_D}\left(-\delta_{ij}
   +\frac{1-\delta_{ij}}{N-1}\right),
 \end{equation}
-and then construct the prior based on the transition probability
+and construct the pseudo-counts based on the transition probability
 propagator per unit time step,
 \begin{equation}
   \tilde w_{ij}^{(\matris{A})}=\frac{t_Af_{sample}}{n_{downsample}}
   e^{\Delta tQ}.
 \end{equation}
-Here, $t_A$ is the prior strength; both $t_A$ and $t_D$ is specified
-in time units to be invariant under a change of sampling
-frequency. Further, the timestep is given by $\Delta
+This expression uses the downsampled timestep $\Delta
 t=n_{downsample}/f_{sample}$, where $f_{sample}$ is the sampling
 frequency (30 Hz in our case), and $n_{downsample}$ is the
-downsampling factor (we use 3).
+downsampling factor.  Numerical experiments by \citet{persson2013}
+show that choosing the strength too low compared to the mean dwell
+time produces a bias towards sparse transition matrices. This is not
+desireable in our case, and we therefore use $t_D=1$ s, and $t_A=5$ s
+throughout this work.
 
-Numerical experiments by \citet{persson2013} show that choosing the
-strength too low compared to the mean dwell time produces a bias
-towards sparse transition matrices. This is not desireable in our
-case, and we therefore use $t_D=1$ s, and $t_A=5$ s throughout this
-work.
-
-
-{\bf Prior for factorial model: TBA}.\cite{factorialmodelprior}
+Runinput parameters for prior specification is given in table
+\ref{stab:priors}.
 
 \subsection{Empirical Bayes update equations}
 The empirical Bayes update equations optimizes the lower bound with
