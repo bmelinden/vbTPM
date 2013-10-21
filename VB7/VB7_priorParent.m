@@ -59,7 +59,7 @@ if(nargin==3 && isfield(fSample,'priorParameterOptions'))
 else
 %% handle parameters
 if(~exist('tD','var') || isempty(tD)); tD=1; end
-if(~exist('tA','var') || isempty(tA)); tA=1; end
+if(~exist('tA','var') || isempty(tA)); tA=5; end
 if(~exist('tDc0','var') || isempty(tDc0)); tDc0=10; end
 if(sum(size(tDc0))>2)
     warning('VB7_priorparent: ignoring all but first element of tDc0');
