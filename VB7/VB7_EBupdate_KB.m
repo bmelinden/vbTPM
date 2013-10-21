@@ -1,5 +1,5 @@
-function [n0,c0,v0,mu0]=VB7_EBupdate_KB(n,c,v,mu)
-% [n0,c0,v0,mu0]=VB7_EBupdate_KB(n,c,v,mu)
+function [n0,c0,v0,mu0]=VB7_EBupdate_KB2(n,c,v,mu,PM)
+% [n0,c0,v0,mu0]=VB7_EBupdate_KB2(n,c,v,mu,PM)
 % perform the hierarchical prior update steps on the KB-distribution in the
 % Gaussian TPM model, with emission probability parameters n,c,v,mu.
 % PM is an optional prior structure (with fields n,c,mu,v) used as initial
@@ -10,7 +10,8 @@ function [n0,c0,v0,mu0]=VB7_EBupdate_KB(n,c,v,mu)
 % refinement, which only seems to make things worse.
 % ML 2012-07-04 : switched to a log-equation for n, to avoid x<0 errors in
 % the numerical solution
-
+% ML 2013-05-13 : attempt better stability by using an explicit initial
+% guess
 opt1=optimset('Display','off','TolFun',1e-15,'TolX',1e-15,'MaxFunEvals',1e5,'MaxIter',1e5);
 opt2=optimset('Display','on','TolFun',1e-15,'TolX',1e-15,'MaxFunEvals',1e5,'MaxIter',1e5);
 M=size(mu,1);
@@ -28,16 +29,15 @@ v0=1/2./(sum(VS,1)/M);
 
 a0=mean(a,1);
 lnb0=mean(log(a)+lnb,1)-log(a0);
-n0=min(n,[],1);
 res=0*lnb0;
 for m=1:length(lnb0)
     % try using a logarithmic unknown to enforce exp(x)>0
     leq=@(x)(psi(exp(x)+0.5)-log(exp(x)+0.5)-lnb0(m));  
     
-    x0=log(0.1*n0(m));
+    x0=log(PM.n(m)); % explicit initial guess
     if(~isreal(x0))
         disp('im initial guess')
-        x0=-10;
+        x0=-5;
     end    
     [logn,~,nflag,noutput]=fsolve(leq,x0,opt1);
     n1(m)=exp(logn);
@@ -46,7 +46,7 @@ for m=1:length(lnb0)
     % uning a linear unknown
     eq=@(x)(psi(x+0.5)-log(x+0.5)-lnb0(m));
     try
-        [n0(m),~,nflag,noutput]=fsolve(eq,0.1*n0(m),opt1);
+        [n0(m),~,nflag,noutput]=fsolve(eq,PM.n(m),opt1);
         res(m)=eq(n0(m));
         
         if(nflag<=0)
@@ -76,5 +76,3 @@ disp([' nres log: ' num2str(res1,3)])
 
 % generally use the logarithmic equation
 n0=n1;
-
-c0=(n0+0.5)./a0;
