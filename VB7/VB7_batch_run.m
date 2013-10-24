@@ -51,6 +51,7 @@
 
 %% start of actual code
 function VB7_batch_run(ri)
+VB7_printGPL('VB7_batch_run.m')
 
 %% run runinput file
 if(strcmp(ri(end-1:end),'.m'))

@@ -28,17 +28,51 @@
 }
 
 
-\title{vbTPM user guide} 
+\title{vbTPM manual and user guide} 
 
 \author{Martin Lind\'en, bmelinden@gmail.com, \today.}
 \date{}
 
 \begin{document}
+\onecolumn
 \maketitle 
-vbTPM is an acronym for variational Bayes for Tethered Particle
-Motion. The latest version of this manual and the corresponding
-software is available as open source via
-\url{http://sourceforge.net/projects/vbtpm/}.
+\noindent 
+vbTPM is an acronym for variational Bayes for Tethered Particle Motion
+(TPM), and is a software package for analyzing TPM data.  The latest
+version of this manual and the corresponding software is available as
+open source via \url{http://sourceforge.net/projects/vbtpm/}. If you
+use vbTPM in your research, please cite our
+paper:\smallskip\\\noindent S. Johnson, J-W van de Meent, Rob
+Phillips, Chris H Wiggins, and Martin Lindén. Multiple Lac-mediated
+loops revealed by Bayesian statistics and tethered particle motion
+(manuscript in preparation, 2013).\medskip\\
+
+\noindent Copyright \copyright~2013 Martin Lindén. \medskip\\
+
+\noindent
+The vbTPM package and documentation is free software: you can
+redistribute it and/or modify it under the terms of the GNU General
+Public License as published by the Free Software Foundation, either
+version 3 of the License, or any later version.\medskip\\
+
+\noindent
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.\medskip\\
+ 
+\noindent
+Additional permission under GNU GPL version 3 section 7: If you modify
+this Program, or any covered work, by linking or combining it with
+Matlab or any Matlab toolbox, the licensors of this Program grant you
+additional permission to convey the resulting work.\medskip\\
+
+\noindent 
+You should have received a copy of the GNU General Public License
+along with this program. If not, see \url{http://www.gnu.org/licenses/}
+
+
+\twocolumn
 \tableofcontents
 % some information that is useful for running the VB7 software for
 % analyzing TPM traces.
@@ -226,6 +260,8 @@ $RMS_j=\sqrt{\mean{\x_t^2|s_t=j}}
 \end{tabular}\end{center}
 \end{table*}  
 
+\clearpage
+\addcontentsline{toc}{section}{References}
 \bibliographystyle{unsrtnat}
 \bibliography{references}%,jwm_single_molecule,jwm_machine_learning}
 

@@ -77,6 +77,7 @@
 
 %% start of actual code
 function gfig=VB7_batch_postprocess(runinputfile,xtrastates,savefile)
+VB7_printGPL_short('VB7_batch_postprocess.m')
 
 %% input parameters
 % runinput file
