@@ -1,6 +1,14 @@
+%% W1=VB7_removeState(W0,rmG,rmS)
+%
+% function to remove single states (genuine or spurious)
+% 
+% W0    : parent VB7 structure
+% rmG,rmS: indices of clean/dirt states that are to be changed. For
+% now, only one state can be changed at a time.
+
 %% copyright notice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
+% VB7_removeState.m, model pruning tool, part of the vbTPM package
 % =========================================================================
 % 
 % Copyright (C) 2013 Martin Lindén
@@ -25,14 +33,8 @@
 % You should have received a copy of the GNU General Public License along
 % with this program. If not, see <http://www.gnu.org/licenses/>.
 %% start of actual code
+
 function W1=VB7_removeState(W0,rmG,rmS)
-%% W1=VB7_removeState(W0,rmG,rmS)
-%
-% function to remove single states (genuine or spurious)
-% 
-% W0    : parent VB7 structure
-% rmG,rmS: indices of clean/dirt states that are to be changed. For
-% now, only one state can be changed at a time.
 
 %% change-log
 % M.L. 2010-12-27   : started on VB4 converter

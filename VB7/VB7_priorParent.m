@@ -50,7 +50,7 @@
 
 %% copyright notice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
+% VB7_priorParent.m, prior creator for the vbTPM package
 % =========================================================================
 % 
 % Copyright (C) 2013 Martin Lindén
@@ -74,6 +74,7 @@
 %
 % You should have received a copy of the GNU General Public License along
 % with this program. If not, see <http://www.gnu.org/licenses/>.
+
 %% start of actual code
 function W=VB7_priorParent(fSample,ds,fPi,tD,tA,tDc0,fB,B0,fBc,Bc0,K0,Kstd,Kc0,KcStd,KBscaling)
 

@@ -1,6 +1,20 @@
+% [trjdat,caldat]=VB7_getTrjData(runinputfile,k,b)
+%
+% retrieve looping and calibration data trajectory k,b for the analysis
+% specified in runinput file. The objects trjdat,caldat have fields
+%
+% name      : name of data file
+% data      : preprocessed data object, as used in the analysis
+% x         : position trajectory
+% RMS       : RMS trace
+%
+
+% change-log
+% ML 2012-06-01 : handle runinput filenames ending with .m
+
 %% copyright notice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
+% VB7_getTrjData.m, access analysis results in the vbTPM package
 % =========================================================================
 % 
 % Copyright (C) 2013 Martin Lindén
@@ -26,20 +40,6 @@
 % with this program. If not, see <http://www.gnu.org/licenses/>.
 %% start of actual code
 function [trjdat,caldat]=VB7_getTrjData(runinputfile,k,b)
-% [trjdat,caldat]=VB7_getTrjData(runinputfile,k,b)
-%
-% retrieve looping and calibration data trajectory k,b for the analysis
-% specified in runinput file. The objects trjdat,caldat have fields
-%
-% name      : name of data file
-% data      : preprocessed data object, as used in the analysis
-% x         : position trajectory
-% RMS       : RMS trace
-%
-% M.L. 2012-02-23
-
-% change-log
-% ML 2012-06-01 : handle runinput filenames ending with .m
 
 % get settings for this runinput file
 if(strcmp(runinputfile(end-1:end),'.m'))

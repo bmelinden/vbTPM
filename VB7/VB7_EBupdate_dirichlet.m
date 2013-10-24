@@ -1,6 +1,25 @@
+% U=VB7_EBupdate_dirichlet(w,zpattern)
+%
+% Find Dirichlet distribution u that minimize the total KL divergences
+% between each row of w and u, argmin_u sum_j KL_dirichlet(w(j,:)||u),
+% i.e., each row of w is a Dirichlet distribution
+%
+% This means solving 
+% psi(u) - psi(u0) = 1/M sum_j ( psi(w(j,:) - psi(w0(j)),
+% with
+% u0 = sum(u), w0(j)=sum(w(j,:))
+%
+% If present, zpattern specifices columns to ignore; only columns with
+% zpattern>0 are included in the analysis. For columns with zpattern<=0,
+% the corresponding entries of u are set to zero as well. By default, all
+% columns are included.
+% 
+% ML 2012-05-02
+
 %% copyright notice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
+% VB7_EBupdate.m, empirical Bayes updates for Dirichlet distributions,
+% in the vbTPM package
 % =========================================================================
 % 
 % Copyright (C) 2013 Martin Lindén
@@ -24,25 +43,9 @@
 %
 % You should have received a copy of the GNU General Public License along
 % with this program. If not, see <http://www.gnu.org/licenses/>.
+
 %% start of actual code
 function U=VB7_EBupdate_dirichlet(w,zpattern)
-% U=VB7_EBupdate_dirichlet(w,zpattern)
-%
-% Find Dirichlet distribution u that minimize the total KL divergences
-% between each row of w and u, argmin_u sum_j KL_dirichlet(w(j,:)||u),
-% i.e., each row of w is a Dirichlet distribution
-%
-% This means solving 
-% psi(u) - psi(u0) = 1/M sum_j ( psi(w(j,:) - psi(w0(j)),
-% with
-% u0 = sum(u), w0(j)=sum(w(j,:))
-%
-% If present, zpattern specifices columns to ignore; only columns with
-% zpattern>0 are included in the analysis. For columns with zpattern<=0,
-% the corresponding entries of u are set to zero as well. By default, all
-% columns are included.
-% 
-% ML 2012-05-02
 
 opt=optimset('Display','off','TolFun',1e-15,'TolX',1e-15);
 relTolF=1e-15;

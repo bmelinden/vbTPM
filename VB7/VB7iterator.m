@@ -1,32 +1,3 @@
-%% copyright notice
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
-% =========================================================================
-% 
-% Copyright (C) 2013 Martin Lindén
-% 
-% E-mail: bmelinden@gmail.com
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This program is free software: you can redistribute it and/or modify it
-% under the terms of the GNU General Public License as published by the
-% Free Software Foundation, either version 3 of the License, or any later
-% version.   
-% This program is distributed in the hope that it will be useful, but
-% WITHOUT ANY WARRANTY; without even the implied warranty of
-% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
-% % Public License for more details.
-% 
-% Additional permission under GNU GPL version 3 section 7
-% 
-% If you modify this Program, or any covered work, by linking or combining it
-% with Matlab or any Matlab toolbox, the licensors of this Program grant you 
-% additional permission to convey the resulting work.
-%
-% You should have received a copy of the GNU General Public License along
-% with this program. If not, see <http://www.gnu.org/licenses/>.
-%% start of actual code
-function [W,C,F]=VB7iterator(W,x,maxIter,relTolF,tolPar,outputLevel)
-%%
 % [W,C,F]=VB7iterator(W,x,maxIter,relTolF,tolPar,outputLevel)
 % run VBE iterations using VB7_VBEMiter(W,x), starting from VB7 structure W
 % and data x, using convergence criteria explained below. C is an output
@@ -66,6 +37,36 @@ function [W,C,F]=VB7iterator(W,x,maxIter,relTolF,tolPar,outputLevel)
 % M.L. 2012-03-28 : changed default tolerances to make the criterion on the
 %                   lower bound (F) the most stringent one.
 
+%% copyright notice
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% VB7iterator.m, converge VBEM iterations in the vbTPM package
+% =========================================================================
+% 
+% Copyright (C) 2013 Martin Lindén
+% 
+% E-mail: bmelinden@gmail.com
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This program is free software: you can redistribute it and/or modify it
+% under the terms of the GNU General Public License as published by the
+% Free Software Foundation, either version 3 of the License, or any later
+% version.   
+% This program is distributed in the hope that it will be useful, but
+% WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+% % Public License for more details.
+% 
+% Additional permission under GNU GPL version 3 section 7
+% 
+% If you modify this Program, or any covered work, by linking or combining it
+% with Matlab or any Matlab toolbox, the licensors of this Program grant you 
+% additional permission to convey the resulting work.
+%
+% You should have received a copy of the GNU General Public License along
+% with this program. If not, see <http://www.gnu.org/licenses/>.
+
+%% start of actual code
+function [W,C,F]=VB7iterator(W,x,maxIter,relTolF,tolPar,outputLevel)
+
 %% set convergence parameters
 if(~exist('maxIter','var')  || isempty(maxIter));maxIter=1000;end
 if(~exist('relTolF','var')  || isempty(relTolF));relTolF=1e-8;end
@@ -76,9 +77,6 @@ C.tolPar  =tolPar;
 C.iter    =0;
 C.converged=false;
 C.W0=VB7_minimalStorage(W);
-%if(isfield(W,'minimalStorage')) % save memory by saving a small object...
-%    C.W0=W.minimalStorage(); 
-%end
 %% run the VBE iterations until convergence
 if(~exist('outputLevel','var') || isempty(outputLevel))
     outputLevel=1;

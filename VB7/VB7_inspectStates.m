@@ -1,31 +1,3 @@
-%% copyright notice
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
-% =========================================================================
-% 
-% Copyright (C) 2013 Martin Lindén
-% 
-% E-mail: bmelinden@gmail.com
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This program is free software: you can redistribute it and/or modify it
-% under the terms of the GNU General Public License as published by the
-% Free Software Foundation, either version 3 of the License, or any later
-% version.   
-% This program is distributed in the hope that it will be useful, but
-% WITHOUT ANY WARRANTY; without even the implied warranty of
-% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
-% % Public License for more details.
-% 
-% Additional permission under GNU GPL version 3 section 7
-% 
-% If you modify this Program, or any covered work, by linking or combining it
-% with Matlab or any Matlab toolbox, the licensors of this Program grant you 
-% additional permission to convey the resulting work.
-%
-% You should have received a copy of the GNU General Public License along
-% with this program. If not, see <http://www.gnu.org/licenses/>.
-%% start of actual code
-function s=VB7_inspectStates(W,X,s,KBax,x,y)
 % s=VB7_inspectStates(W,X,s,KBax,x,y)
 %
 % a function to inspect the coordinate trace in the neighbouthood of each
@@ -49,6 +21,37 @@ function s=VB7_inspectStates(W,X,s,KBax,x,y)
 % M.L. 2012-01-23   : started attempt to conform to new postprocess with
 %                     flexible axes
 % M.L. 2012-01-28   : accepted as new version to go with VB7_batch_postprocess.
+
+%% copyright notice
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% VB7_inspectStates.m, tool for manual model curation in the vbTPM package
+% =========================================================================
+% 
+% Copyright (C) 2013 Martin Lindén
+% 
+% E-mail: bmelinden@gmail.com
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This program is free software: you can redistribute it and/or modify it
+% under the terms of the GNU General Public License as published by the
+% Free Software Foundation, either version 3 of the License, or any later
+% version.   
+% This program is distributed in the hope that it will be useful, but
+% WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+% % Public License for more details.
+% 
+% Additional permission under GNU GPL version 3 section 7
+% 
+% If you modify this Program, or any covered work, by linking or combining it
+% with Matlab or any Matlab toolbox, the licensors of this Program grant you 
+% additional permission to convey the resulting work.
+%
+% You should have received a copy of the GNU General Public License along
+% with this program. If not, see <http://www.gnu.org/licenses/>.
+
+%% start of actual code
+function s=VB7_inspectStates(W,X,s,KBax,x,y)
+
 %% non-adjustable parameters
 RMS=gaussFilter(X,3); % filter width 3 s at 30 Hz
 flank=1000;             % number of points before and after each 2-dwell

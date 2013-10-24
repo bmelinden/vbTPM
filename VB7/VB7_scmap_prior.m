@@ -1,6 +1,16 @@
+% W1=VB7_scmap_prior(W0,N,Nc)
+% generate prior parameters for a mixed model with N genuine and Nc-1
+% spurious states, based on the prior parameters for a genuine state-only model
+% with N+Nc-1 states.
+%
+% mixed model: 
+% p(st,ct|st-1,ct-1)=A(st-1,st)*(delta(ct-1,1)*Ac(st-1,ct) 
+%       + (1-delta(ct-1,1))*Rc(ct-1,ct)
+
 %% copyright notice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
+% VB7_scmap_prior.m, prior builder for mixed genuine/spurious models, part 
+% of the vbTPM package
 % =========================================================================
 % 
 % Copyright (C) 2013 Martin Lindén
@@ -26,14 +36,6 @@
 % with this program. If not, see <http://www.gnu.org/licenses/>.
 %% start of actual code
 function W1=VB7_scmap_prior(W0,N,Nc)
-% W1=VB7_scmap_prior(W0,N,Nc)
-% generate prior parameters for a mixed model with N genuine and Nc-1
-% spurious states, based on the prior parameters for a genuine state-only model
-% with N+Nc-1 states.
-%
-% mixed model: 
-% p(st,ct|st-1,ct-1)=A(st-1,st)*(delta(ct-1,1)*Ac(st-1,ct) 
-%       + (1-delta(ct-1,1))*Rc(ct-1,ct)
 
 w=VB7_priorParent(W0,N+Nc-1,1); % construct genuine-state only prior
 

@@ -1,6 +1,19 @@
+% W=VB7_split(W0,ss,TsplitFactor)
+% splits genuine state ss into two distinct genuine states, with mean dwell
+% times differing by a factor TsplitFactor (each new state gets the
+% original ss a factor sqrt(TsplitFactor) bigger or smaller dwell time a
+% factor sqrt(TsplitFactor).
+
+%% change-log
+% M.L. 2011-01-06   : started
+% M.L. 2011-02-03   : translated from VB5 to VB7, new rescaling formulae
+% M.L. 2011-02-14   : throw error on split of empty state. Debug thing,
+%                     because that problem seems to depend in initiakl
+%                     guess, not data set.
+
 %% copyright notice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
+% VB7_split.m, splits genuine states, part of the vbTPM package
 % =========================================================================
 % 
 % Copyright (C) 2013 Martin Lindén
@@ -25,20 +38,9 @@
 % You should have received a copy of the GNU General Public License along
 % with this program. If not, see <http://www.gnu.org/licenses/>.
 %% start of actual code
-function W1=VB7_split(W0,ss,TsplitFactor)
-% W=VB7_split(W0,ss,TsplitFactor)
-% splits genuine state ss into two distinct genuine states, with mean dwell
-% times differing by a factor TsplitFactor (each new state gets the
-% original ss a factor sqrt(TsplitFactor) bigger or smaller dwell time a
-% factor sqrt(TsplitFactor).
 
-%% change-log
-% M.L. 2011-01-06   : started
-% M.L. 2011-02-03   : translated from VB5 to VB7, new rescaling formulae
-% M.L. 2011-02-14   : throw error on split of empty state. Debug thing,
-%                     because that problem seems to depend in initiakl
-%                     guess, not data set.
-%% actual code
+function W1=VB7_split(W0,ss,TsplitFactor)
+
 N=W0.N+1;
 Nc=W0.Nc;
 W1=VB7_priorParent(W0,N,Nc); % create extended model

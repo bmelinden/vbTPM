@@ -1,6 +1,15 @@
+% opt=VB7_getOptions(runinputfile)
+%
+% convert HMM runinput parameters from a runinput file into an options
+% structure opt. In fact, all variables created by the command
+% eval(runinputfile) are stored in the opt structure. 
+% An (incomplete) sanity check of some parameter values is also performed.
+%
+% M.L. 2013-07-07
+
 %% copyright notice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
+% VB7_getOptions.m, access analysis options in the vbTPM package
 % =========================================================================
 % 
 % Copyright (C) 2013 Martin Lindén
@@ -24,18 +33,10 @@
 %
 % You should have received a copy of the GNU General Public License along
 % with this program. If not, see <http://www.gnu.org/licenses/>.
-%% start of actual code
-function opt=VB7_getOptions(runinputfile)
-% opt=VB7_getOptions(runinputfile)
-%
-% convert HMM runinput parameters from a runinput file into an options
-% structure opt. In fact, all variables created by the command
-% eval(runinputfile) are stored in the opt structure. 
-% An (incomplete) sanity check of some parameter values is also performed.
-%
-% M.L. 2013-07-07
 
 %% start of actual code
+function opt=VB7_getOptions(runinputfile)
+
 % Split the runinput filename
 [path, name, ext] = fileparts(runinputfile);
 if(isempty(path))

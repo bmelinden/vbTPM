@@ -1,6 +1,13 @@
+% est=VB7_Mestimates(M,fSample,downSampling)
+% Compute some estimates based on variational distribution
+% parametrers (no hyper-parameters substracted).
+%
+% ML 2012-12-06
+
 %% copyright notice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
+% VB7_Mestimates.m, generate parameter estimates from variational 
+% distributions in the vbTPM package.
 % =========================================================================
 % 
 % Copyright (C) 2013 Martin Lindén
@@ -26,11 +33,6 @@
 % with this program. If not, see <http://www.gnu.org/licenses/>.
 %% start of actual code
 function est=VB7_Mestimates(M,fSample,downSampling)
-% est=VB7_Mestimates(M,fSample,downSampling)
-% Compute some estimates based on variational distribution
-% parametrers (no hyper-parameters substracted).
-%
-% ML 2012-12-06
 
 % occupation probabilities
 est.Pocc=sum(M.wA,2)/sum(sum(M.wA,2));

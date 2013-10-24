@@ -1,31 +1,3 @@
-%% copyright notice
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
-% =========================================================================
-% 
-% Copyright (C) 2013 Martin Lindén
-% 
-% E-mail: bmelinden@gmail.com
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This program is free software: you can redistribute it and/or modify it
-% under the terms of the GNU General Public License as published by the
-% Free Software Foundation, either version 3 of the License, or any later
-% version.   
-% This program is distributed in the hope that it will be useful, but
-% WITHOUT ANY WARRANTY; without even the implied warranty of
-% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
-% % Public License for more details.
-% 
-% Additional permission under GNU GPL version 3 section 7
-% 
-% If you modify this Program, or any covered work, by linking or combining it
-% with Matlab or any Matlab toolbox, the licensors of this Program grant you 
-% additional permission to convey the resulting work.
-%
-% You should have received a copy of the GNU General Public License along
-% with this program. If not, see <http://www.gnu.org/licenses/>.
-%% start of actual code
-function VB7_batch_run(ri)
 % VB7_runAnalysis(ri)
 % start a new analysis job in pseudoparallel mode, based on he runinput
 % file ri. This version only runs a single pass through the file list, and
@@ -49,6 +21,36 @@ function VB7_batch_run(ri)
 % M.L. 2011-10-25   : added driftcorrection flag and cut-off frequency to
 %                     the list of saved variables, so that complete
 %                     reproduction is possible.
+
+%% copyright notice
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% VB7_batch_run.m, analysis manager for the vbTPM package
+% =========================================================================
+% 
+% Copyright (C) 2013 Martin Lindén
+% 
+% E-mail: bmelinden@gmail.com
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This program is free software: you can redistribute it and/or modify it
+% under the terms of the GNU General Public License as published by the
+% Free Software Foundation, either version 3 of the License, or any later
+% version.   
+% This program is distributed in the hope that it will be useful, but
+% WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+% % Public License for more details.
+% 
+% Additional permission under GNU GPL version 3 section 7
+% 
+% If you modify this Program, or any covered work, by linking or combining it
+% with Matlab or any Matlab toolbox, the licensors of this Program grant you 
+% additional permission to convey the resulting work.
+%
+% You should have received a copy of the GNU General Public License along
+% with this program. If not, see <http://www.gnu.org/licenses/>.
+
+%% start of actual code
+function VB7_batch_run(ri)
 
 %% run runinput file
 if(strcmp(ri(end-1:end),'.m'))

@@ -1,6 +1,21 @@
+% [res,R]=VB7_kineticAnalysis(runinputfile,loadfile,doplots,resort)
+% 
+% Create factorial HMM models with spurious states in a class of its own.
+% example
+% [res,R]=VB7_kineticAnalysis('RI_ds3run_100pM_tA01','ML_ds3_0100pM.mat')
+%
+
+% runinputfile          VB7 runinput file
+% loadfile              VB7 file with state classification (e.g., from
+%                       the VB7_batch_postprocess GUI).
+% doplots=true/false    plot some stuff
+% resort=true/false     reorder thestates such that the spurious states
+%                       come last.
+
 %% copyright notice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
+% VB7_kineticAnalysis.m, automated generation of factorial models based on 
+% state classifications, part of the vbTPM package
 % =========================================================================
 % 
 % Copyright (C) 2013 Martin Lindén
@@ -24,21 +39,9 @@
 %
 % You should have received a copy of the GNU General Public License along
 % with this program. If not, see <http://www.gnu.org/licenses/>.
+
 %% start of actual code
 function [res,R]=VB7_kineticAnalysis(runinputfile,loadfile,doplots,resort)
-% [res,R]=VB7_kineticAnalysis(runinputfile,loadfile,doplots,resort)
-% 
-% Create factorial HMM models with spurious states in a class of its own.
-% example
-% [res,R]=VB7_kineticAnalysis('RI_ds3run_100pM_tA01','ML_ds3_0100pM.mat')
-%
-
-% runinputfile          VB7 runinput file
-% loadfile              VB7 file with state classification (e.g., from
-%                       the VB7_batch_postprocess GUI).
-% doplots=true/false    plot some stuff
-% resort=true/false     reorder thestates such that the spurious states
-%                       come last.
 
 if(~exist('doplots','var') || isempty(doplots)); doplots=true;end
 if(~exist('resort','var') || isempty(resort)); resort=false;end

@@ -1,8 +1,8 @@
-%% W=VB7_VBEMiter(W,X,...)
+%% W=VB7_VBEMiter_nomex(W,X,...)
 %
-% Perform a full VBEM iteration, with the K,B-correated Gaussian noise
-% model, on the VB7 structure W, with data structure X.
-% X=VB3_preprocess(x,downSample);
+% Perform a full VBEM iteration without calling mex-files, with the K,B-
+% correated Gaussian noise model, on the VB7 structure W, with data structure 
+% X. X=VB3_preprocess(x,downSample);
 % 
 % If W.E and W.Ec exist, then a full VBE iteration (M-step + E-step) is
 % performed. If W.E or W.Ec fields are missing, then only the E-step is

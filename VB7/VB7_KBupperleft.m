@@ -1,6 +1,15 @@
+% [Kmin,Bmax]=VB7_KBupperleft(RMS0,B0)
+%
+% find a minimum K and maximum B from solving the equations
+% B = B0 * (1-K)
+% B = 1 /RMS0^2/(1-K^2)
+%
+% Can be used as an extra selection criterion for genuine states.
+% M.L. 2011-09-12 
+
 %% copyright notice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
+% VB7_KBupperleft.m, part of the vbTPM package
 % =========================================================================
 % 
 % Copyright (C) 2013 Martin Lindén
@@ -24,17 +33,9 @@
 %
 % You should have received a copy of the GNU General Public License along
 % with this program. If not, see <http://www.gnu.org/licenses/>.
+
 %% start of actual code
 function [Kmin,Bmax]=VB7_KBupperleft(RMS0,B0)
-% [Kmin,Bmax]=VB7_KBupperleft(RMS0,B0)
-%
-% find a minimum K and maximum B from solving the equations
-% B = B0 * (1-K)
-% B = 1 /RMS0^2/(1-K^2)
-%
-% Can me used as an extra selection criterion for genuine states.
-
-% M.L. 2011-09-12   : started
 
 Keq=@(k)((1-k).*(1-k.^2)-1/RMS0^2/B0);
 

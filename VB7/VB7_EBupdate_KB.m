@@ -1,4 +1,3 @@
-
 % [n0,c0,v0,mu0]=VB7_EBupdate_KB(n,c,v,mu)
 %
 % perform the hierarchical prior update steps on the KB-distribution in the
@@ -8,7 +7,8 @@
 
 %% copyright notice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
+% VB7_EBupdate.m, empirical Bayes updates for emission parameters 
+% in the vbTPM package
 % =========================================================================
 % 
 % Copyright (C) 2013 Martin Lindén
@@ -32,8 +32,8 @@
 %
 % You should have received a copy of the GNU General Public License along
 % with this program. If not, see <http://www.gnu.org/licenses/>.
-%% start of actual code
 
+%% start of actual code
 function [n0,c0,v0,mu0]=VB7_EBupdate_KB2(n,c,v,mu,PM)
 opt1=optimset('Display','off','TolFun',1e-15,'TolX',1e-15,'MaxFunEvals',1e5,'MaxIter',1e5);
 opt2=optimset('Display','on','TolFun',1e-15,'TolX',1e-15,'MaxFunEvals',1e5,'MaxIter',1e5);
