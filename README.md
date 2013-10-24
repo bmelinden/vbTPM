@@ -19,13 +19,6 @@ of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program. If not, see <http://www.gnu.org/licenses/>.
+along with this program. If not, see 
+http://www.gnu.org/licenses/
 =====================================================================
-
-If you use vbTPM in your research, please cite the original article in
-your work:
-
-S. Johnson, J-W van de Meent, Rob Phillips, Chris H Wiggins, and
-Martin Lindén. Multiple Lac-mediated loops revealed by Bayesian
-statistics and tethered particle motion (manuscript in preparation,
-2013).
