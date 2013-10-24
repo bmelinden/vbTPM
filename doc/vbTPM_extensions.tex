@@ -1,0 +1,117 @@
+\subsection{Factorial model}
+The above algorithm is readily extended to treat the factorial model
+where genuine ($s_t$) and spurious ($c_t$) states are separated into
+two different hidden processes, with $c_t=1$ indicating a genuine
+state (bead motion described by genuine parameters $K_{s_t},B_{s_t}$),
+and $c_t>1$ indicating a spurious state (bead motion described by
+genuine parameters $\hat K_{c_t},\hat B_{c_t}$). 
+
+The bead motion/emission parameters are exactly analogous to genuine
+state parameters in the simple HMM above. For the transitions, we
+assume that genuine states evolve independently, and likewise for
+spurious states ($c_t>1$), but that the transitions from genuine to
+spurious $c_t=1 \to c_{t+1}>1$ depends on the genuine state (see main
+text \cite{vbTPMpaper}). This leads to the following model:
+\begin{equation}
+  p(s_{t+1},c_{t+1}|s_t,c_t)=p(s_{t+1}|s_t)p(c_{t+1}|s_t,c_t),
+\end{equation}
+with $p(s_{t+1}|s_t)=A_{s_ts_{t+1}}$ as earlier, and
+\begin{equation}
+  p(c_{t+1}|s_t,c_t)
+  =\left\{
+  \begin{array}{ll}
+    \hat A_{s_tc_{t+1}},&\text{ if $c_t=1$,}\\
+    \hat R_{c_tc_{t+1}},&\text{ if $c_t>1$,}\\
+  \end{array}
+  \right.
+\end{equation}
+
+We implemented a brute force variational treatment of this extended
+model, where we define new composite hidden states $\hat
+s_t=(s_t,c_t)$ and modify the simple vb algorithm to run this
+composite model, which mainly involves book-keeping to update the
+transition count matrices for $\hat A$, $\hat R$.  This has a
+significant computational cost, since a simple model with $N_{gen.}$
+genuine states and $N_{sp.}$ spurious ones gets
+$N_{gen.}\times(1+N_{sp.})$ states after conversion. However, since we
+do not perform exhaustive model search in this representation and can
+utilize the simpler model to make good initial guesses, this is not a
+significant problem.
+
+{\bf Priors} We take the priors for the spurious states to be as
+similar to the genuine state prior as possible. Thus, we parameterize
+the priors for $\hat K_j,\hat B_j$ in the same way as for the genuine
+state parameters. For the spurious-spurious transitions
+$\hat{\matris{A}}$, we use the same prior mean dwell time and strength
+as for the genuine transition matrix $\matris{A}$. For the
+genuine$\to$spurious transition matrix $\hat{\matris{R}}$, we use the
+same strength, but a different (longer) mean life-time for the state
+$c_t=1$, since spurious events are presumably rare. Further details:
+table \ref{stab:priors}, the example runinput files, and
+\verb+VB7_priorParent+.
+
+\subsection{Empirical Bayes update equations}
+The empirical Bayes update equations optimizes the lower bound with
+respect to the hyperparameters in the prior distribution. This means
+optimizing sums of Kullback-Leibler divergence terms. 
+
+The initial state probability, and the rows of the transition
+probability matrix, are both Dirichlet distributed. Thus, for $M$
+trajectories with Dirichlet parameters $u_j^{(i)}$, $i=1,2,\ldots,M$,
+and hyperparameters $\tilde{u}_j$ ($u = w^{(\vec\pi)},u^{(\matris{A})}$),
+we need to solve
+\begin{multline}
+\frac{d}{d \tilde u_j} \sum_i\Bigg( 
+ \ln\frac{\Gamma(u_0^{(i)})}{\Gamma(\tilde u_0)}
+    -(u_0^{(i)}-\tilde u_0)\psi(u_0^{(i)})\\
+    -\sum_{k=1}^N\bigg[
+      \ln\frac{\Gamma(u_k^{(i)})}{\Gamma(\tilde u_k^{(i)})}
+      -\big(u_k^{(i)}-\tilde u_k\big)
+      \psi(u_k^{(i)})\bigg]\Bigg)=0,
+\end{multline}
+where $u_0^{(i)}=\sum_ku_k^{(i)}$ and similar for $\tilde u_0$. This
+leads to the update equations
+\begin{equation}
+  \psi(\tilde u_0)-\psi(\tilde u_j)
+=\frac{1}{M}\sum_i\bigg(
+  \psi(u_0^{(i)})-\psi(u_j^{(i)})\bigg).
+\end{equation}
+A numerical solution turned out to be easier using the variables
+$\tilde U_j=\ln \tilde u_j$ (to numerically enforce $\tilde u_j>0$).
+
+For the emission parameters, the update equations are instead derived
+from minimizing \Eq{seq:KBKL} summed over $M$ trajectories,
+\begin{multline}
+  f_{KB}=\sum_i\Bigg(
+  -\frac{n^{(i)}+\frac 12}{c^{(i)}} \Big(c^{(i)}-\tilde c-\tilde v(\mu^{(i)}-\tilde
+  \mu)^2\Big)\\ +\frac 12\ln\frac{v^{(i)}}{\tilde v} +(\tilde
+  n+\frac 12)\ln\frac{c^{(i)}}{\tilde c}
+  -\ln\frac{\Gamma\big(n^{(i)}+\frac 12\big)}{\Gamma\big(\tilde n+\frac
+    12\big)}\\ +(n^{(i)}-\tilde n)\psi\big(n^{(i)}+\frac 12\big)
+  +\frac{1}{2}\Big(\frac{\tilde v}{v^{(i)}} -1\Big)\Bigg).
+\end{multline}
+Minimizing with respect to $\tilde\mu$ and $\tilde v$ leads to
+\begin{align}
+   \tilde\mu=&\frac{1}{M}\sum_i\mu^{(i)},\\
+   \frac{1}{\tilde v}=&
+   \frac{1}{M}\sum_i\Big(\frac{1}{v^{(i)}}+2(\tilde\mu-\mu^{(i)})^2\Big).
+\end{align}
+The remaining $\tilde c$ and $\tilde n$ lead to
+\begin{align}
+  \frac{\tilde n+\frac 12}{\tilde c}=&
+  \frac{1}{M}\sum_i\frac{n^{(i)}+\frac 12}{c^{(i)}},\\
+  \ln\tilde c-\psi\big(\tilde n+\frac 12\big)=&
+  \frac{1}{M}\sum_i\bigg(
+\ln c^{(i)}-\psi\big(n^{(i)}+\frac 12\big)\bigg),
+\end{align}
+which we solve numerically. This gets easier by defining
+$\alpha=\frac{\tilde n+\frac 12}{\tilde c}$, then solve the second
+equation for $\tilde c$ numerically, and finally compute $\tilde
+n=\alpha\tilde c-\frac 12$.
+
+\subsection{Doing empirical Bayes}
+Our empirical Bayes analysis of multiple models was not implemented as
+part of our analysis pipeline, but instead ran using tailored
+scripts. These are not included with vbTPM, but the optimization
+procedures for the individual prior distributions are included, in
+\verb+VB7_EBupdate_dirichlet+, and \verb+VB7_EBupdate_KB+.

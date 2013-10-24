@@ -42,20 +42,15 @@ software is available as open source via
 \tableofcontents
 % some information that is useful for running the VB7 software for
 % analyzing TPM traces.
-\section*{To-do list}
-Factorial model, including priors.
-
-Factorial algorithm.
-
-
-
 \section{Getting started with vbTPM}
 \input{vbTPM_getstarted.tex}
 \section{Diffusive model for TPM}
 \input{vbTPM_model.tex}
 \section{The VB-algorithm}
 \input{vbTPM_algorithm.tex}
-\subsection{Notation and symbols}\label{sec:notation}
+\section{Extensions}
+\input{vbTPM_extensions.tex}
+\section{Notation and symbols}\label{sec:notation}
 vbSPT stores mathematical objects in matlab structures that contain
 parameters for the variational and prior distributions, and various
 other things. In this section we list some of them.
@@ -66,7 +61,7 @@ model search for each trajectory, indexed as the filenames in the
 runinput file, e.g. \verb+trj{k}{j}+ contains the analysis result for
 \verb+looping_filename{k}{j}+ etc. 
 
-Most importantly, teh Wtrj and Wcal fields are the converged model
+Most importantly, the Wtrj and Wcal fields are the converged model
 structs, whose content are detailed below (using W as the generic
 model name). In addition the columns of the arrays
 \verb+NFtrj+/\verb+NFcal+ contain $N,\hat N, F, iter$ for each model
@@ -74,7 +69,7 @@ that was converged during the nodel search, and $iter$ is the restart
 number that produced it. In \verb+NFitrj/NFical+, the best model for
 each size is listed in the same way, with the last column indicating
 the rows in \verb+NFtrj,NFcal+ where these optimal models can be
-found. 
+found.
 
 Further details about the model structs are given in tables
 \ref{tab:Wfields}-\ref{tab:Westimates}.
@@ -88,9 +83,9 @@ field & \\
 \hline
     \verb+W.N+& \parboxc{$N$, number of (genuine) states.} \\
     \hline
-    \verb+W.Nc+& \parboxc{       
-      Number of indicator states $\hat N$. $\hat N=1$ means no spurious
-      states, i.e., the simple HMM.}\\ 
+    \verb+W.Nc+& \parboxc{ Number of indicator states $\hat
+      N$+1. W.Nc=1 means no spurious states, i.e., the simple
+      HMM.}\\
     \hline
     \verb+W.F+& \parboxc{Lower bound $F$.} \\
     \hline
@@ -230,14 +225,6 @@ $RMS_j=\sqrt{\mean{\x_t^2|s_t=j}}
   which is the reason computing it is optional. }\\\hline
 \end{tabular}\end{center}
 \end{table*}  
-\clearpage
-\subsection{Doing empirical Bayes}
-Our empirical Bayes analysis of multiple models was not implemented as
-part of our analysis pipeline, but instead ran using tailored
-scripts. These are not included with vbTPM, but the optimization
-procedures for the individual prior distributions are included, in
-\verb+VB7_EBupdate_dirichlet+, \verb+VB7_EBupdate_KB+, and
-\verb+VB7_EBupdate_KB2+.
 
 \bibliographystyle{unsrtnat}
 \bibliography{references}%,jwm_single_molecule,jwm_machine_learning}

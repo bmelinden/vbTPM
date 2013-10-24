@@ -1,31 +1,3 @@
-%% copyright notice
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
-% =========================================================================
-% 
-% Copyright (C) 2013 Martin Lindén
-% 
-% E-mail: bmelinden@gmail.com
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This program is free software: you can redistribute it and/or modify it
-% under the terms of the GNU General Public License as published by the
-% Free Software Foundation, either version 3 of the License, or any later
-% version.   
-% This program is distributed in the hope that it will be useful, but
-% WITHOUT ANY WARRANTY; without even the implied warranty of
-% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
-% % Public License for more details.
-% 
-% Additional permission under GNU GPL version 3 section 7
-% 
-% If you modify this Program, or any covered work, by linking or combining it
-% with Matlab or any Matlab toolbox, the licensors of this Program grant you 
-% additional permission to convey the resulting work.
-%
-% You should have received a copy of the GNU General Public License along
-% with this program. If not, see <http://www.gnu.org/licenses/>.
-%% start of actual code
-function W=VB7_priorParent(fSample,ds,fPi,tD,tA,tDc0,fB,B0,fBc,Bc0,K0,Kstd,Kc0,KcStd,KBscaling)
 % use 1: create an empty model object from scratch
 % Wparent=VB7_priorParent(fSample,ds,fPi,tD,tA,tDc0,fB,B0,fBc,Bc0,K0,Kstd,Kc0,KcStd,KBscaling)
 % creates a VB7 parent structure with prior distribution parameters only,
@@ -61,6 +33,7 @@ function W=VB7_priorParent(fSample,ds,fPi,tD,tA,tDc0,fB,B0,fBc,Bc0,K0,Kstd,Kc0,K
 % parameters according to the options in Wparent.priorParameterOptions. The
 % created object inherits the prior options, and can in turn be used to
 % generate new onjects.
+
 %% change-log
 % M.L. 2011-01-05   : started translation to VB5, added a downSample parameter
 % M.L. 2011-02-02   : started translation to VB7, removed zeros in Rc prior
@@ -75,6 +48,35 @@ function W=VB7_priorParent(fSample,ds,fPi,tD,tA,tDc0,fB,B0,fBc,Bc0,K0,Kstd,Kc0,K
 % M.L. 2012-05-02   : changed how wPi scales with number of states (equal
 %                     weight on both spurious and genuine states).
 
+%% copyright notice
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
+% =========================================================================
+% 
+% Copyright (C) 2013 Martin Lindén
+% 
+% E-mail: bmelinden@gmail.com
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This program is free software: you can redistribute it and/or modify it
+% under the terms of the GNU General Public License as published by the
+% Free Software Foundation, either version 3 of the License, or any later
+% version.   
+% This program is distributed in the hope that it will be useful, but
+% WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+% % Public License for more details.
+% 
+% Additional permission under GNU GPL version 3 section 7
+% 
+% If you modify this Program, or any covered work, by linking or combining it
+% with Matlab or any Matlab toolbox, the licensors of this Program grant you 
+% additional permission to convey the resulting work.
+%
+% You should have received a copy of the GNU General Public License along
+% with this program. If not, see <http://www.gnu.org/licenses/>.
+%% start of actual code
+function W=VB7_priorParent(fSample,ds,fPi,tD,tA,tDc0,fB,B0,fBc,Bc0,K0,Kstd,Kc0,KcStd,KBscaling)
+
 %% determine if the call is to create a new parent or a new VB7 object
 % use 1: VB7_priorParent(fSample,ds,fPi,...)
 % use 2: VB7_priorParent(Wparent,N ,Nc)
@@ -86,7 +88,7 @@ if(nargin==3 && isfield(fSample,'priorParameterOptions'))
 else
 %% handle parameters
 if(~exist('tD','var') || isempty(tD)); tD=1; end
-if(~exist('tA','var') || isempty(tA)); tA=1; end
+if(~exist('tA','var') || isempty(tA)); tA=5; end
 if(~exist('tDc0','var') || isempty(tDc0)); tDc0=10; end
 if(sum(size(tDc0))>2)
     warning('VB7_priorparent: ignoring all but first element of tDc0');

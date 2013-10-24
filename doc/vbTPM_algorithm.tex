@@ -322,52 +322,8 @@ Finally, the emission parameter of each state contributes
     -\frac 12.
 \end{multline}
 
-
-\subsection{Extension to a factorial model}
-The above algorithm is readily extended to treat the factorial model
-where genuine and spurious states are separated into two different
-hidden processes. The extra process is called , $c_t$, where $c_t=1$
-indicates genuine looping dynamics goverened by the simple model
-described above. However, when $c_t>1$, the bead motion is modeled by
-a different set of emission parameters $\hat B_{c_t},\hat
-K_{c_t}$. This separates experimental artifacts from genuine looping
-dynamics. We assume the genuine states, $s_t$, to evolve independently
-of spurious events. Similarly, spurious events $c_t>1$ can
-interconvert independently of the underlying genuine state, but we
-take transitions out of $c_t=1$ to depend on $s_t$, to allow for,
-e.g., the possibility that transient sticking events are more frequent
-in a looped state when the bead is on average closer to the
-coverslip. \cite{notfinished}
-
-%%%
-
-\begin{equation}
-  p(s_{t+1},c_{t+1}|s_t,c_t)=p(s_{t+1}|s_t)p(c_{t+1}|s_t,c_t),
-\end{equation}
-with $p(s_{t+1}|s_t)=A_{s_ts_{t+1}}$,
-\begin{equation}
-  p(c_{t+1}|s_t,c_t)
-  =\left\{
-  \begin{array}{ll}
-    \hat A_{s_tc_{t+1}},&\text{ if $c_t=1$,}\\
-    \hat R_{c_tc_{t+1}},&\text{ if $c_t>1$,}\\
-  \end{array}
-  \right.
-\end{equation}
-
-
-This has a significant computational cost, since a simple model with
-$N_{gen.}$ genuine states and $N_{sp.}$ spurious ones gets
-$N_{gen.}\times(1+N_{sp.})$ states after conversion. However, since we
-do not perform exhaustive model search in this representation and can
-utilize the simpler model to make good initial guesses, this is not a
-significant problem.
-
-
-{\bf Prior for factorial model: TBA}.\cite{factorialmodelprior}
-
-
 \subsection{Specification of prior distributions}
+\paragraph{Emission parameters}
 We specify priors for the emission parameters $K,B$ in terms of the
 the mean values $\mean{K_j}$, $\mean{B_j}$, the standard deviation of
 $K_j$, and the number of pseudo-counts $\tilde n_j$, and then solve
@@ -376,13 +332,15 @@ v_j$ using Eqs.~(\ref{seq:meanK}-\ref{seq:varB}).  We take the same
 hyperparameters for all states, and independent of the number of
 states $N$. Priors for spurious states are specified analogously.
 
+\paragraph{Initial state}
 The initial state probability vector has a Dirichlet prior with
 weights $\tilde\vec w^{(\vec{\pi})}$ (see \Eq{seq:VBMpi}). We choose a
 constant total strength $f^{(\vec\pi)}$, i.e.,
-\begin{equation}
+\begin{equation}\label{seq:fPi}
   \tilde w_j^{(\vec{\pi})}=f^{(\vec\pi)}/N.
 \end{equation}
 
+\paragraph{Transition matrix}
 The prior for the transition matrix is independent Dirichlet
 distributions for each row (see \Eq{seq:VBMAj}), with pseudo-count
 matrix $\tilde w_{ij}^{(\matris{A})}$. Following \citet{persson2013},
@@ -392,13 +350,13 @@ state. To make the definition invariant under changes of sampling
 time, we specify the strength $t_A$ and prior mean dwell time $t_D$ in
 time units. We then construct a transition \textit{rate} matrix Q with
 mean dwell time $t_D$,
-\begin{equation}
+\begin{equation}\label{seq:Qprior}
   Q_{ij}=\frac{1}{t_D}\left(-\delta_{ij}
   +\frac{1-\delta_{ij}}{N-1}\right),
 \end{equation}
 and construct the pseudo-counts based on the transition probability
 propagator per unit time step,
-\begin{equation}
+\begin{equation}\label{seq:wAprior}
   \tilde w_{ij}^{(\matris{A})}=\frac{t_Af_{sample}}{n_{downsample}}
   e^{\Delta tQ}.
 \end{equation}
@@ -407,68 +365,69 @@ t=n_{downsample}/f_{sample}$, where $f_{sample}$ is the sampling
 frequency (30 Hz in our case), and $n_{downsample}$ is the
 downsampling factor.  Numerical experiments by \citet{persson2013}
 show that choosing the strength too low compared to the mean dwell
-time produces a bias towards sparse transition matrices. This is not
-desireable in our case, and we therefore use $t_D=1$ s, and $t_A=5$ s
-throughout this work.
+time produces a bias towards sparse transition matrices.  This is
+often not desireable, and we use $t_D=1$ s and $t_A=5$ s as default
+parameters, and also throughout our work \cite{vbTPMpaper}.
 
-Runinput parameters for prior specification is given in table
-\ref{stab:priors}.
+Details on how top specify parameters for prior distributions are
+given in table \ref{stab:priors}.
 
-\subsection{Empirical Bayes update equations}
-The empirical Bayes update equations optimizes the lower bound with
-respect to the hyperparameters in the prior distribution. This means
-optimizing sums of Kullback-Leibler divergence terms. 
+\begin{table}
+  \begin{center}
+    \begin{tabular}{|c|l|c|}
+      \hline
+      variable & comment & Eq.\\    
+      \hline
+      \hline
+      \verb+B0+ & $\mean{B_j}$ & \eqref{seq:meanB}\\
+      \verb+fB+ & $\tilde n_j$ &   \eqref{seq:nj}\\
+      \verb+K0+ & $\tilde\mu_j$ &  \eqref{seq:muj}\\
+      \verb+Kstd+& $\sqrt{\Var{K_j}}$ & \eqref{seq:varK}\\
+      \verb+KBscaling+& 
+      \begin{minipage}[t]{0.5\columnwidth}
+        Possibility to specify an obsolete state-dependence of the prior
+        parameters for $K_j$, $B_j$. We recommend the default value 2.
+      \end{minipage}&\\
+      \hline
+      &\begin{minipage}[t]{0.5\columnwidth}
+         \verb+Bc0+, \verb+fBc+, \verb+Kc0+, and \verb+KcStd+ are
+         spurious state parameters, with the same interpretation as for
+         genuine states. 
+       \end{minipage}&\\
+      \hline
+      \verb+fPi+& $f^{(\vec\pi)}$ & \eqref{seq:fPi}\\
+      \verb+tD+ & \begin{minipage}[t]{0.5\columnwidth}
+        Mean prior dwell time $t_D$. Default 1 s.  \end{minipage}& \eqref{seq:Qprior}\\
+      \verb+tA+ & \begin{minipage}[t]{0.5\columnwidth}
+        $\matris{A}$ prior strength $t_A$. Default 5 s. \end{minipage}& \eqref{seq:wAprior}\\
+      \hline
+      \verb+tDc0+ & 
+      \begin{minipage}[t]{0.5\columnwidth}
+        Mean prior dwell time of the genuine indicator state
+        $c_t=1$. Default 10 s. \end{minipage}&\\
+      \hline
+    \end{tabular}
+  \end{center}
+  \caption{Specifying prior parameters in runinput files. See also the
+    documentation of VB7\_priorParent, and the example runinput
+    files.}\label{stab:priors}  
+\end{table}
+\subsection{Model search}
+To find the best number of states, we adopt a greedy search approach
+with multiple restarts, similar to the one used in vbSPT
+\cite{persson2013}. The basic idea is to exploit the fact that the
+variational Bayes EM iterations tend to sense overfitting by making
+superfluous states unpopulated. Each search sweep thus starts by
+convrging the largest model to be considered, and then gradually
+removes low-occupancy states until the lower bound $F$ does not
+improve any more. We also attempt to reconverge each size with some
+extra pseudo-counts added to the transition matrix to avoid getting
+stuck in non-interconverting models.
 
-The initial state probability, and the rows of the transition
-probability matrix, are both Dirichlet distributed. Thus, for $M$
-trajectories with Dirichlet parameters $u_j^{(i)}$, $i=1,2,\ldots,M$,
-and hyperparameters $\tilde{u}_j$ ($u = w^{(\vec\pi)},u^{(\matris{A})}$),
-we need to solve
-\begin{multline}
-\frac{d}{d \tilde u_j} \sum_i\Bigg( 
- \ln\frac{\Gamma(u_0^{(i)})}{\Gamma(\tilde u_0)}
-    -(u_0^{(i)}-\tilde u_0)\psi(u_0^{(i)})\\
-    -\sum_{k=1}^N\bigg[
-      \ln\frac{\Gamma(u_k^{(i)})}{\Gamma(\tilde u_k^{(i)})}
-      -\big(u_k^{(i)}-\tilde u_k\big)
-      \psi(u_k^{(i)})\bigg]\Bigg)=0,
-\end{multline}
-where $u_0^{(i)}=\sum_ku_k^{(i)}$ and similar for $\tilde u_0$. This
-leads to the update equations
-\begin{equation}
-  \psi(\tilde u_0)-\psi(\tilde u_j)
-=\frac{1}{M}\sum_i\bigg(
-  \psi(u_0^{(i)})-\psi(u_j^{(i)})\bigg).
-\end{equation}
-A numerical solution turned out to be easier using the variables
-$\tilde U_j=\ln \tilde u_j$ (to numerically enforce $\tilde u_j>0$).
-
-For the emission parameters, the update equations are instead derived
-from minimizing \Eq{seq:KBKL} summed over $M$ trajectories,
-\begin{multline}
-  f_{KB}=\sum_i\Bigg(
-  -\frac{n^{(i)}+\frac 12}{c^{(i)}} \Big(c^{(i)}-\tilde c-\tilde v(\mu^{(i)}-\tilde
-  \mu)^2\Big)\\ +\frac 12\ln\frac{v^{(i)}}{\tilde v} +(\tilde
-  n+\frac 12)\ln\frac{c^{(i)}}{\tilde c}
-  -\ln\frac{\Gamma\big(n^{(i)}+\frac 12\big)}{\Gamma\big(\tilde n+\frac
-    12\big)}\\ +(n^{(i)}-\tilde n)\psi\big(n^{(i)}+\frac 12\big)
-  +\frac{1}{2}\Big(\frac{\tilde v}{v^{(i)}} -1\Big)\Bigg).
-\end{multline}
-Minimizing with respect to $\tilde\mu$ and $\tilde v$ leads to
-\begin{align}
-   \tilde\mu=&\frac{1}{M}\sum_i\mu^{(i)},\\
-   \frac{1}{\tilde v}=&
-   \frac{1}{M}\sum_i\Big(\frac{1}{v^{(i)}}+2(\tilde\mu-\mu^{(i)})^2\Big).
-\end{align}
-The remaining $\tilde c$ and $\tilde n$ lead to
-\begin{align}
-  \frac{\tilde n+\frac 12}{\tilde c}=&
-  \frac{1}{M}\sum_i\frac{n^{(i)}+\frac 12}{c^{(i)}},\\
-  \ln\tilde c-\psi\big(\tilde n+\frac 12\big)=&
-  \frac{1}{M}\sum_i\bigg(
-\ln c^{(i)}-\psi\big(n^{(i)}+\frac 12\big)\bigg),
-\end{align}
-which we solve numerically. This gets easier by defining
-$\alpha=\frac{\tilde n+\frac 12}{\tilde c}$, then solve the second
-equation for $\tilde c$ numerically, and finally compute $\tilde
-n=\alpha\tilde c-\frac 12$.
+Inital conditions for the largest model are generated randomly, partly
+based on user-specified intervals for the $K$ and $B$ parameters, and
+partly using the actual data to find high-occupancy values of
+$K,B$. For the transition matrices, we initialize using a mean dwell
+time, similar as for the prior distributions, but with higher total
+strength. Details are given in the documentation of
+\verb+VB7_initialGuess_KBregion.m+, and in the example runinput file.
