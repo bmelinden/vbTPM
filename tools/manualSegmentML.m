@@ -1,4 +1,3 @@
-function s=manualSegmentML(file)
 % s=manualSegmentML(file)
 %
 % function to do 3-segmentation on a data file file that contains the fields
@@ -23,7 +22,36 @@ function s=manualSegmentML(file)
 %% change-log
 % M.L. 2010-11-16   : new rectangles start where the last one left off
 
-    
+%% copyright notice
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% manualSegmentML.m, part of the vbTPM package
+% =========================================================================
+% 
+% Copyright (C) 2013 Martin Lindén
+% 
+% E-mail: bmelinden@gmail.com
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This program is free software: you can redistribute it and/or modify it
+% under the terms of the GNU General Public License as published by the
+% Free Software Foundation, either version 3 of the License, or any later
+% version.   
+% This program is distributed in the hope that it will be useful, but
+% WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+% % Public License for more details.
+% 
+% Additional permission under GNU GPL version 3 section 7
+% 
+% If you modify this Program, or any covered work, by linking or combining it
+% with Matlab or any Matlab toolbox, the licensors of this Program grant you 
+% additional permission to convey the resulting work.
+%
+% You should have received a copy of the GNU General Public License along
+% with this program. If not, see <http://www.gnu.org/licenses/>.
+
+%% start of actual code
+function s=manualSegmentML(file)
+
 %% parameters
 fSample=30;
 sLabels={'unlooped','mid loop','short loop','undecided','stuck','tracking error'};

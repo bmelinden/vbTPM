@@ -1,4 +1,3 @@
-function [STATE,DWELL,Dstart,Dend,wA]=getDwellTRJ(s,spurious)
 % [STATE,DWELL,Dstart,Dend,wA]=getDwellTRJ(s,spurious)
 % converts a state trajectory s into a list of sojourn states STATE, and a
 % list of dwell times DWELL.
@@ -14,7 +13,34 @@ function [STATE,DWELL,Dstart,Dend,wA]=getDwellTRJ(s,spurious)
 % M.L. 2011-01-21   : added wA
 % M.L. 2012-03-20   : added ability to remove spurious states
 
+%% copyright notice
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% getDwellTRJ.m, part of the vbTPM package
+% =========================================================================
+% 
+% Copyright (C) 2013 Martin Lindén
+% 
+% E-mail: bmelinden@gmail.com
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This program is free software: you can redistribute it and/or modify it
+% under the terms of the GNU General Public License as published by the
+% Free Software Foundation, either version 3 of the License, or any later
+% version.   
+% This program is distributed in the hope that it will be useful, but
+% WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+% % Public License for more details.
+% 
+% Additional permission under GNU GPL version 3 section 7
+% 
+% If you modify this Program, or any covered work, by linking or combining it
+% with Matlab or any Matlab toolbox, the licensors of this Program grant you 
+% additional permission to convey the resulting work.
+%
+% You should have received a copy of the GNU General Public License along
+% with this program. If not, see <http://www.gnu.org/licenses/>.
 
+function [STATE,DWELL,Dstart,Dend,wA]=getDwellTRJ(s,spurious)
 
 % remove the ignore states
 if(exist('ignore','var') && ~isempty(ignore))

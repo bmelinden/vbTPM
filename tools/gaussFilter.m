@@ -1,4 +1,3 @@
-function [RMSf,fRMS,t,r2]=gaussFilter(x,tSigma,fSample)
 %% [RMSf,fRMS,t]=gaussFilter(x,tSigma,tSample)
 % Gaussian lowpass filter with window std tSigma, or a signal with sampling
 % time tSample (default 1/30 s). The radius rho(t) is defined as
@@ -20,6 +19,34 @@ function [RMSf,fRMS,t,r2]=gaussFilter(x,tSigma,fSample)
 %% change-log
 % M.L. 2010-07-06   : added default value (4 s) for tSigma.
 
+%% copyright notice
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% gaussFilter.m, part of the vbTPM package
+% =========================================================================
+% 
+% Copyright (C) 2013 Martin Lindén
+% 
+% E-mail: bmelinden@gmail.com
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This program is free software: you can redistribute it and/or modify it
+% under the terms of the GNU General Public License as published by the
+% Free Software Foundation, either version 3 of the License, or any later
+% version.   
+% This program is distributed in the hope that it will be useful, but
+% WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+% % Public License for more details.
+% 
+% Additional permission under GNU GPL version 3 section 7
+% 
+% If you modify this Program, or any covered work, by linking or combining it
+% with Matlab or any Matlab toolbox, the licensors of this Program grant you 
+% additional permission to convey the resulting work.
+%
+% You should have received a copy of the GNU General Public License along
+% with this program. If not, see <http://www.gnu.org/licenses/>.
+
+function [RMSf,fRMS,t,r2]=gaussFilter(x,tSigma,fSample)
 %% handle partameters
 if(size(x,1)==2 && shape(x,2)>2) % then transpose x
     x=x';
