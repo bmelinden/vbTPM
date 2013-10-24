@@ -1,4 +1,3 @@
-function W=VB7_VBEMiter(W,X,varargin)
 %% W=VB7_VBEMiter(W,X,...)
 %
 % Perform a full VBEM iteration, with the K,B-correated Gaussian noise
@@ -31,6 +30,35 @@ function W=VB7_VBEMiter(W,X,varargin)
 %                    memory 
 % W.est2           : more memory intensensive estimates
 
+%% copyright notice
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% VB7_VBEMiter_nomex.m, VBEM iteration without mex files, in the vbTPM package
+% =========================================================================
+% 
+% Copyright (C) 2013 Martin Lindén
+% 
+% E-mail: bmelinden@gmail.com
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This program is free software: you can redistribute it and/or modify it
+% under the terms of the GNU General Public License as published by the
+% Free Software Foundation, either version 3 of the License, or any later
+% version.   
+% This program is distributed in the hope that it will be useful, but
+% WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+% % Public License for more details.
+% 
+% Additional permission under GNU GPL version 3 section 7
+% 
+% If you modify this Program, or any covered work, by linking or combining it
+% with Matlab or any Matlab toolbox, the licensors of this Program grant you 
+% additional permission to convey the resulting work.
+%
+% You should have received a copy of the GNU General Public License along
+% with this program. If not, see <http://www.gnu.org/licenses/>.
+%% start of actual code
+
+function W=VB7_VBEMiter(W,X,varargin)
 %% change log and notes
 % M.L. 2011-02-02   : started from VB5_VBEMiter.m
 % M.L. 2011-02-21   : ~20% optimization by skipping some steps in the

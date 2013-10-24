@@ -270,7 +270,7 @@ independent restarts, since it is easier to construct a good initial
 guess for a model with many states.
 
 \subsection{The lower bound}
-has an especially simple form just after the VBE step
+The lower bound has an especially simple form just after the VBE step
 \cite{mackay1997,beal2003,persson2013}, given by the normalization
 constant $\ln Z$ of the variational hidden state distribution, minus
 the Kullback-Leibler divergences between the variational and prior
@@ -323,13 +323,38 @@ Finally, the emission parameter of each state contributes
 \end{multline}
 
 
-\subsection{Extension to factorial model}
+\subsection{Extension to a factorial model}
 The above algorithm is readily extended to treat the factorial model
 where genuine and spurious states are separated into two different
-hidden processes. We implemented a brute force approach to this
-problem, where we define new composite hidden states $\hat
-s_t=(s_t,c_t)$ and modify the above algorithm to run this composite
-model, which mainly involves book-keeping to 
+hidden processes. The extra process is called , $c_t$, where $c_t=1$
+indicates genuine looping dynamics goverened by the simple model
+described above. However, when $c_t>1$, the bead motion is modeled by
+a different set of emission parameters $\hat B_{c_t},\hat
+K_{c_t}$. This separates experimental artifacts from genuine looping
+dynamics. We assume the genuine states, $s_t$, to evolve independently
+of spurious events. Similarly, spurious events $c_t>1$ can
+interconvert independently of the underlying genuine state, but we
+take transitions out of $c_t=1$ to depend on $s_t$, to allow for,
+e.g., the possibility that transient sticking events are more frequent
+in a looped state when the bead is on average closer to the
+coverslip. \cite{notfinished}
+
+%%%
+
+\begin{equation}
+  p(s_{t+1},c_{t+1}|s_t,c_t)=p(s_{t+1}|s_t)p(c_{t+1}|s_t,c_t),
+\end{equation}
+with $p(s_{t+1}|s_t)=A_{s_ts_{t+1}}$,
+\begin{equation}
+  p(c_{t+1}|s_t,c_t)
+  =\left\{
+  \begin{array}{ll}
+    \hat A_{s_tc_{t+1}},&\text{ if $c_t=1$,}\\
+    \hat R_{c_tc_{t+1}},&\text{ if $c_t>1$,}\\
+  \end{array}
+  \right.
+\end{equation}
+
 
 This has a significant computational cost, since a simple model with
 $N_{gen.}$ genuine states and $N_{sp.}$ spurious ones gets

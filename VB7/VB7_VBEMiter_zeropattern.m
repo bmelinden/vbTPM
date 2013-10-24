@@ -1,4 +1,3 @@
-function W=VB7_VBEMiter(W,X,varargin)
 %% W=VB7_VBEMiter(W,X,...)
 %
 % Perform a full VBEM iteration, with the K,B-correated Gaussian noise
@@ -37,31 +36,35 @@ function W=VB7_VBEMiter(W,X,varargin)
 % compilation script in ../HMMcore/HMMcore_compile.m, or send an e-mail to
 % bmelinden@gmail.com
 
-%% change log and notes
-% M.L. 2012-01-12   : moved inner loop binaries (VBwaCount and VBforwback)
-%                     to HMMcore directory, to make it easier to reuse them
-%                     in other HMM projects.
-% M.L. 2011-12-20   : stored log(qst) and log(Q) in W.est, to try and hunt
-%                     down weird Viterbi paths for really long
-%                     trajectories. Did not help, I think weird Viterbi
-%                     paths happens when a combination of very long
-%                     trajectories and weak transition probability priors
-%                     lead to numerical underflow in the VBE iterations (it
-%                     still runs though, and the Pmax paths look OK).
-% M.L. 2011-02-02   : started from VB5_VBEMiter.m
-% M.L. 2011-02-21   : ~20% optimization by skipping some steps in the
-%                     transitions count loop when the model has no spurious
-%                     states.
-% M.L. 2011-02-25   : Further optimizations by rewriting large parts of the
-%                     VBE step in c.
-% M.L. 2011-03-01   : successfully renamed E.C -> E.U, E.S -> E.C E.M ->
-%                     E.V, E.P -> E.M, and made corresponding changes in
-%                     the Ec field names. 
-% M.L. 2011-07-25   : removed the internal function minimalStorage from being saved to the VB7 structure, since
-%                     it turns out to be very bulky to store. Created an
-%                     external VB7 function instead.
-% M.L. 2011-08-15   : reformulated VBE step slightly to avoid division by
-%                     zero in case of points x=(0,0).
+%% copyright notice
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% VB7_VBEMiter_zeropattern.m, VBEM iterations in vbTPM
+% =========================================================================
+% 
+% Copyright (C) 2013 Martin Lindén
+% 
+% E-mail: bmelinden@gmail.com
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% This program is free software: you can redistribute it and/or modify it
+% under the terms of the GNU General Public License as published by the
+% Free Software Foundation, either version 3 of the License, or any later
+% version.   
+% This program is distributed in the hope that it will be useful, but
+% WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+% % Public License for more details.
+% 
+% Additional permission under GNU GPL version 3 section 7
+% 
+% If you modify this Program, or any covered work, by linking or combining it
+% with Matlab or any Matlab toolbox, the licensors of this Program grant you 
+% additional permission to convey the resulting work.
+%
+% You should have received a copy of the GNU General Public License along
+% with this program. If not, see <http://www.gnu.org/licenses/>.
+%% start of actual code
+
+function W=VB7_VBEMiter(W,X,varargin)
 
 %% options
 do_estimates=false;
