@@ -4,6 +4,8 @@ dir0=pwd;
 addpath(genpath([dir0 filesep '.' filesep 'VB7']))
 addpath(genpath([dir0 filesep '.' filesep 'HMMcore']))
 addpath(genpath([dir0 filesep '.' filesep 'Tools']))
+%SJ added 1/1/2014:
+addpath(genpath([dir0 filesep '.' filesep 'example1']))
 addpath([dir0 filesep '.'])
 clear dir0
 disp('Added local vbTPM paths.')
