@@ -1,4 +1,4 @@
-% S=VBlogViterbi(lnQ,lnqst) 
+% S=VBviterbi_log0(lnQ,lnqst) 
 % most likely trajectory by the Viterbi algorithm, using log of transition
 % matrix lnQ and emission likelihood lnqst. This is the matlab version of
 % VBviterbi_log.c, created for debugging purposes, but very much slower.
@@ -31,7 +31,7 @@
 % with this program. If not, see <http://www.gnu.org/licenses/>.
 
 %% start of actual code
-function S=VBlogViterbi(lnQ,lnqst) 
+function S=VBviterbi_log0(lnQ,lnqst) 
 
 [T,N]=size(lnqst);
 % algorithm version without large lnpt array
