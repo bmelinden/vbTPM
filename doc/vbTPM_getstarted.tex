@@ -1,13 +1,15 @@
 \subsection{Installation}
 Get the source code, and make sure VB7, HMMcore, and tools are in your
-matlab path, for example by running the script \verb+vbTPMstart+ from
-the matlab command prompt. (To add these paths permanently to your
-matlab path, see the matlab documentation).
+Matlab path, for example by running the script \verb+vbTPMstart+ from
+the Matlab command prompt. (To add these paths permanently to your
+Matlab path, see the Matlab documentation).
 
-Make sure that HMMcore/ contains binaries for your systems. If not, a
-simple matlab compilation script can be found in HMMcore/.
+Make sure that HMMcore/ contains binaries for your system. If not, a
+simple Matlab compilation script can be found in HMMcore/. (See Matlab
+documentation for how to set up your mex compiler). For serious
+analysis, it is probably faster to compile your own binaries.
 
-\subsection{Hardware requirements}
+\subsection{System requirements}
 Tethered particle motion often produces large data sets of many long
 trajectories, which makes the HMM analysis computer intensive. As an
 example, one parameter point in our test data sets, about 90
@@ -15,18 +17,25 @@ trajectories averaging 45 min, downsampled to 10 Hz, took about 24 h
 to go through on two 6 core Intel Xeon E5645 2.40GHz processors. The
 analysis time increases sharply with the number of states (including
 spurious ones, like transient sticking events).
+
+vbTPM is implemented in Matlab, tested on R2012a and R2013a, and
+requires the signal processing toolbox.
+
 \subsection{A small test problem}
-A small test problem, which runs on a (fast) laptop in about one hour,
-with examples of data and runinput files, can be found in example1/,
-with the actual data in example1/lacdata/.  The data set has one
-calibration (cal) and one production (trj) trajectory for each bead.
+A small test problem can be found in example1/, with the actual data
+in example1/lacdata/.  The data set has one calibration (cal) and one
+production (trj) trajectory for each bead, and contains data from five
+beads. Using the runinput2.m and runscript2.sh files as described
+below, this data set takes less than 30 min to analyze on the above
+machine (running all five trajectories in parallell).
 
 \subsubsection*{Runinput files} 
 Runinput files contain all parameters to run the analysis and access
-the results. The meaning of the parameters are documentet in the help
-text of \verb+VB7_batch_run.m+, and commented in those files.
-\verb+runinput1.m+ refers to an already completed analysis (results in
-example1/HMMresults1/), while \verb+runinput2.m+ has not yet run.
+the results. The meaning of the parameters are documented in the help
+text of \verb+VB7_batch_run.m+, and commented in the runinput files in
+example1/.  \verb+runinput1.m+ refers to an already completed analysis
+(results in example1/HMMresults1/), while \verb+runinput2.m+ has not
+yet run.
 
 \subsubsection*{Run basic analysis}
 To start analyzing the test data set, type
@@ -35,17 +44,24 @@ the runinput file has \verb+one_at_a_time=true;+ this will analyze one
 trajectory in the data set. Several calls are needed to complete the
 analysis. 
 
-In our experience, matlab tends to hoard memory if several large data
+In our experience, Matlab tends to hoard memory if several large data
 sets are analyzed consecutively.  To work around that, one can use
-scripts that starts several matlab sessions with a single trajectory
-in each. An example for the bash shell is \verb+runscript1.sh+, which
-calls \verb+runinput1.m+. To parallellize, run several instances of
-the script at once. \verb+VB7_batch_run+ keeps track of which
-trajectories have already been 'checked out', so it is also possible
-to run on several computers, it the results folder is synced regularly
-(if the same trajectory is checked out multiple times, old results are
-simply overwritten).
+scripts that starts consecutive Matlab sessions and runs a single
+trajectory in each.
 
+One example for the bash shell is \verb+runscript1.sh+ and
+\verb+runscript1.sh+, which calls \verb+runinput1.m+ (there is also a
+\verb+runscript2.sh+).
+
+\subsubsection*{Parallelization}
+To parallellize, run several instances of the above script at once,
+with \verb+one_at_a_time=true;+ in the runinput
+file. \verb+VB7_batch_run+ keeps track of which trajectories have
+already been 'checked out', so it is also possible to run on several
+computers, if the results folder is synced regularly. If the same
+trajectory is checked out multiple times on different computers, old
+results are simply overwritten (no harm done if they used the same
+runinput file).
 
 \subsubsection*{Manage the analysis}
 \verb+VB7_batch_manage+ is a tool for managing the basic analysis. It
