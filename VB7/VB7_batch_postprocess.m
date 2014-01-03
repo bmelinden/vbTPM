@@ -510,7 +510,6 @@ h=myhandle.h;
 R=myhandle.R;
 trj=myhandle.trj;
 cal=myhandle.cal;
-
 %% do some standard analysis
 M=length(R.statelabels);
 % emission helper variables, see ML19, eqs. C33-36
@@ -531,7 +530,7 @@ for k=1:length(trj)
         Wcal.E.C=Wcal.E.C+W.E.C(R.calGenuine(k));
         Wcal.E.V=Wcal.E.V+W.E.V(R.calGenuine(k));
         Wcal.E.M=Wcal.E.M+W.E.M(R.calGenuine(k));
-        Wcal.E.U=Wcal.E.U+W.E.U(R.calGenuine(k));        
+        Wcal.E.U=Wcal.E.U+W.E.U(R.calGenuine(k));
         Wcal.T=Wcal.T+W.T;
     end
     for b=1:length(trj{k})
@@ -594,7 +593,7 @@ Wcal.M.mu=Wcal.E.U./Wcal.E.V;
 % interesting averages, transitions
 Ttot=sum(Wtrj.M.wA,1); % in downsampled units
 Wtrj.est.Paverage=Ttot/sum(Ttot); %relative probabilities of genuine states
-                                  % in upsampled units
+% in upsampled units
 Pcal=Wcal.M.n/Wcal.T/ds;
 % exclude spurious states from rate calculations
 A=rowNormalize(Wtrj.M.wA(1:end-1,1:end-1)); % accumulated transition rates, per downsampled time step
@@ -680,9 +679,9 @@ for mm=1:M-1
 end
 fprintf('\n')
 for mm=1:M-1
-fprintf('%20s',' [ ')
-fprintf('%12.2e',A(mm,:))
-fprintf(' ]\n')
+    fprintf('%20s',' [ ')
+    fprintf('%12.2e',A(mm,:))
+    fprintf(' ]\n')
 end
 fprintf('\n')
 
@@ -693,9 +692,9 @@ for mm=1:M-1
 end
 fprintf('\n')
 for mm=1:M-1
-fprintf('%20s',' [ ')
-fprintf('%12.2e',Q(mm,:))
-fprintf(' ]\n')
+    fprintf('%20s',' [ ')
+    fprintf('%12.2e',Q(mm,:))
+    fprintf(' ]\n')
 end
 fprintf('\n')
 %% save results
@@ -710,8 +709,6 @@ cc=menu('create factorial models?','yes','no');
 if(cc==1)
     VB7_kineticAnalysis(h.runinputfile,[h.HMManalysispath filesep h.HMManalysisfile],false,true);
 end
-
-
 end
 function nextTrj(hObject,eventdata)
 % change to next trajectory

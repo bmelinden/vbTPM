@@ -53,7 +53,8 @@
 function s=VB7_inspectStates(W,X,s,KBax,x,y)
 
 %% non-adjustable parameters
-RMS=gaussFilter(X,3); % filter width 3 s at 30 Hz
+RMS=RMSKBgaussfilter(X,3); % filter width 3 s at 30 Hz
+disp('VB7_inspectStates: generated RMS trace with Gaussian filter of width 3 s (assuming f_sample=30 Hz).')
 flank=1000;             % number of points before and after each 2-dwell
 %% input parameters
 dSample=W.priorParameterOptions.downSample;

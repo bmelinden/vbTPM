@@ -1,27 +1,11 @@
 % VB7_runAnalysis(ri)
-% start a new analysis job in pseudoparallel mode, based on he runinput
-% file ri. This version only runs a single pass through the file list, and
-% thus needs to be called multiple times.
-% At least on Linux, it is good memory management to quit matlab in
-% between, or to call the pack command, since Matlab tends to hoard memory
-% while loading and clearing long data sets.
-
-%% change-log
-% M.L. 2011-02-09   : added sanity check on source and target paths, and
-%                     runinput file name
-% M.L. 2011-02-11   : single run option one_at_a_time in runinput file
-% M.L. 2011-02-25   : make sure the prior option KBscaling exists
-% M.L. 2011-03-01   : improved naming and saving scheme: savename based on
-%                     data file, only save after actually analyzing
-%                     something, get rid of the progress file
-% M.L. 2011-08-15   : added the possibility to set the field name of the
-%                     xy-position array, using variables
-%                     calibration_xyfield and looping_xyfield in the
-%                     runinput file. 
-% M.L. 2011-10-25   : added driftcorrection flag and cut-off frequency to
-%                     the list of saved variables, so that complete
-%                     reproduction is possible.
-
+% start a new analysis job based on he runinput file ri. Runinput
+% parameters are explained in the runinput file examples in example1/ 
+%
+% At least on Linux, it is good memory management to quit matlab in between
+% running consecutive trajectories (using one_at_a_time=true; in the
+% runinput file), since Matlab tends to hoard memory while loading and
+% clearing long data sets. 
 %% copyright notice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % VB7_batch_run.m, analysis manager for the vbTPM package
@@ -48,7 +32,6 @@
 %
 % You should have received a copy of the GNU General Public License along
 % with this program. If not, see <http://www.gnu.org/licenses/>.
-
 %% start of actual code
 function VB7_batch_run(ri)
 VB7_printGPL('VB7_batch_run.m')
