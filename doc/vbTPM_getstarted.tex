@@ -6,8 +6,8 @@ Matlab path, see the Matlab documentation).
 
 Make sure that HMMcore/ contains binaries for your system. If not, a
 simple Matlab compilation script can be found in HMMcore/. (See Matlab
-documentation for how to set up your mex compiler). For serious
-analysis, it is probably faster to compile your own binaries.
+documentation for how to set up your mex compiler). For large data
+sets, it is probably faster to compile your own binaries.
 
 \subsection{System requirements}
 Tethered particle motion often produces large data sets of many long
@@ -19,7 +19,7 @@ analysis time increases sharply with the number of states (including
 spurious ones, like transient sticking events).
 
 vbTPM is implemented in Matlab, tested on R2012a and R2013a, and
-requires the signal processing toolbox.
+requires the signal processing and statistics toolbox.
 
 \subsection{A small test problem}
 A small test problem can be found in example1/, with the actual data

@@ -48,7 +48,7 @@ p(\vec{\pi}|N)
 where $A_{j,:}$ denote row $j$ of the matrix $\matris{A}$.  The first
 right hand side line in \Eq{eq:evidencintegrand} describes the initial
 state and bead position. We will neglect the factor $p(\x_1)$ from now
-on, but the initial state $p(s_1|\vec\pi)$ and transition
+on, but the initial state $p(s_1|\vec{\pi})$ and transition
 probabilities $p(s_t|s_{t-1},\matris{A})$ are given by
 \Eq{eq:eoms}, and the bead motion follows from \Eq{eq:eomx},
 \begin{equation}
@@ -121,8 +121,7 @@ probability vector, and each row in the transition matrix (denoted
 $A_{j,:}$), are Dirichlet distributed,
 \begin{align}
 q(\vec{\pi})=&\Dir(\vec{\pi}|\vec{w}^{(\vec{\pi})}),\label{seq:VBpi}\\
-w_j^{(\vec{\pi})}=&\tilde w_j^{(\vec{\pi})}+\mean{\delta_{j,s_1}}_{q(s_{1:T})},
-\label{seq:VBMpi}\\
+w_j^{(\vec{\pi})}=&\tilde w_j^{(\vec{\pi})}+\mean{\delta_{j,s_1}}_{q(s_{1:T})},\label{seq:VBMpi}\\
 %\end{align}\begin{align}
 q(A_{i,:})=&\Dir(A_{i,:}|\vec{w}^{(\matris{A})}),\\
 w_{ij}^{(\matris{A})}=&\tilde w_{ij}^{(\matris{A})}
@@ -132,7 +131,7 @@ Here, variables under tilde's ($\tilde{~}$) are hyperparameters that
 parameterize the prior distributions, and can be interpreted as
 pseudo-observations. The Dirichlet density function is
 \begin{equation}
-  \Dir(\vec \pi | \vec u)=\frac{\Gamma(u_0)}{\prod_j\Gamma(u_j)}
+  \Dir(\vec{\pi} | \vec{u})=\frac{\Gamma(u_0)}{\prod_j\Gamma(u_j)}
   \prod_j \pi_j^{u_j-1},\quad u_j>1,
 \end{equation}
 where $u_0=\sum_j u_j$ is called the strength, and the density is
@@ -163,7 +162,8 @@ The bead motion parameters have the following variational distributions
 \end{align}
 with the range $B_j\ge 0$, $-\infty<K_j<\infty$. Physically, we might
 rather expect $0<K_j<1$, but the extended range for $K_j$ simplifies
-the calculations a lot. The VBM equations are
+the calculations a lot, and with enough data, most of the probability
+mass ends up in the expected interval anyway. The VBM equations are
 \begin{align}
   n_j=& \tilde n_j+M_j,\label{seq:nj}\\
   c_j=& \tilde c_j+C_j+\tilde v_j\tilde\mu_j^2
@@ -334,10 +334,10 @@ states $N$. Priors for spurious states are specified analogously.
 
 \paragraph{Initial state}
 The initial state probability vector has a Dirichlet prior with
-weights $\tilde\vec w^{(\vec{\pi})}$ (see \Eq{seq:VBMpi}). We choose a
-constant total strength $f^{(\vec\pi)}$, i.e.,
+weights $\tilde{\vec{w}}^{(\vec{\pi})}$ (see \Eq{seq:VBMpi}). We choose a
+constant total strength $f^{(\vec{\pi})}$, i.e.,
 \begin{equation}\label{seq:fPi}
-  \tilde w_j^{(\vec{\pi})}=f^{(\vec\pi)}/N.
+  \tilde w_j^{(\vec{\pi})}=f^{(\vec{\pi})}/N.
 \end{equation}
 
 \paragraph{Transition matrix}
@@ -373,44 +373,45 @@ Details on how top specify parameters for prior distributions are
 given in table \ref{stab:priors}.
 
 \begin{table}
+  \caption{Specifying prior parameters in runinput files. See also the
+    documentation of VB7\_priorParent, and the example runinput
+    files.}\label{stab:priors}  
   \begin{center}
     \begin{tabular}{|c|l|c|}
       \hline
       variable & comment & Eq.\\    
       \hline
       \hline
-      \verb+B0+ & $\mean{B_j}$ & \eqref{seq:meanB}\\
-      \verb+fB+ & $\tilde n_j$ &   \eqref{seq:nj}\\
-      \verb+K0+ & $\tilde\mu_j$ &  \eqref{seq:muj}\\
-      \verb+Kstd+& $\sqrt{\Var{K_j}}$ & \eqref{seq:varK}\\
-      \verb+KBscaling+& 
+      \texttt{B0} & $\mean{B_j}$ \strutbeg& \eqref{seq:meanB}\\
+      \texttt{fB} & $\tilde n_j$ &   \eqref{seq:nj}\\
+      \texttt{K0} & $\tilde\mu_j$ &  \eqref{seq:muj}\\
+      \texttt{Kstd}& $\sqrt{\Var{K_j}}$ & \eqref{seq:varK}\\
+      \texttt{KBscaling}& 
       \begin{minipage}[t]{0.5\columnwidth}
         Possibility to specify an obsolete state-dependence of the prior
-        parameters for $K_j$, $B_j$. We recommend the default value 2.
+        parameters for $K_j$, $B_j$. We recommend the default value 2.\strutend
       \end{minipage}&\\
       \hline
       &\begin{minipage}[t]{0.5\columnwidth}
-         \verb+Bc0+, \verb+fBc+, \verb+Kc0+, and \verb+KcStd+ are
-         spurious state parameters, with the same interpretation as for
-         genuine states. 
+         \texttt{Bc0, fBc, Kc0}, and \texttt{KcStd} are spurious state
+         parameters, with the same interpretation as for genuine
+         states.
        \end{minipage}&\\
       \hline
-      \verb+fPi+& $f^{(\vec\pi)}$ & \eqref{seq:fPi}\\
-      \verb+tD+ & \begin{minipage}[t]{0.5\columnwidth}
-        Mean prior dwell time $t_D$. Default 1 s.  \end{minipage}& \eqref{seq:Qprior}\\
-      \verb+tA+ & \begin{minipage}[t]{0.5\columnwidth}
-        $\matris{A}$ prior strength $t_A$. Default 5 s. \end{minipage}& \eqref{seq:wAprior}\\
+      \texttt{fPi}& $f^{(\vec{\pi})}$\strutbeg & \eqref{seq:fPi}\\
+      \texttt{tD} & \begin{minipage}[t]{0.5\columnwidth}
+        Mean prior dwell time $t_D$. Default 1 s.  \strutend\end{minipage}
+      & \eqref{seq:Qprior}\\
+      \texttt{tA} & \begin{minipage}[t]{0.5\columnwidth}
+        $\matris{A}$ prior strength $t_A$. Default 5 s. \strutend\end{minipage}& \eqref{seq:wAprior}\\
       \hline
-      \verb+tDc0+ & 
+      \texttt{tDc0} & 
       \begin{minipage}[t]{0.5\columnwidth}
         Mean prior dwell time of the genuine indicator state
-        $c_t=1$. Default 10 s. \end{minipage}&\\
+        $c_t=1$. Default 10 s. \strutend\end{minipage}&\\
       \hline
     \end{tabular}
   \end{center}
-  \caption{Specifying prior parameters in runinput files. See also the
-    documentation of VB7\_priorParent, and the example runinput
-    files.}\label{stab:priors}  
 \end{table}
 \subsection{Model search}
 To find the best number of states, we adopt a greedy search approach

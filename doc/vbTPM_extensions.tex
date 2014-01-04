@@ -25,30 +25,34 @@ with $p(s_{t+1}|s_t)=A_{s_ts_{t+1}}$ as earlier, and
   \end{array}
   \right.
 \end{equation}
+Thus, $\hat{\matris{A}}$ is the transition matrix to induce spurious
+states, and $\hat{\matris{R}}$ is the transition matrix to convert
+between spurious states and to end them.
 
-We implemented a brute force variational treatment of this extended
+vbTPM implements a brute force variational treatment of this extended
 model, where we define new composite hidden states $\hat
 s_t=(s_t,c_t)$ and modify the simple vb algorithm to run this
 composite model, which mainly involves book-keeping to update the
-transition count matrices for $\hat A$, $\hat R$.  This has a
-significant computational cost, since a simple model with $N_{gen.}$
-genuine states and $N_{sp.}$ spurious ones gets
+transition count matrices for $\hat{\matris{A}}$, $\hat{\matris{R}}$.
+This has a significant computational cost, since a simple model with
+$N_{gen.}$ genuine states and $N_{sp.}$ spurious ones gets
 $N_{gen.}\times(1+N_{sp.})$ states after conversion. However, since we
 do not perform exhaustive model search in this representation and can
 utilize the simpler model to make good initial guesses, this is not a
-significant problem.
+big problem.
 
-{\bf Priors} We take the priors for the spurious states to be as
+\paragraph{Priors} We take the priors for the spurious states to be as
 similar to the genuine state prior as possible. Thus, we parameterize
 the priors for $\hat K_j,\hat B_j$ in the same way as for the genuine
-state parameters. For the spurious-spurious transitions
-$\hat{\matris{A}}$, we use the same prior mean dwell time and strength
+state parameters. For the spurious$\to$spurious transitions
+$\hat{\matris{R}}$, we use the same prior mean dwell time and strength
 as for the genuine transition matrix $\matris{A}$. For the
-genuine$\to$spurious transition matrix $\hat{\matris{R}}$, we use the
-same strength, but a different (longer) mean life-time for the state
-$c_t=1$, since spurious events are presumably rare. Further details:
-table \ref{stab:priors}, the example runinput files, and
-\verb+VB7_priorParent+.
+genuine$\to$spurious transition matrix $\hat{\matris{A}}$, we use the
+same strength, but a different (longer) mean life-time \verb+tDc0+ for the state
+$c_t=1$, since spurious events are presumably rare. 
+
+Further details: tables \ref{stab:priors} and \ref{stab:QSparameters},
+the example runinput files, and \verb+VB7_priorParent+.
 
 \subsection{Empirical Bayes update equations}
 The empirical Bayes update equations optimizes the lower bound with

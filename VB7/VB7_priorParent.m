@@ -29,7 +29,7 @@
 % created by use 1 above).
 %
 % W=VB7_priorParent(Wparent,N,Nc)
-% creates a new VB7 object with N states and Nc dirt states, with prior
+% creates a new VB7 object with N states and Nc spurious states, with prior
 % parameters according to the options in Wparent.priorParameterOptions. The
 % created object inherits the prior options, and can in turn be used to
 % generate new onjects.
@@ -53,7 +53,7 @@
 % VB7_priorParent.m, prior creator for the vbTPM package
 % =========================================================================
 % 
-% Copyright (C) 2013 Martin Lindén
+% Copyright (C) 2014 Martin Lindén
 % 
 % E-mail: bmelinden@gmail.com
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -142,10 +142,13 @@ end
             W.PM.wA=opt.tA*opt.fSample/opt.downSample;
         end
         
-         if(Nc>0)
-            pC=exp(-1/opt.tDc0/(opt.fSample/opt.downSample)); % probability to stay genuine
+        if(Nc>0)
+            % probability to stay genuine
+            pC=exp(-1/opt.tDc0/(opt.fSample/opt.downSample));
             W.PMc.wA=opt.tA*opt.fSample/opt.downSample*[pC*ones(N,1) (1-pC)/(Nc-1)*ones(N,Nc-1)];            
-            pS=exp(-1/opt.tD/(opt.fSample/opt.downSample)); % probability to stay stuck
+            
+            % probability to stay spurious
+            pS=exp(-1/opt.tD/(opt.fSample/opt.downSample)); 
             W.PMc.wR=opt.tA*(opt.fSample/opt.downSample)*...
                 [zeros(1,Nc); (1-pS)/(Nc-1)*([ones(Nc-1,1) 1-eye(Nc-1,Nc-1)])+[zeros(Nc-1,1) pS*eye(Nc-1,Nc-1)]];
         else

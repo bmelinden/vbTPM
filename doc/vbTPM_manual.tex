@@ -41,7 +41,7 @@ vbTPM is an acronym for variational Bayes for Tethered Particle Motion
 (TPM), and is a software package for analyzing TPM data.  The latest
 version of this manual and the corresponding software is available as
 open source via \url{http://sourceforge.net/projects/vbtpm/}. \bigskip\\
-\noindent Copyright \copyright~2013 Martin Lindén. \smallskip\\
+\noindent Copyright \copyright~2014 Martin Lindén. \smallskip\\
 \noindent
 The vbTPM package and documentation is free software: you can
 redistribute it and/or modify it under the terms of the GNU General
@@ -60,9 +60,12 @@ additional permission to convey the resulting work.\smallskip\\
 \noindent 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see \url{http://www.gnu.org/licenses/}
-\bigskip\\\noindent
-If you use vbTPM in your research, please cite the original article in your work:
-\medskip\\\noindent 
+\bigskip\\
+\noindent 
+If you use vbTPM in your research, please cite the original article in
+your work:
+\medskip\\
+\noindent 
 S. Johnson, J-W van de Meent, Rob Phillips, Chris H Wiggins, and
 Martin Lindén. Multiple Lac-mediated loops revealed by Bayesian
 statistics and tethered particle motion (manuscript in preparation,
@@ -96,11 +99,11 @@ runinput file, e.g. \verb+trj{k}{j}+ contains the analysis result for
 Most importantly, the Wtrj and Wcal fields are the converged model
 structs, whose content are detailed below (using W as the generic
 model name). In addition the columns of the arrays
-\verb+NFtrj+/\verb+NFcal+ contain $N,\hat N, F, iter$ for each model
-that was converged during the nodel search, and $iter$ is the restart
-number that produced it. In \verb+NFitrj/NFical+, the best model for
+\texttt{NFtrj,NFcal} contain $N,\hat N, F, iter$ for each model that
+was converged during the nodel search, and $iter$ is the restart
+number that produced it. In \texttt{NFitrj,NFical}, the best model for
 each size is listed in the same way, with the last column indicating
-the rows in \verb+NFtrj,NFcal+ where these optimal models can be
+the rows in \texttt{NFtrj,NFcal} where these optimal models can be
 found.
 
 Further details about the model structs are given in tables
@@ -113,49 +116,49 @@ Further details about the model structs are given in tables
 field & \\
 \hline
 \hline
-    \verb+W.N+& \parboxc{$N$, number of (genuine) states.} \\
+    \texttt{W.N}& \parboxc{$N$, number of (genuine) states.} \\
     \hline
-    \verb+W.Nc+& \parboxc{ Number of indicator states $\hat
+    \texttt{W.Nc}& \parboxc{ Number of indicator states $\hat
       N$+1. W.Nc=1 means no spurious states, i.e., the simple
       HMM.}\\
     \hline
-    \verb+W.F+& \parboxc{Lower bound $F$.} \\
+    \texttt{W.F}& \parboxc{Lower bound $F$.} \\
     \hline
 \end{tabular}\end{center}
 \end{table}
 
 \begin{table}
 \caption{Representration of variational distributions for genuine
-  states in a model object named $W$.}\label{tab:Qparameters}
+  states in a model object $W$.}\label{tab:Qparameters}
 \begin{center}\begin{tabular}{|l|c|c|}
     \hline
     field & symbol & Eq.\\
     \hline\hline
-    \verb+W.M.wPi(j)+& $ w_j^{(\vec{\pi})}$    & \\ 
-    \verb+W.PM.wPi(j)+& $\tilde w_j^{(\vec{\pi})}$    & \eqref{seq:VBMpi}\\ 
-    \verb+W.E.ds_1(j)+& $\mean{\delta_{j,s_1}}$ & \\ 
+    \texttt{W.M.wPi(j)}  & $ w_j^{(\vec{\pi})}$   \strutbeg & \\ 
+    \texttt{W.PM.wPi(j)} & $\tilde w_j^{(\vec{\pi})}$    & \eqref{seq:VBMpi}\\ 
+    \texttt{W.E.ds\_1(j)}& $\mean{\delta_{j,s_1}}$ \strutend& \\ 
     \hline
     
-    \verb+W.PM.wA(i,j)+& $\tilde w_{ij}^{(\matris{A})}$& \\ 
-    \verb+W.M.wA(i,j)+& $w_{ij}^{(\matris{A})}$& \eqref{seq:VBMAj}\\ 
-    \verb+W.E.wA(i,j)+& $\sum_{t=2}^T\mean{\delta_{i,s_{t-1}}\delta_{j,s_t}}$
+    \texttt{W.PM.wA(i,j)}& $\tilde w_{ij}^{(\matris{A})}$\strutbeg& \\ 
+    \texttt{W.M.wA(i,j)}& $w_{ij}^{(\matris{A})}$& \eqref{seq:VBMAj}\\ 
+    \texttt{W.E.wA(i,j)}& $\sum_{t=2}^T\mean{\delta_{i,s_{t-1}}\delta_{j,s_t}}$\strutend
     & \\ 
     \hline
-    \verb+W.PM.n(j)+& $\tilde n_j$& \eqref{seq:nj}\\ 
-    \verb+W.M.n(j)+& $n_j$& \eqref{seq:nj}\\ 
-    \verb+W.E.M(j)+& $M_j$& \eqref{seq:Mj}\\ 
+    \texttt{W.PM.n(j)}& $\tilde n_j$& \eqref{seq:nj}\\ 
+    \texttt{W.M.n(j)}& $n_j$& \eqref{seq:nj}\\ 
+    \texttt{W.E.M(j)}& $M_j$& \eqref{seq:Mj}\\ 
     \hline
-    \verb+W.PM.c(j)+& $\tilde c_j$& \eqref{seq:cj}\\ 
-    \verb+W.M.c(j)+& $c_j$& \eqref{seq:cj}\\ 
-    \verb+W.E.C(j)+& $C_j$&\eqref{seq:Cj}\\
+    \texttt{W.PM.c(j)}& $\tilde c_j$& \eqref{seq:cj}\\ 
+    \texttt{W.M.c(j)}& $c_j$& \eqref{seq:cj}\\ 
+    \texttt{W.E.C(j)}& $C_j$&\eqref{seq:Cj}\\
     \hline
-    \verb+W.PM.v(j)+& $\tilde v_j$& \eqref{seq:vj}\\ 
-    \verb+W.M.v(j)+& $v_j$& \eqref{seq:vj}\\ 
-    \verb+W.E.V(j)+& $V_j$& \eqref{seq:Vj}\\ 
+    \texttt{W.PM.v(j)}& $\tilde v_j$& \eqref{seq:vj}\\ 
+    \texttt{W.M.v(j)}& $v_j$& \eqref{seq:vj}\\ 
+    \texttt{W.E.V(j)}& $V_j$& \eqref{seq:Vj}\\ 
     \hline
-    \verb+W.PM.mu(j)+& $\tilde \mu_j$& \eqref{seq:muj}\\
-    \verb+W.M.mu(j)+& $\mu_j$& \eqref{seq:muj}\\  
-    \verb+W.E.U(j)+& $U_j$&\eqref{seq:Uj}\\
+    \texttt{W.PM.mu(j)}& $\tilde \mu_j$& \eqref{seq:muj}\\
+    \texttt{W.M.mu(j)}& $\mu_j$& \eqref{seq:muj}\\  
+    \texttt{W.E.U(j)}& $U_j$&\eqref{seq:Uj}\\
     \hline
   \end{tabular}\end{center}\end{table}
 \begin{table}
@@ -163,25 +166,25 @@ field & \\
   states $c_t$ in a model object named $W$. Fields relating to the
   emission model (.n, .c, .v, .mu, etc.) have the same meaning as for
   the genuine states $s_t$, except that their first element is not
-  used, since $c_t=1$ indicate a genuine state.}\label{tab:QSparameters}
+  used, since $c_t=1$ indicate a genuine state. Transition counts
+  (.wA, .wR) are similarly analogous to those parameterizing the
+  genuine transition matris $\matris{A}$.}\label{tab:QSparameters}
 \begin{center}  
   \begin{tabular}{|l|c|c|}
     \hline
-    field & symbol & Eq.\\
+    field & symbol \\
     \hline\hline
-%
+    \texttt{W.Mc.wPi(j)} & $w_j^{(\hat{\vec{\pi}})}$         \strutbeg\\ 
+    \texttt{W.PMc.wPi(j)}& $\tilde w_j^{(\hat{\vec{\pi}})}$    \\
+    \texttt{W.Ec.ds\_1(j)}& $\mean{\delta_{j,c_1}}$  \strutend\\ 
     \hline
-    \verb+W.Mc.wPi(j)+& $w_j^{(\vec{\pi})}$    & \\ 
-    \verb+W.PMc.wPi(j)+& $\tilde w_j^{(\vec{\pi})}$    & \eqref{seq:VBMcpi}\\ 
-    \verb+W.Ec.ds_1(j)+& $\mean{\delta_{j,c_1}}$ & \\ 
+     \texttt{W.PMc.wA(j,k)}& $\tilde w_{jk}^{(\hat{\matris{A}})}$\strutbeg\\ 
+    \texttt{W.Mc.wA(j,k)}  & $ w_{jk}^{(\hat{\matris{A}})}$\\ 
+    \texttt{W.Ec.wA(j,k)}  & $\sum_t \mean{\delta_{j,s_t}\delta_{k,c_{t+1}}\delta_{1,c_t}}$    \strutend\\
     \hline
-     \verb+W.PMc.wA(j)+& & \\ 
-    \verb+W.Mc.wA(j)+& & \eqref{seq:VBMcAj}\\ 
-    \verb+W.Ec.wA(j)+& &\\
-    \hline
-     \verb+W.PMc.wR(i,j)+& & \\ 
-    \verb+W.Mc.wR(i,j)+& & \eqref{seq:VBMcRj}\\ 
-    \verb+W.Ec.wR(i,j)+&& \\
+     \texttt{W.PMc.wR(j,k)}& $\tilde w_{jk}^{(\hat{\matris{R}})}$\strutbeg\\ 
+    \texttt{W.Mc.wR(j,k)}  & $ w_{jk}^{(\hat{\matris{R}})}$\\ 
+    \texttt{W.Ec.wR(j,k)}  & $\sum_t \mean{\delta_{j,c_t}\delta_{k,c_{t+1}}(1-\delta_{1,c_t})}$ \strutend\\    
     \hline
   \end{tabular}
 \end{center}
@@ -197,59 +200,59 @@ field & \\
   \begin{tabular}{|l|l|}
     \hline   field & comment \\  \hline  
 \hline
-\verb+W.est.sAverage+&
+\texttt{W.est.sAverage}&
 \parboxcc{Occupation probability of genuine states $s_t$, computed by
   classification, i.e., sAverage(j) proportional to
   $\sum_t\mean{\delta_{j,s_t}}$.}\\
 \hline
-\verb+W.est.cAverage+&
+\texttt{W.est.cAverage}&
 \parboxcc{Occupation probability of indicator states
   $c_t$, by classification.}\\
 \hline
-\verb+W.est.sVisible+&
+\texttt{W.est.sVisible}&
 \parboxcc{Occupation probability of genuine states $s_t$, by classification that excludes spurious states, i.e., sAverage(j) proportional to $\sum_t\mean{\delta_{j,s_t}\delta_{1,c_t}}$.}\\
 \hline
 \hline
-\verb+W.est.A+&
+\texttt{W.est.A}&
 \parboxcc{Mean transition probabilities for genuine states,
-  $\mean{\matris{A}}_{q(\matris{A})}$.}\\
+  $\mean{\matris{A}}_{q(\matris{A})}$.\strutend}\\
 \hline
-\verb+W.est.dA+&
+\texttt{W.est.dA}&
 \parboxcc{Standard devition of stransition probability matrix
   $\matris{A}$.}\\
 \hline
-\verb+W.est.tD+&
+\texttt{W.est.tD}&
 \parboxcc{Mean dwell times of genuine states in units of time,
-  computed from the elements of $\mean{\matris{A}}$.}\\
+  computed from the elements of $\mean{\matris{A}}$.\strutend}\\
 \hline
-\verb+W.est.lnQss+&\parboxcc{Log average transition probabilities, goes into
+\texttt{W.est.lnQss}&\parboxcc{Log average transition probabilities, goes into
   $q(s_{1:T})$.}\\
 \hline
 &\parboxcc{Corresponding averages for spurious state distributions are
   also computed, Ac, dAc, Rc, dRc, tStick, lnQcc, lnQsc, tStick, tUnstick.}\\
 \hline\hline
-\verb+W.est.sKaverage(j)+&$\mean{K_j}=\mu_j$.\\\hline
-\verb+W.est.sBaverage(j)+&$\mean{B_j}$.\\\hline
-\verb+W.est.sRMS(j)+&
+\texttt{W.est.sKaverage(j)}&$\mean{K_j}=\mu_j$.\\\hline
+\texttt{W.est.sBaverage(j)}&$\mean{B_j}$.\\\hline
+\texttt{W.est.sRMS(j)}&\strutbeg\strutend
 $RMS_j=\sqrt{\mean{\x_t^2|s_t=j}}
 \approx (\mean{B_j}(1-\mean{K_j}^2))^{-\frac 12}$.\\\hline
-\verb+W.est.sTC(j)+&Approx. correlation time 
+\texttt{W.est.sTC(j)}&Approx. correlation time 
   $\tau_j\approx -\Delta t/\log\mean{K_j}$, units of time.\\\hline
-\verb+W.est.sKstd(j)+&Standard deviation of $K_j$.\\\hline
-\verb+W.est.sBstd(j)+&Standard deviation of $B_j$.\\\hline
-\verb+W.est.cXXX+&Corresponding properties of spurious
+\texttt{W.est.sKstd(j)}&Standard deviation of $K_j$.\\\hline
+\texttt{W.est.sBstd(j)}&Standard deviation of $B_j$.\\\hline
+\texttt{W.est.cXXX}&Corresponding properties of spurious
   states are named with $s\to c$.\\ \hline\hline
-\verb+W.est2.qt+& 
+\texttt{W.est2.qt}& 
 \parboxcc{State occupancy probability for combined states
   $(s_t,c_t)$. Use sMap and cMap to extract genuine/spurious
   occupancies, e.g.,\\ $p(s_t=j)=$sum(W.est2.qt(t,:).*(W.est.sMap==j)).}\\\hline
-\verb+W.est2.sMaxP(t)+& Most likely genuine state at time $t$.\\
-\verb+W.est2.cMaxP(t)+& Most likely indicator state at time $t$.\\
+\texttt{W.est2.sMaxP(t)}& Most likely genuine state at time $t$.\\
+\texttt{W.est2.cMaxP(t)}& Most likely indicator state at time $t$.\\
      % Viterbi paths. 
      % W.est2.zViterbi=uint8(VBlogViterbi(lnQ,lnqst,Q,qst));
-%     \verb+W.est2.zViterbi=uint8(VBviterbi_log(lnQ,lnqst)); % faster!     
-\verb+W.est2.sViterbi+& Viterbi path (most likely sequence of states) for $s_t$.\\
-\verb+W.est2.cViterbi+& Viterbi path (most likely sequence of states) for $c_t$.\\\hline
+%     \texttt{W.est2.zViterbi=uint8(VBviterbi_log(lnQ,lnqst)); % faster!     
+\texttt{W.est2.sViterbi}& Viterbi path (most likely sequence of states) for $s_t$.\\
+\texttt{W.est2.cViterbi}& Viterbi path (most likely sequence of states) for $c_t$.\\\hline
 
 &\parboxcc{W.est2 also contains a few other intermediate fields from
   the VBEM iteration that are mainly good for debugging. This
