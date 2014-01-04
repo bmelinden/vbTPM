@@ -72,18 +72,25 @@ analysis run is interrupted.
 
 \subsubsection*{Access the results} 
 The GUI for manual state classification is called
-\verb+VB7_batch_postprocess()+. The GUI can be used to inspect the
-analysis results in detail, and can also convert the simple HMM models
-to factorial models for further analysis. To try it out, use the
-runinput file \verb+runinput1.m+, which is already analyzed. To access
-the fitted models directly, use \verb+VB7_batch_manage+ with the
-'collect' option. The results are returned as cell vectors for
-calibration and production trajectories, with the same index structure
-as the filenames in the runinput file.
+\verb+VB7_batch_postprocess()+ (see Fig.~\ref{fig:postprocess}). The
+GUI can be used to inspect the analysis results in detail, and can
+also convert the simple HMM models to factorial models for further
+analysis. To try it out, use the runinput file \verb+runinput1.m+,
+which is already analyzed. To access the fitted models directly, use
+\verb+VB7_batch_manage+ with the 'collect' option. The results are
+returned as cell vectors for calibration and production trajectories,
+with the same index structure as the filenames in the runinput file.
 
 For details on how vbTPM represents the models etc., we refer to
 section \ref{sec:notation}.
 
+\begin{figure*}
+  \begin{center}
+    \includegraphics{figures/GUI_manual.pdf}    
+  \end{center}
+  \caption{Screenshot of the state classification
+    GUI.}\label{fig:postprocess}
+\end{figure*}
 \subsection{Other useful scripts}
 \subsubsection{Data and options}
 \paragraph{VB7\_getOptions} 
