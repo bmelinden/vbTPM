@@ -1,0 +1,246 @@
+
+vbSPT stores mathematical objects in Matlab structures that contain
+parameters for the variational and prior distributions, and various
+other things. In this section we list some of them.
+
+First, \verb+VB7_batch_manage+ with the collect option returns a
+filename, and cell vectors of structs that contain results of the
+model search for each trajectory, indexed as the filenames in the
+runinput file, e.g. \verb+trj{k}{j}+ contains the analysis result for
+\verb+looping_filename{k}{j}+ etc. 
+
+Most importantly, the Wtrj and Wcal fields are the converged model
+structs, whose content are detailed below (using W as the generic
+model name). In addition the columns of the arrays
+\texttt{NFtrj,NFcal} contain $N,\hat N, F, iter$ for each model that
+was converged during the model search, and $iter$ is the restart
+number that produced it. In \texttt{NFitrj,NFical}, the best model for
+each size is listed in the same way, with the last column indicating
+the rows in \texttt{NFtrj,NFcal} where these optimal models can be
+found.
+
+Further details about the model structs are given in tables
+\ref{tab:Wfields}-\ref{tab:Westimates}.
+
+\begin{table}
+\caption{Fields in a model object $W$.}\label{tab:Wfields}
+\begin{center}\begin{tabular}{|l|l|}
+\hline
+field & \\
+\hline
+\hline
+    \texttt{W.N}& \parboxc{$N$, number of (genuine) states.} \\
+    \hline
+    \texttt{W.Nc}& \parboxc{ Number of indicator states $\hat
+      N$+1. W.Nc=1 means no spurious states, i.e., the simple
+      HMM.}\\
+    \hline
+    \texttt{W.F}& \parboxc{Lower bound $F$.} \\
+    \hline
+\end{tabular}\end{center}
+\end{table}
+
+\begin{table}
+\caption{Representation of variational distributions for genuine
+  states in a model object $W$.}\label{tab:Qparameters}
+\begin{center}\begin{tabular}{|l|c|c|}
+    \hline
+    field & symbol & Eq.\\
+    \hline\hline
+    \texttt{W.M.wPi(j)}  & $ w_j^{(\vec{\pi})}$   \strutbeg & \\ 
+    \texttt{W.PM.wPi(j)} & $\tilde w_j^{(\vec{\pi})}$    & \eqref{seq:VBMpi}\\ 
+    \texttt{W.E.ds\_1(j)}& $\mean{\delta_{j,s_1}}$ \strutend& \\ 
+    \hline
+    
+    \texttt{W.PM.wA(i,j)}& $\tilde w_{ij}^{(\matris{A})}$\strutbeg& \\ 
+    \texttt{W.M.wA(i,j)}& $w_{ij}^{(\matris{A})}$& \eqref{seq:VBMAj}\\ 
+    \texttt{W.E.wA(i,j)}& $\sum_{t=2}^T\mean{\delta_{i,s_{t-1}}\delta_{j,s_t}}$\strutend
+    & \\ 
+    \hline
+    \texttt{W.PM.n(j)}& $\tilde n_j$& \eqref{seq:nj}\\ 
+    \texttt{W.M.n(j)}& $n_j$& \eqref{seq:nj}\\ 
+    \texttt{W.E.M(j)}& $M_j$& \eqref{seq:Mj}\\ 
+    \hline
+    \texttt{W.PM.c(j)}& $\tilde c_j$& \eqref{seq:cj}\\ 
+    \texttt{W.M.c(j)}& $c_j$& \eqref{seq:cj}\\ 
+    \texttt{W.E.C(j)}& $C_j$&\eqref{seq:Cj}\\
+    \hline
+    \texttt{W.PM.v(j)}& $\tilde v_j$& \eqref{seq:vj}\\ 
+    \texttt{W.M.v(j)}& $v_j$& \eqref{seq:vj}\\ 
+    \texttt{W.E.V(j)}& $V_j$& \eqref{seq:Vj}\\ 
+    \hline
+    \texttt{W.PM.mu(j)}& $\tilde \mu_j$& \eqref{seq:muj}\\
+    \texttt{W.M.mu(j)}& $\mu_j$& \eqref{seq:muj}\\  
+    \texttt{W.E.U(j)}& $U_j$&\eqref{seq:Uj}\\
+    \hline
+  \end{tabular}\end{center}\end{table}
+\begin{table}
+\caption{Representation of variational distributions for indicator
+  states $c_t$ in a model object named $W$. Fields relating to the
+  emission model (.n, .c, .v, .mu, etc.) have the same meaning as for
+  the genuine states $s_t$, except that their first element is not
+  used, since $c_t=1$ indicate a genuine state. Transition counts
+  (.wA, .wR) are similarly analogous to those parameterizing the
+  genuine transition matrix $\matris{A}$.}\label{tab:QSparameters}
+\begin{center}  
+  \begin{tabular}{|l|c|c|}
+    \hline
+    field & symbol \\
+    \hline\hline
+    \texttt{W.Mc.wPi(j)} & $w_j^{(\hat{\vec{\pi}})}$         \strutbeg\\ 
+    \texttt{W.PMc.wPi(j)}& $\tilde w_j^{(\hat{\vec{\pi}})}$    \\
+    \texttt{W.Ec.ds\_1(j)}& $\mean{\delta_{j,c_1}}$  \strutend\\ 
+    \hline
+     \texttt{W.PMc.wA(j,k)}& $\tilde w_{jk}^{(\hat{\matris{A}})}$\strutbeg\\ 
+    \texttt{W.Mc.wA(j,k)}  & $ w_{jk}^{(\hat{\matris{A}})}$\\ 
+    \texttt{W.Ec.wA(j,k)}  & $\sum_t \mean{\delta_{j,s_t}\delta_{k,c_{t+1}}\delta_{1,c_t}}$    \strutend\\
+    \hline
+     \texttt{W.PMc.wR(j,k)}& $\tilde w_{jk}^{(\hat{\matris{R}})}$\strutbeg\\ 
+    \texttt{W.Mc.wR(j,k)}  & $ w_{jk}^{(\hat{\matris{R}})}$\\ 
+    \texttt{W.Ec.wR(j,k)}  & $\sum_t \mean{\delta_{j,c_t}\delta_{k,c_{t+1}}(1-\delta_{1,c_t})}$ \strutend\\    
+    \hline
+  \end{tabular}
+\end{center}
+\end{table}
+   
+ \begin{table*}
+\caption{Selected fields that characterize converged models (named
+  W). The fields W.est and W.est2 are constructed by VB7\_VBEMiter.m
+  (although W.est2 must be specifically requested), and fields not
+  mentioned here can be looked up there. Averages are
+  w.r.t. variational parameter distributions unless stated otherwise.}\label{tab:Westimates}
+\begin{center}  
+  \begin{tabular}{|l|l|}
+    \hline   field & comment \\  \hline  
+\hline
+\texttt{W.est.sAverage}&
+\parboxcc{Occupation probability of genuine states $s_t$, computed by
+  classification, i.e., sAverage(j) proportional to
+  $\sum_t\mean{\delta_{j,s_t}}$.}\\
+\hline
+\texttt{W.est.cAverage}&
+\parboxcc{Occupation probability of indicator states
+  $c_t$, by classification.}\\
+\hline
+\texttt{W.est.sVisible}&
+\parboxcc{Occupation probability of genuine states $s_t$, by classification that excludes spurious states, i.e., sAverage(j) proportional to $\sum_t\mean{\delta_{j,s_t}\delta_{1,c_t}}$.}\\
+\hline
+\hline
+\texttt{W.est.A}&
+\parboxcc{Mean transition probabilities for genuine states,
+  $\mean{\matris{A}}_{q(\matris{A})}$.\strutend}\\
+\hline
+\texttt{W.est.dA}&
+\parboxcc{Standard deviation of transition probability matrix
+  $\matris{A}$.}\\
+\hline
+\texttt{W.est.tD}&
+\parboxcc{Mean dwell times of genuine states in units of time,
+  computed from the elements of $\mean{\matris{A}}$.\strutend}\\
+\hline
+\texttt{W.est.lnQss}&\parboxcc{Log average transition probabilities, goes into
+  $q(s_{1:T})$.}\\
+\hline
+&\parboxcc{Corresponding averages for spurious state distributions are
+  also computed, Ac, dAc, Rc, dRc, tStick, lnQcc, lnQsc, tStick, tUnstick.}\\
+\hline\hline
+\texttt{W.est.sKaverage(j)}&$\mean{K_j}=\mu_j$.\\\hline
+\texttt{W.est.sBaverage(j)}&$\mean{B_j}$.\\\hline
+\texttt{W.est.sRMS(j)}&\strutbeg\strutend
+$RMS_j=\sqrt{\mean{\x_t^2|s_t=j}}
+\approx (\mean{B_j}(1-\mean{K_j}^2))^{-\frac 12}$.\\\hline
+\texttt{W.est.sTC(j)}&Approx. correlation time 
+  $\tau_j\approx -\Delta t/\log\mean{K_j}$, units of time.\\\hline
+\texttt{W.est.sKstd(j)}&Standard deviation of $K_j$.\\\hline
+\texttt{W.est.sBstd(j)}&Standard deviation of $B_j$.\\\hline
+\texttt{W.est.cXXX}&Corresponding properties of spurious
+  states are named with $s\to c$.\\ \hline\hline
+\texttt{W.est2.qt}& 
+\parboxcc{State occupancy probability for combined states
+  $(s_t,c_t)$. Use sMap and cMap to extract genuine/spurious
+  occupancies, e.g.,\\ $p(s_t=j)=$sum(W.est2.qt(t,:).*(W.est.sMap==j)).}\\\hline
+\texttt{W.est2.sMaxP(t)}& Most likely genuine state at time $t$.\\
+\texttt{W.est2.cMaxP(t)}& Most likely indicator state at time $t$.\\
+     % Viterbi paths. 
+     % W.est2.zViterbi=uint8(VBlogViterbi(lnQ,lnqst,Q,qst));
+%     \texttt{W.est2.zViterbi=uint8(VBviterbi_log(lnQ,lnqst)); % faster!     
+\texttt{W.est2.sViterbi}& Viterbi path (most likely sequence of states) for $s_t$.\\
+\texttt{W.est2.cViterbi}& Viterbi path (most likely sequence of states) for $c_t$.\\\hline
+
+&\parboxcc{W.est2 also contains a few other intermediate fields from
+  the VBEM iteration that are mainly good for debugging. This
+  substructure is thus very bulky and somewhat expensive to compute,
+  which is the reason computing it is optional. }\\\hline
+\end{tabular}\end{center}
+\end{table*}  
+
+\begin{table*}
+\caption{Output fields from the analysis and state classification GUI 
+\texttt{VB7\_batch\_postprocess}, where \texttt{[PIDprefix]} and \texttt{[targetpath]} refers to 
+string variable set in the runinput file.}\label{tab:results}
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|l|}{
+         \parbox[t]{1.5\columnwidth}{Fields in results
+        file \texttt{[PIDprefix]\_result.mat},
+        from \texttt{VB7\_batch\_manage}.}}
+\\\hline
+\texttt{cal\{k\}\{b\}}& \parboxc{}\\\hline
+\texttt{trj\{k\}\{b\}}& \parboxc{}\\\hline
+\texttt{trj\{k\}\{b\}.Wtrj}&Converged model object for this trajectory.\\\hline
+\texttt{cal\{k\}.Wcal}&Converged model object for this calibration trajectory.\\\hline
+\hline
+\multicolumn{2}{|l|}{\parbox[t]{1.5\columnwidth}{
+        Additional fields in output file from the state classification
+        GUI \texttt{VB7\_batch\_postprocess}, stored by default
+        in \texttt{[PIDprefix]\_result\_analyzed.mat}.}}
+\\\hline
+\texttt{hastrj\{k\}(b)}& =1 if there is trajectory data for \texttt{trj\{k\}\{b\}}, 0 otherwise.
+\\\hline
+\texttt{includetrj\{k\}(b)}& \parbox[t]{1.25\columnwidth}{
+=0 if the trajectory was excluded during the GUI session, 1
+otherwise. No factorial models are produced from excluded
+trajectories.  }\\\hline
+\texttt{calGenuine(k)}& 
+State index to the genuine state in calibration trajectory \texttt{k}.
+\\\hline
+\texttt{statelabels\{s\}}& \parbox[t]{1.25\columnwidth}{
+Cell vector of state labels (strings) used to label the states
+by \texttt{VB7\_batch\_postprocess}.}
+\\\hline
+\texttt{trjstates\{k\}\{b\}(j)}& \parbox[t]{1.25\columnwidth}{
+Indicates the state class of state \texttt{j}
+in \texttt{trj\{k\}\{b\}}, with index referring
+to \texttt{statelabels}.
+}\\\hline
+\texttt{isSorted}&\parbox[t]{1.25\columnwidth}{
+=1 if the states in the trajectories have been reordered to put
+spurious states last.}\\
+\hline
+\texttt{statelabels\_Wxxx}& \parbox[t]{1.25\columnwidth}{
+State labels in different order (obsolete).}\\
+\hline
+\hline
+\multicolumn{2}{|l|}{\parbox[t]{1.5\columnwidth}{\parbox[t]{1.5\columnwidth}{
+Additional output from using the option to create factorial models
+when saving from the classification GUI
+(see \Fig{fig:postprocess}). This creates a file with the inelegant
+name
+\texttt{[PIDprefix]\_result\_analyzed.mat\_VB7kin.mat} in the \texttt{[targetpath]} folder.
+}}}\\\hline
+\texttt{trj\{k\}\{b\}.Wgs}& Factorial model object with genuine and spurious states separated.
+\\\hline
+\texttt{RMS}&RMS trajectory.
+\\\hline
+\texttt{trj\_vit\_s}& \parbox[t]{1.25\columnwidth}{
+Segmented state sequence for a trajectory (or calibration trace,
+if \texttt{cal\_}) from the simple HMM, using the Viterbi algorithm
+(or point-wise most likely states. if \texttt{\_sMaxP\_}).}
+\\\hline
+\texttt{trj\_vit\_td}& \parbox[t]{1.25\columnwidth}{
+Segmented state lifetimes corresponding to \texttt{trj\_vit\_s}
+etc.}\\
+\hline
+\end{tabular}\end{center}
+\end{table*}

@@ -8,7 +8,7 @@ end
 disp('vbTPM is a package for variational Bayes analysis of Tethered Particle ');
 disp('Motion data. See http://sourceforge.net/projects/vbtpm/');
 disp(' ' );
-disp('Copyright (C) 2013 Martin Lindén, E-mail: bmelinden@gmail.com');
+disp('Copyright (C) 2014 Martin Lindén, E-mail: bmelinden@gmail.com');
 disp('=========================================================================');
 disp('This program is free software: you can redistribute it and/or modify it');
 disp('under the terms of the GNU General Public License as published by the');

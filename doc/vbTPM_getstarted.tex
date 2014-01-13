@@ -18,8 +18,13 @@ to go through on two 6 core Intel Xeon E5645 2.40GHz processors. The
 analysis time increases sharply with the number of states (including
 spurious ones, like transient sticking events).
 
-vbTPM is implemented in Matlab, tested on R2012a and R2013a, and
-requires the signal processing and statistics toolbox.
+vbTPM is implemented in Matlab, tested on R2012a and R2013a, requires
+the signal processing and statistics toolbox, and is tested on recent
+Mac and Linux systems. 
+
+Windows users will have to do some scripting to translate the
+bash-based parallelization scheme (below) to some other script
+language, but should be fine otherwise.
 
 \subsection{A small test problem}
 A small test problem can be found in example1/, with the actual data
@@ -27,30 +32,42 @@ in example1/lacdata/.  The data set has one calibration (cal) and one
 production (trj) trajectory for each bead, and contains data from five
 beads. Using the runinput2.m and runscript2.sh files as described
 below, this data set takes less than 30 min to analyze on the above
-machine (running all five trajectories in parallell).
+machine (running all five trajectories in parallel).
 
-\subsubsection*{Runinput files} 
+\subsection{Runinput files} 
 Runinput files contain all parameters to run the analysis and access
-the results. The meaning of the parameters are documented in the help
-text of \verb+VB7_batch_run.m+, and commented in the runinput files in
-example1/.  \verb+runinput1.m+ refers to an already completed analysis
-(results in example1/HMMresults1/), while \verb+runinput2.m+ has not
-yet run.
+the results. The meaning of the parameters are documented below, and
+via comments in the runinput files in example1/.  \verb+runinput1.m+
+refers to an already completed analysis (results in
+example1/HMMresults1/), while \verb+runinput2.m+ has not yet run.
 
-\subsubsection*{Run basic analysis}
+The runinput files are parsed by executing them as Matlab scripts,
+which makes it possible to use Matlab commands to define variables,
+for example loading filename lists. It also opens the dangerous
+possibility to interfere with the analysis code though (be careful when
+introducing temporary variables).
+
+Relative paths specified in runinput files are interpreted relative to
+the location of the runinput file.
+
+\texttt{VB7\_getOptions} parses the runinput file and returns a Matlab
+struct with all runinput parameters as subfields.
+
+\subsection{Run basic analysis on single trajectories}
 To start analyzing the test data set, type
-\verb+VB7_batch_run('runinput2')+ in the Matab command prompt. Since
+\verb+VB7_batch_run('runinput2')+ in the Matlab command prompt. Since
 the runinput file has \verb+one_at_a_time=true;+ this will analyze one
 trajectory in the data set. Several calls are needed to complete the
 analysis. 
 
-In our experience, Matlab tends to hoard memory if several large data
-sets are analyzed consecutively.  To work around that, one can use
-scripts that starts consecutive Matlab sessions and runs a single
-trajectory in each.
+Setting \verb+one_at_a_time=false;+ will run analysis of all
+trajectories in the data set. In our experience however, Matlab tends
+to hoard memory when several large data sets are analyzed
+consecutively.  To work around that, one can use scripts that starts
+consecutive Matlab sessions and runs a single trajectory in each.
 
-One example for the bash shell is \verb+runscript1.sh+ and
-\verb+runscript1.sh+, which calls \verb+runinput1.m+ (there is also a
+One example for the bash shell is \verb+runscript1.sh+, which calls
+\verb+runinput1.m+ (there is also a corresponding
 \verb+runscript2.sh+).
 
 \subsubsection*{Parallelization}
@@ -65,24 +82,82 @@ runinput file).
 
 \subsubsection*{Manage the analysis}
 \verb+VB7_batch_manage+ is a tool for managing the basic analysis. It
-can collect the results and write them to a file, count how many
-trajectories in a data set has been analyzed, and also clean up
-temporary files from unfinished trajectories, which is useful if an
-analysis run is interrupted.
+can collect the results and write them to a file or return them to the
+Matlab workspace, count how many trajectories in a data set has been
+analyzed, and also clean up temporary files from unfinished
+trajectories, which is useful if an analysis run is interrupted.
 
-\subsubsection*{Access the results} 
+By default, collected analysis results are written to a file named
+\texttt{[PIDprefix]\_results.mat} (\texttt{PIDprefix} is a string set
+in the runinput file), in the \texttt{[target\_path]/} folder (see
+also table \ref{tab:results}).
+
+\subsubsection*{Inspect and classify the results} 
 The GUI for manual state classification is called
-\verb+VB7_batch_postprocess()+. The GUI can be used to inspect the
-analysis results in detail, and can also convert the simple HMM models
-to factorial models for further analysis. To try it out, use the
-runinput file \verb+runinput1.m+, which is already analyzed. To access
-the fitted models directly, use \verb+VB7_batch_manage+ with the
-'collect' option. The results are returned as cell vectors for
-calibration and production trajectories, with the same index structure
-as the filenames in the runinput file.
+\verb+VB7_batch_postprocess()+, outlined in
+Fig.~\ref{fig:postprocess}. The GUI can be used to inspect the
+analysis results in detail, and can also start a conversion of the
+simple HMM models to factorial models for further (manual)
+analysis. To try it out, use the runinput file \verb+runinput1.m+,
+which is already analyzed. To access the fitted models directly, use
+\verb+VB7_batch_manage+ with the 'collect' option. The results are
+returned as cell vectors for calibration and production trajectories,
+with the same index structure as the filenames in the runinput file.
 
-For details on how vbTPM represents the models etc., we refer to
-section \ref{sec:notation}.
+The results of the state classification are written to
+\texttt{[PIDprefix]\_results\_analyzed.mat} (in the
+\texttt{[target\_path]/} folder) and factorial models are similarly
+written to \texttt{[PIDprefix]\_results\_analyzed.mat\_VB7kin.mat}.
+
+For details on how vbTPM represents the models and contents of results
+files etc., we refer to section \ref{sec:notation}.
+
+\begin{figure*}
+  \begin{center}
+    \includegraphics{figures/GUI_manual.pdf}    
+  \end{center}
+  \caption{Screenshot of the state classification GUI. There is also
+    an additional window showing the current RMS trace together with
+    the inferred RMS levels and state classifications. The ``inspect''
+    button further launches a tool to explore single trajectories and
+    states in more detail (see \Fig{fig:trjexplore}).}\label{fig:postprocess}
+\end{figure*}
+
+\begin{figure*}
+  \begin{center}
+    \includegraphics{figures/trajectory_explorer.pdf}    
+  \end{center}
+  \caption{Screenshot of the trajectory explorer tool, launched by the
+    ``inspect'' button in the state classification
+    GUI.}\label{fig:trjexplore}
+\end{figure*}
+
+\subsection{Input data format}
+vbTPM reads individual trajectories as column matrices, one column for
+x- and one for y-positions, with sampling frequency specified by
+\texttt{fSample} in the runinput file. If the data is not already
+drift-corrected, vbTPM can do this using a first-order Butterworth
+filter (\texttt{driftcorrection=true;}) with cut-off frequency
+\texttt{fCut}.
+
+Each trajectory is supplied in an individual .mat file, which could
+either contain a Matlab struct (in which case vbTPM will read the
+field specified by \texttt{calibration\_xyfield} or
+\texttt{looping\_xyfield}, same for all trajectories), or just the
+position trace matrix (by setting the xyfield parameters to empty
+strings).
+
+Trajectories filenames are supplied as string cell vectors
+\texttt{calibration\_filename} and \texttt{looping\_filename}
+containing in the runinput file. The latter is nested, to allow
+several production traces per calibration run. Calibration and looping
+trajectories is analyzed with different model search parameters, and
+it is usually a good idea to spend more restarts
+(\texttt{restarts\_cal, restarts\_trj}) and larger initial number of
+states (\texttt{Ninit\_cal, Ninit\_trj}) on the looping data than on
+the calibration data. All traces are analyzed individually however, so
+it is possible to use this structure to organize the data in a
+different way.
 
 \subsection{Other useful scripts}
 \subsubsection{Data and options}

@@ -115,7 +115,7 @@ Refs.~\cite{beal2003,mackay2003,bishop2006} for more general
 discussion of variational inference methods.
 
 \subsubsection{Parameter distributions}
-The results of plugging our diffusinve HMM into the parameter update
+The results of plugging our diffusive HMM into the parameter update
 equation \eqref{seq:qparam} are as follows.  The initial state
 probability vector, and each row in the transition matrix (denoted
 $A_{j,:}$), are Dirichlet distributed,
@@ -366,11 +366,25 @@ frequency (30 Hz in our case), and $n_{downsample}$ is the
 downsampling factor.  Numerical experiments by \citet{persson2013}
 show that choosing the strength too low compared to the mean dwell
 time produces a bias towards sparse transition matrices.  This is
-often not desireable, and we use $t_D=1$ s and $t_A=5$ s as default
+often not desirable, and we use $t_D=1$ s and $t_A=5$ s as default
 parameters, and also throughout our work \cite{vbTPMpaper}.
 
 Details on how top specify parameters for prior distributions are
 given in table \ref{stab:priors}.
+
+\paragraph{Priors for factorial models} We take the priors for the spurious states to be as
+similar to the genuine state prior as possible. Thus, we parameterize
+the priors for $\hat K_j,\hat B_j$ in the same way as for the genuine
+state parameters. For the spurious$\to$spurious transitions
+$\hat{\matris{R}}$, we use the same prior mean dwell time and strength
+as for the genuine transition matrix $\matris{A}$. For the
+genuine$\to$spurious transition matrix $\hat{\matris{A}}$, we use the
+same strength, but a different (longer) mean life-time \verb+tDc0+ for the state
+$c_t=1$, since spurious events are presumably rare. 
+
+Further details: tables \ref{stab:priors}, the example runinput files,
+and \verb+VB7_priorParent+.
+
 
 \begin{table}
   \caption{Specifying prior parameters in runinput files. See also the
@@ -419,13 +433,13 @@ with multiple restarts, similar to the one used in vbSPT
 \cite{persson2013}. The basic idea is to exploit the fact that the
 variational Bayes EM iterations tend to sense overfitting by making
 superfluous states unpopulated. Each search sweep thus starts by
-convrging the largest model to be considered, and then gradually
+converging the largest model to be considered, and then gradually
 removes low-occupancy states until the lower bound $F$ does not
 improve any more. We also attempt to reconverge each size with some
 extra pseudo-counts added to the transition matrix to avoid getting
 stuck in non-interconverting models.
 
-Inital conditions for the largest model are generated randomly, partly
+Initial conditions for the largest model are generated randomly, partly
 based on user-specified intervals for the $K$ and $B$ parameters, and
 partly using the actual data to find high-occupancy values of
 $K,B$. For the transition matrices, we initialize using a mean dwell
