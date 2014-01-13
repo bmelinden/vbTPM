@@ -2034,6 +2034,20 @@
          style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
          transform="matrix(0.8,0,0,0.8,10,0)" />
     </marker>
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lstart-6-3"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path9115-0-78"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(0.8,0,0,0.8,10,0)" />
+    </marker>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -2044,7 +2058,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
      inkscape:cx="436.3321"
-     inkscape:cy="412.80572"
+     inkscape:cy="251.18131"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -2066,7 +2080,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -2158,7 +2172,7 @@
        style="fill:#ffff00;fill-opacity:0.72602737;stroke:none"
        id="rect9780-4"
        width="105.86987"
-       height="44.497475"
+       height="70.761444"
        x="576.67224"
        y="379.75629" />
     <text
@@ -2182,20 +2196,22 @@
          x="581.41949"
          y="418.2446"
          style="font-size:11px"
-         id="tspan8321-1">states on the inside.</tspan><tspan
+         id="tspan8321-1">states on the inside</tspan><tspan
          sodipodi:role="line"
          x="581.41949"
          y="431.9946"
          style="font-size:11px"
+         id="tspan3531">(see instructions on </tspan><tspan
+         sodipodi:role="line"
+         x="581.41949"
+         y="445.7446"
+         style="font-size:11px"
+         id="tspan3533">the command line).</tspan><tspan
+         sodipodi:role="line"
+         x="581.41949"
+         y="459.4946"
+         style="font-size:11px"
          id="tspan3595" /></text>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart)"
-       d="m 557.34605,423.86547 c 9.83541,1.90499 19.80644,3.10942 29.81256,3.60116 18.22915,0.89585 36.57364,-0.58294 54.4239,-4.38723"
-       id="path8339-0"
-       inkscape:path-effect="#path-effect8341-8"
-       inkscape:original-d="m 557.34605,423.86547 c 24.58038,5.7242 4.59743,2.5249 29.81256,3.60116 30.79771,1.31454 23.7826,-1.02006 54.4239,-4.38723"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="csc" />
     <g
        id="g3581"
        transform="translate(0,20)">
@@ -2231,7 +2247,7 @@
     </g>
     <path
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart-6)"
-       d="m 556.03888,441.83166 c 6.85893,-0.58806 15.62715,-1.64643 19.5885,3.68772 9.90107,13.33227 -6.17373,33.70549 -5.32886,49.53413 0.22856,4.28208 2.32607,7.86649 10.06525,8.01166"
+       d="m 556.03888,441.83166 c 6.85893,-0.58806 11.92233,-3.99605 15.5885,-0.31228 12.59175,12.65218 -2.17373,37.70549 -1.32886,53.53413 0.22856,4.28208 2.32607,7.86649 10.06525,8.01166"
        id="path9594-5"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="casc" />
@@ -2420,6 +2436,12 @@
        style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart-6)"
        d="m 529.00808,354.47547 c 55.44779,-0.35463 15.27834,-36.95064 51.51778,-42.42641"
        id="path9594-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#Arrow1Lstart-6)"
+       d="m 517.09816,410.40608 c 16.42917,-31.62699 42.56032,-23.34528 62.12439,-23.63961"
+       id="path9594-5-0"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
   </g>

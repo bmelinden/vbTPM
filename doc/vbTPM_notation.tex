@@ -174,3 +174,73 @@ $RMS_j=\sqrt{\mean{\x_t^2|s_t=j}}
 \end{tabular}\end{center}
 \end{table*}  
 
+\begin{table*}
+\caption{Output fields from the analysis and state classification GUI 
+\texttt{VB7\_batch\_postprocess}, where \texttt{[PIDprefix]} and \texttt{[targetpath]} refers to 
+string variable set in the runinput file.}\label{tab:results}
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{2}{|l|}{
+         \parbox[t]{1.5\columnwidth}{Fields in results
+        file \texttt{[PIDprefix]\_result.mat},
+        from \texttt{VB7\_batch\_manage}.}}
+\\\hline
+\texttt{cal\{k\}\{b\}}& \parboxc{}\\\hline
+\texttt{trj\{k\}\{b\}}& \parboxc{}\\\hline
+\texttt{trj\{k\}\{b\}.Wtrj}&Converged model object for this trajectory.\\\hline
+\texttt{cal\{k\}.Wcal}&Converged model object for this calibration trajectory.\\\hline
+\hline
+\multicolumn{2}{|l|}{\parbox[t]{1.5\columnwidth}{
+        Additional fields in output file from the state classification
+        GUI \texttt{VB7\_batch\_postprocess}, stored by defaul
+        in \texttt{[PIDprefix]\_result\_analyzed.mat}.}}
+\\\hline
+\texttt{hastrj\{k\}(b)}& =1 if there is trajectory data for \texttt{trj\{k\}\{b\}}, 0 otherwise.
+\\\hline
+\texttt{includetrj\{k\}(b)}& \parbox[t]{1.25\columnwidth}{
+=0 if the trajectory was excluded during the GUI session, 1
+otherwise. No factorial models are produced from excluded
+trajectories.  }\\\hline
+\texttt{calGenuine(k)}& 
+State index to the genuine state in calibration trajectory \texttt{k}.
+\\\hline
+\texttt{statelabels\{s\}}& \parbox[t]{1.25\columnwidth}{
+Cell vector of state labels (strings) used to label the states
+by \texttt{VB7\_batch\_postprocess}.}
+\\\hline
+\texttt{trjstates\{k\}\{b\}(j)}& \parbox[t]{1.25\columnwidth}{
+Indicates the state class of state \texttt{j}
+in \texttt{trj\{k\}\{b\}}, with index referring
+to \texttt{statelabels}.
+}\\\hline
+\texttt{isSorted}&\parbox[t]{1.25\columnwidth}{
+=1 if the states in the trajectories have been reordered to put
+spurious states last.}\\
+\hline
+\texttt{statelabels\_Wxxx}& \parbox[t]{1.25\columnwidth}{
+State labels in different order (obsolete).}\\
+\hline
+\hline
+\multicolumn{2}{|l|}{\parbox[t]{1.5\columnwidth}{\parbox[t]{1.5\columnwidth}{
+Additional output from using the option to create factorial models
+when saving from the classification GUI
+(see \Fig{fig:postprocess}). This creates a file with the inelegant
+name
+\texttt{[PIDprefix]\_result\_analyzed.mat\_VB7kin.mat} in the \texttt{[targetpath]} folder.
+}}}\\\hline
+\texttt{trj\{k\}\{b\}.Wgs}& Factorial model object with genuine and spurious states separated.
+\\\hline
+\texttt{RMS}&RMS trajectory.
+\\\hline
+\texttt{trj\_vit\_s}& \parbox[t]{1.25\columnwidth}{
+Segmented state sequence for a trajectory (or calibration trace,
+if \texttt{cal\_}) from the simple HMM, using the Viterbi algorithm
+(or point-wise most likely states. if \texttt{\_sMaxP\_}).}
+\\\hline
+\texttt{trj\_vit\_td}& \parbox[t]{1.25\columnwidth}{
+Segmented state lifetimes corresponding to \texttt{trj\_vit\_s}
+etc.}\\
+\hline
+\end{tabular}\end{center}
+\end{table*}

@@ -88,9 +88,9 @@ analyzed, and also clean up temporary files from unfinished
 trajectories, which is useful if an analysis run is interrupted.
 
 By default, collected analysis results are written to a file named
-\texttt{PIDprefix\_results.mat} (\texttt{PIDprefix} is a string set in
-the runinput file), in the \texttt{target\_path} folder (see also
-table tables \ref{tab:caltrj}).
+\texttt{[PIDprefix]\_results.mat} (\texttt{PIDprefix} is a string set
+in the runinput file), in the \texttt{[target\_path]/} folder (see
+also table \ref{tab:results}).
 
 \subsubsection*{Inspect and classify the results} 
 The GUI for manual state classification is called
@@ -105,16 +105,12 @@ returned as cell vectors for calibration and production trajectories,
 with the same index structure as the filenames in the runinput file.
 
 The results of the state classification are written to
-\texttt{target\_path/PIDprefix\_results\_analyzed.mat} (with
-\texttt{PIDprefix} read from the runinput file), and factorial models
-are similarly written to
-\texttt{target\_path/PIDprefix\_results\_analyzed.mat\_VB7kin.mat}.
+\texttt{[PIDprefix]\_results\_analyzed.mat} (in the
+\texttt{[target\_path]/} folder) and factorial models are similarly
+written to \texttt{[PIDprefix]\_results\_analyzed.mat\_VB7kin.mat}.
 
-For details on how vbTPM represents the models etc., we refer to
-section \ref{sec:notation}. In particular, the fields of the various
-results files are explained in tables \ref{tab:caltrj},
-\ref{tab:results}, and \ref{tab:results}
-
+For details on how vbTPM represents the models and contents of results
+files etc., we refer to section \ref{sec:notation}.
 
 \begin{figure*}
   \begin{center}
