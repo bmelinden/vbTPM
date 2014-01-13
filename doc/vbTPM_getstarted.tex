@@ -4,10 +4,13 @@ Matlab path, for example by running the script \verb+vbTPMstart+ from
 the Matlab command prompt. (To add these paths permanently to your
 Matlab path, see the Matlab documentation).
 
-Make sure that HMMcore/ contains binaries for your system. If not, a
-simple Matlab compilation script can be found in HMMcore/. (See Matlab
-documentation for how to set up your mex compiler). For large data
-sets, it is probably faster to compile your own binaries.
+Make sure that HMMcore/ contains binaries for your system
+(\texttt{VBforwback.mex[sys], VBwAcount.mex[sys], VBviterbi.mex[sys],
+  VBviterbi\_log.mex[sys]}, where \texttt{[sys]} is some
+system-dependent extension). If not, a simple Matlab compilation
+script can be found in HMMcore/. (See Matlab documentation for how to
+set up your mex compiler). For large data sets, it is probably faster
+to compile your own binaries.
 
 \subsection{System requirements}
 Tethered particle motion often produces large data sets of many long
