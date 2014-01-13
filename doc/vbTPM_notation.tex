@@ -13,7 +13,7 @@ Most importantly, the Wtrj and Wcal fields are the converged model
 structs, whose content are detailed below (using W as the generic
 model name). In addition the columns of the arrays
 \texttt{NFtrj,NFcal} contain $N,\hat N, F, iter$ for each model that
-was converged during the nodel search, and $iter$ is the restart
+was converged during the model search, and $iter$ is the restart
 number that produced it. In \texttt{NFitrj,NFical}, the best model for
 each size is listed in the same way, with the last column indicating
 the rows in \texttt{NFtrj,NFcal} where these optimal models can be
@@ -41,7 +41,7 @@ field & \\
 \end{table}
 
 \begin{table}
-\caption{Representration of variational distributions for genuine
+\caption{Representation of variational distributions for genuine
   states in a model object $W$.}\label{tab:Qparameters}
 \begin{center}\begin{tabular}{|l|c|c|}
     \hline
@@ -75,13 +75,13 @@ field & \\
     \hline
   \end{tabular}\end{center}\end{table}
 \begin{table}
-\caption{Representration of variational distributions for indicator
+\caption{Representation of variational distributions for indicator
   states $c_t$ in a model object named $W$. Fields relating to the
   emission model (.n, .c, .v, .mu, etc.) have the same meaning as for
   the genuine states $s_t$, except that their first element is not
   used, since $c_t=1$ indicate a genuine state. Transition counts
   (.wA, .wR) are similarly analogous to those parameterizing the
-  genuine transition matris $\matris{A}$.}\label{tab:QSparameters}
+  genuine transition matrix $\matris{A}$.}\label{tab:QSparameters}
 \begin{center}  
   \begin{tabular}{|l|c|c|}
     \hline
@@ -131,7 +131,7 @@ field & \\
   $\mean{\matris{A}}_{q(\matris{A})}$.\strutend}\\
 \hline
 \texttt{W.est.dA}&
-\parboxcc{Standard devition of stransition probability matrix
+\parboxcc{Standard deviation of transition probability matrix
   $\matris{A}$.}\\
 \hline
 \texttt{W.est.tD}&
@@ -193,7 +193,7 @@ string variable set in the runinput file.}\label{tab:results}
 \hline
 \multicolumn{2}{|l|}{\parbox[t]{1.5\columnwidth}{
         Additional fields in output file from the state classification
-        GUI \texttt{VB7\_batch\_postprocess}, stored by defaul
+        GUI \texttt{VB7\_batch\_postprocess}, stored by default
         in \texttt{[PIDprefix]\_result\_analyzed.mat}.}}
 \\\hline
 \texttt{hastrj\{k\}(b)}& =1 if there is trajectory data for \texttt{trj\{k\}\{b\}}, 0 otherwise.
