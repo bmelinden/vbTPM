@@ -3,9 +3,9 @@
 
 copyright notice
 =========================================================================
-VBforwback.c
+VBforwback.c, part of the vbTPM package
 =========================================================================
-Copyright (C) 2013 Martin Lindén, E-mail: bmelinden@gmail.com
+Copyright (C) 2014 Martin Lindén, E-mail: bmelinden@gmail.com
 =========================================================================
 This program is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the

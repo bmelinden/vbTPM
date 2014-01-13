@@ -53,7 +53,7 @@
 % VB7_batch_postprocess.m, postprocessing manager for the vbTPM package.
 % =========================================================================
 % 
-% Copyright (C) 2013 Martin Lindén
+% Copyright (C) 2014 Martin Lindén
 % 
 % E-mail: bmelinden@gmail.com
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -77,7 +77,7 @@
 
 %% start of actual code
 function gfig=VB7_batch_postprocess(runinputfile,xtrastates,savefile)
-VB7_printGPL_short('VB7_batch_postprocess.m')
+VB7_printGPL('VB7_batch_postprocess.m')
 
 %% input parameters
 % runinput file

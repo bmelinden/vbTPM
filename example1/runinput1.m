@@ -1,6 +1,5 @@
 % Sample runinput file for vbTPM, ML 2013-09-05
 
-
 %%%%%% part I: analysis parameters
 % data preprocessing
 fSample    =30;     % Hz, sampling frequency

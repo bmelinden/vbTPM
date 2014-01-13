@@ -10,10 +10,7 @@
 %
 % Rc is the transition probabilities for ending dirt events:
 % Rc(i,j)=p(c_t=j| c_{t-1}=i, i>1).
-% The constraint i>1 means that the first row of Rc is ignored. In the
-% VB4-VB6 algorithms, spurious states are assumed non-interconvertable,
-% meaning that only the diagonal and the first column of Rc is nonzero. VB7
-% can infer spurious state interconversion as well.
+% The constraint i>1 means that the first row of Rc is ignored.
 %
 % Kc, Bc are emission parameters of the 'dirt' process c(t): 
 % when c(t)==1, the emission is determined by s(t). Otherwise, c(t)
@@ -33,7 +30,7 @@
 % VB7_simTrj.m, generate synthetic TPM data, part of the vbTPM package
 % =========================================================================
 % 
-% Copyright (C) 2013 Martin Lindén
+% Copyright (C) 2014 Martin Lindén
 % 
 % E-mail: bmelinden@gmail.com
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,7 +54,7 @@
 %% start of actual code
 
 function [s,c,x1,x2]=VB7_simTrj(A,K,B,Asc,Rc,Kc,Bc,xyc,T,Twu)
-
+VB7_printGPL('VB7_simTrj')
 %% change log
 % M.L. 2011-01-06 : started on a VB5 version, with two different ways to
 %                   simuate sticking events.

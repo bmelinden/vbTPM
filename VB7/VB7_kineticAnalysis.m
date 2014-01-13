@@ -18,7 +18,7 @@
 % state classifications, part of the vbTPM package
 % =========================================================================
 % 
-% Copyright (C) 2013 Martin Lindén
+% Copyright (C) 2014 Martin Lindén
 % 
 % E-mail: bmelinden@gmail.com
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

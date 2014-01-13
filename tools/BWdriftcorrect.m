@@ -10,7 +10,7 @@
 % BWdriftcorrect.m, part of the vbTPM package
 % =========================================================================
 % 
-% Copyright (C) 2013 Martin Linden
+% Copyright (C) 2014 Martin Linden
 % 
 % E-mail: bmelinden@gmail.com
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -44,7 +44,7 @@
 % in the vbTPM package
 % =========================================================================
 % 
-% Copyright (C) 2013 Martin Lindén
+% Copyright (C) 2014 Martin Lindén
 % 
 % E-mail: bmelinden@gmail.com
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -68,7 +68,7 @@
 
 %% start of actual code
 function [resultFile,cal,trj]=VB7_batch_manage(varargin)
-VB7_printGPL_short('VB7_batch_manage.m')
+VB7_printGPL('VB7_batch_manage.m')
 %% call runinput file
 resultFile=[];
 if(nargin>0)
