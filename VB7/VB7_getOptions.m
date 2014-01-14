@@ -44,8 +44,8 @@ function opt=VB7_getOptions(runinputfile)
 [path_tmp, name_tmp, ext_tmp] = fileparts(runinputfile);
 if(isempty(path_tmp))
     path_tmp='.';
-else
-    warning('VB7_getOptions warning: runinput file not in the current folder,')
+    %else
+    %warning('VB7_getOptions warning: runinput file not in the current folder,')
     % keep warning until bug is fixed!
 end
 if(ismember('.',name_tmp))
