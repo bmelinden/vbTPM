@@ -45,59 +45,53 @@ function [trjdat,caldat]=VB7_getTrjData(runinputfile,k,b)
 if(strcmp(runinputfile(end-1:end),'.m'))
     runinputfile=runinputfile(1:end-2);
 end
-eval(runinputfile);
-% add file separator to source path if absent
-if(~strcmp(source_path(end),filesep))
-    source_path=[source_path filesep]
-end
-
+opt=VB7_getOptions(runinputfile);
+%eval(runinputfile);
 %% calibration data
 % determine data file names and load data
 caldat=struct;
 if(include_calibration)
-    caldat.name=[source_path calibration_filename{k}];
+    caldat.name=[opt.source_path opt.calibration_filename{k}];
     caldat=load(caldat.name);
     % rename the coordinate field to 'x'
-    if(~strcmp('x',calibration_xyfield))
-        caldat.x=caldat.(calibration_xyfield);
-        caldat=rmfield(caldat,calibration_xyfield);
+    if(~strcmp('x',opt.calibration_xyfield))
+        caldat.x=caldat.(opt.calibration_xyfield);
+        caldat=rmfield(caldat,opt.calibration_xyfield);
     end
     % driftcorrect by lowpass filter, if specified in the runinputfile
-    if(driftcorrection)
-        caldat.x=BWdriftcorrect(caldat.x,fCut,fSample);
-        caldat.fCut=fCut;
+    if(opt.driftcorrection)
+        caldat.x=BWdriftcorrect(caldat.x,opt.fCut,opt.fSample);
+        caldat.fCut=opt.fCut;
     end
     % preprocessed data
-    caldat.data=VB7_preprocess(caldat.x,downSample,fSample);
+    caldat.data=VB7_preprocess(caldat.x,opt.downSample,opt.fSample);
     % RMS trace
-    caldat.RMS=RMSKBgaussfilter(caldat.x,tSigma,fSample);
-    caldat.tSigma=tSigma;
+    caldat.RMS=RMSKBgaussfilter(caldat.x,opt.tSigma,opt.fSample);
+    caldat.tSigma=opt.tSigma;
     % useful information
-    caldat.fSample=fSample;
-    caldat.downSample=downSample;
+    caldat.fSample=opt.fSample;
+    caldat.downSample=opt.downSample;
 end
 trjdat=struct;
-if(include_looping)
-    trjdat.name=[source_path looping_filename{k}{b}];
+if(opt.include_looping)
+    trjdat.name=[opt.source_path opt.looping_filename{k}{b}];
     trjdat=load(trjdat.name);
-    if(~strcmp('x',looping_xyfield))
-        trjdat.x=trj.(looping_xyfield);
-        trjdat=rmfield(trjdat,looping_xyfield);
+    if(~strcmp('x',opt.looping_xyfield))
+        trjdat.x=trj.(opt.looping_xyfield);
+        trjdat=rmfield(trjdat,opt.looping_xyfield);
     end
     % driftcorrect by lowpass filter, if specified in the runinputfile
-    if(driftcorrection)
-        trjdat.x=BWdriftcorrect(trjdat.x,fCut,fSample);
-        trjdat.fCut=fCut;
+    if(opt.driftcorrection)
+        trjdat.x=BWdriftcorrect(trjdat.x,opt.fCut,opt.fSample);
+        trjdat.fCut=opt.fCut;
     end
 
     % preprocessed data
-    trjdat.data=VB7_preprocess(trjdat.x,downSample,fSample);
+    trjdat.data=VB7_preprocess(trjdat.x,opt.downSample,opt.fSample);
     % RMS trace
-    trjdat.RMS=RMSKBgaussfilter(trjdat.x,tSigma,fSample);
-    trjdat.tSigma=tSigma;
+    trjdat.RMS=RMSKBgaussfilter(trjdat.x,opt.tSigma,opt.fSample);
+    trjdat.tSigma=opt.tSigma;
     % useful information
-    trjdat.fSample=fSample;
-    trjdat.downSample=downSample;
+    trjdat.fSample=opt.fSample;
+    trjdat.downSample=opt.downSample;
 end
-
-

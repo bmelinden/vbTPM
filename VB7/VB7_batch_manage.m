@@ -73,37 +73,30 @@ VB7_printGPL('VB7_batch_manage.m')
 resultFile=[];
 if(nargin>0)
     runinputfile=varargin{1};
-    if(strcmp(runinputfile(end-1:end),'.m'))
-        runinputfile=runinputfile(1:end-2);
-    end
-    eval(runinputfile);
+    opt=VB7_getOptions(runinputfile);
+    %eval(runinputfile);
 end
 if(nargin<=1)
     disp('no action specified')
     return
 end
 if(~exist('KBscaling','var'));KBscaling=[];end
-%% sanity check of source and target paths
-if(isempty(source_path))
-    source_path='./';
-elseif(~strcmp(source_path(end),filesep))
-    source_path=[source_path filesep];
-end
-if(isempty(target_path))
-    target_path='./';
-elseif(~strcmp(target_path(end),filesep))
-    target_path=[target_path filesep];
-end
 %% file names - same convetion as used by VB7_batch_run
-calSaveName=@(k)(sprintf('%s%s_bead%03d_cal.mat',target_path,PIDprefix,k));
-calTmpName =@(k)(sprintf('%s%s_bead%03d_calTMP.mat',target_path,PIDprefix,k));
-calLogName =@(k)(sprintf('%s%s_bead%03d_calLOG.txt',target_path,PIDprefix,k));
-trjSaveName=@(k,j)(sprintf('%s%s_bead%03dr%03d_trj.mat',target_path,PIDprefix,k,j));
-trjTmpName =@(k,j)(sprintf('%s%s_bead%03dr%03d_trjTMP.mat',target_path,PIDprefix,k,j));
-trjLogName =@(k,j)(sprintf('%s%s_bead%03dr%03d_trjLOG.txt',target_path,PIDprefix,k,j));
+calSaveName=@(k)(sprintf('%s%s_bead%03d_cal.mat',opt.target_path,opt.PIDprefix,k));
+calTmpName =@(k)(sprintf('%s%s_bead%03d_calTMP.mat',opt.target_path,opt.PIDprefix,k));
+calLogName =@(k)(sprintf('%s%s_bead%03d_calLOG.txt',opt.target_path,opt.PIDprefix,k));
+trjSaveName=@(k,j)(sprintf('%s%s_bead%03dr%03d_trj.mat',opt.target_path,opt.PIDprefix,k,j));
+trjTmpName =@(k,j)(sprintf('%s%s_bead%03dr%03d_trjTMP.mat',opt.target_path,opt.PIDprefix,k,j));
+trjLogName =@(k,j)(sprintf('%s%s_bead%03dr%03d_trjLOG.txt',opt.target_path,opt.PIDprefix,k,j));
 % variables to load and collect
-calVariableList={'Wcal','NFcal','NFical','calLogFile','calDataFile','driftcorrection','fCut','calibration_xyfield'};
-trjVariableList={'Wtrj','NFtrj','NFitrj','trjLogFile','trjDataFile','driftcorrection','fCut','looping_xyfield'};
+% saving these variables are probably redundant as they are present in the
+% opt struct, but are needed downstream for compatibility: removing them
+% consistently from the analysis might make my old analysis files
+% unreadable. Hence, this is left to update in a future version
+driftcorrection=opt.driftcorrection;fCut=opt.fCut;
+calibration_xyfield=opt.calibration_xyfield;looping_xyfield=opt.looping_xyfield;
+calVariableList={'Wcal','NFcal','NFical','calLogFile','calDataFile','driftcorrection','fCut','calibration_xyfield','opt'};
+trjVariableList={'Wtrj','NFtrj','NFitrj','trjLogFile','trjDataFile','driftcorrection','fCut','looping_xyfield',    'opt'};
 cal=cell(1,1);
 trj=cell(1,1);
 finished=[];
@@ -115,8 +108,8 @@ minimalSave=true;
 saveresults=true;
 reconverge=false;
 % default output destination
-save_path=target_path;
-save_name=[PIDprefix '_result.mat'];
+save_path=opt.target_path;
+save_name=[opt.PIDprefix '_result.mat'];
 
 displayFinished=false;
 displayUnfinished=false;
@@ -185,13 +178,13 @@ if(saveresults && isempty(resultFile))
     resultFile=sprintf('%s%s',save_path,save_name);
 end
 %% run analysis
-finished=zeros(size(looping_filename));
-for k=1:max(length(looping_filename),length(calibration_filename))
-    if(include_calibration)
+finished=zeros(size(opt.looping_filename));
+for k=1:max(length(opt.looping_filename),length(opt.calibration_filename))
+    if(opt.include_calibration)
         calSaveFile=calSaveName(k);
         calLogFile = calLogName(k);
         calTmpFile = calTmpName(k);
-        calDataFile=[source_path calibration_filename{k}];
+        calDataFile=[opt.source_path opt.calibration_filename{k}];
         
         calFileExist=exist(calSaveFile,'file');
         calFileIsFinished=false;
@@ -247,13 +240,13 @@ for k=1:max(length(looping_filename),length(calibration_filename))
             end
         end
     end
-    if(include_looping)
-        trjFileIsFinished=zeros(size(looping_filename{k}));
-        for j=1:length(looping_filename{k})
+    if(opt.include_looping)
+        trjFileIsFinished=zeros(size(opt.looping_filename{k}));
+        for j=1:length(opt.looping_filename{k})
             trjSaveFile=trjSaveName(k,j);
             trjLogFile = trjLogName(k,j);
             trjTmpFile = trjTmpName(k,j);
-            trjDataFile=[source_path looping_filename{k}{j}];
+            trjDataFile=[opt.source_path opt.looping_filename{k}{j}];
             
             trjFileExist=exist(trjSaveFile,'file');            
             if(trjFileExist)

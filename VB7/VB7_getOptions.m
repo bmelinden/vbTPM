@@ -3,9 +3,12 @@
 % convert HMM runinput parameters from a runinput file into an options
 % structure opt. In fact, all variables created by the command
 % eval(runinputfile) are stored in the opt structure. 
-% An (incomplete) sanity check of some parameter values is also performed.
 %
-% M.L. 2013-07-07
+% Additionally, the path part of runinputfile is added to the fields
+% source_path and target_paths, so that the position of data and results
+% are interpreted as given relative to the position of the runinput file.
+%
+% M.L. 2014-01-14
 
 %% copyright notice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -38,19 +41,20 @@
 function opt=VB7_getOptions(runinputfile)
 
 % Split the runinput filename
-[path, name, ext] = fileparts(runinputfile);
-if(isempty(path))
-    path='.';
+[path_tmp, name_tmp, ext_tmp] = fileparts(runinputfile);
+if(isempty(path_tmp))
+    path_tmp='.';
 else
     warning('VB7_getOptions warning: runinput file not in the current folder,')
+    % keep warning until bug is fixed!
 end
-if(ismember('.',name))
-   error(['runinputfile : ' name '. It is currently not possible to handle runinputfile names containing a .'])
+if(ismember('.',name_tmp))
+   error(['runinputfile : ' name_tmp '. It is currently not possible to handle runinputfile names containing a .'])
 end
 
 % read the raw options from the runinput file
-oldFolder = cd(path);
-eval(name)
+oldFolder = cd(path_tmp);
+eval(name_tmp)
 cd(oldFolder);
 clear oldFolder; % forget what folder the options file happend to be called from
 vv=whos;
@@ -60,6 +64,30 @@ for m=1:length(vv)
     opt.(vv(m).name)=eval(vv(m).name);    
 end
 opt.localroot=pwd;
+
+% modify target- and source paths to work relative to runinput file location
+if(isfield(opt,'source_path'))
+    opt.source_path=[path_tmp filesep opt.source_path];
+else
+    opt.source_path=[path_tmp filesep];
+    warning(['VB7_getOptions: no source path specified in ' runinputfile '.'])
+end
+if(isfield(opt,'target_path'))
+    opt.target_path=[path_tmp filesep opt.target_path];
+else
+    opt.target_path=[path_tmp filesep];
+    warning(['VB7_getOptions: no target path specified in ' runinputfile '.'])
+end
+% add fileseparator at the end of the paths
+if(~strcmp(opt.source_path(end),filesep))
+    opt.source_path=[opt.source_path filesep];
+end
+if(~strcmp(opt.target_path(end),filesep))
+    opt.target_path=[opt.target_path filesep];
+end
+
+% remove fields created in this file
+opt=rmfield(opt,{'path_tmp','name_tmp','ext_tmp'});
 
 % possibly check for missing fields and inserting fedault values
 
