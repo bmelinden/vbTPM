@@ -50,19 +50,19 @@ for example loading filename lists. It also opens the dangerous
 possibility to interfere with the analysis code in a few instances
 (so, be careful when introducing temporary variables).
 
+Relative paths specified in runinput files are interpreted relative to
+the location of the runinput file by vbTPM. 
+
 \texttt{VB7\_getOptions} parses the runinput file and returns a Matlab
 struct with all runinput parameters as subfields, without interfering
 with the existing workspace.
 
-Relative paths specified in runinput files are interpreted relative to
-the location of the runinput file. 
-
 \subsection{Run basic analysis on single trajectories}
-To start analyzing the test data set, type
-\verb+VB7_batch_run('runinput2')+ in the Matlab command prompt. Since
-the runinput file has \verb+one_at_a_time=true;+ this will analyze one
-trajectory in the data set. Several calls are needed to complete the
-analysis. 
+To start analyzing the test data set, go to the \verb+example1+ folder
+and type \verb+VB7_batch_run('runinput2')+ in the Matlab command
+prompt. Since the runinput file has \verb+one_at_a_time=true;+ this
+will analyze one trajectory in the data set. Several calls are needed
+to complete the analysis.
 
 Setting \verb+one_at_a_time=false;+ will run analysis of all
 trajectories in the data set. In our experience however, Matlab tends
