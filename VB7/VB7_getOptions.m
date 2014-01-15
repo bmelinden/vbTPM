@@ -54,9 +54,15 @@ end
 
 % read the raw options from the runinput file
 oldFolder = cd(path_tmp);
-eval(name_tmp)
+% check that the runinput file is actually present in this folder
+abspathfile=[oldFolder filesep path_tmp filesep name_tmp '.m'];
+if(exist(abspathfile,'file'))
+    eval(name_tmp)
+else
+    error(['VB7_getOptions: runinput file not found: ' abspathfile ' .'])    
+end
 cd(oldFolder);
-clear oldFolder; % forget what folder the options file happend to be called from
+clear oldFolder abspathfile; % forget what folder the options file happend to be called from
 vv=whos;
 opt=struct;
 
