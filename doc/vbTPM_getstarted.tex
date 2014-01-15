@@ -47,14 +47,15 @@ example1/HMMresults1/), while \verb+runinput2.m+ has not yet run.
 The runinput files are parsed by executing them as Matlab scripts,
 which makes it possible to use Matlab commands to define variables,
 for example loading filename lists. It also opens the dangerous
-possibility to interfere with the analysis code though (be careful when
-introducing temporary variables).
-
-Relative paths specified in runinput files are interpreted relative to
-the location of the runinput file.
+possibility to interfere with the analysis code in a few instances
+(so, be careful when introducing temporary variables).
 
 \texttt{VB7\_getOptions} parses the runinput file and returns a Matlab
-struct with all runinput parameters as subfields.
+struct with all runinput parameters as subfields, without interfering
+with the existing workspace.
+
+Relative paths specified in runinput files are interpreted relative to
+the location of the runinput file. 
 
 \subsection{Run basic analysis on single trajectories}
 To start analyzing the test data set, type
