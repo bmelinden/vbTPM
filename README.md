@@ -8,7 +8,7 @@ documentation is still in progress, in parallel with a scientific
 paper describing the algorithm and performance on real data.
 
 ======================================================================
-Copyright (C) 2013 Martin Lindén, bmelinden@gmail.com
+Copyright (C) 2014 Martin Lindén, bmelinden@gmail.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
