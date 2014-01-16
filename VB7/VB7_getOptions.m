@@ -56,6 +56,7 @@ end
 oldFolder = cd(path_tmp);
 % check that the runinput file is actually present in this folder
 abspathfile=[oldFolder filesep path_tmp filesep name_tmp '.m'];
+%%% abspathfile=fullfile(oldFolder,path_tmp,[name_tmp '.m']); 
 if(exist(abspathfile,'file'))
     eval(name_tmp)
 else
@@ -91,6 +92,20 @@ end
 if(~strcmp(opt.target_path(end),filesep))
     opt.target_path=[opt.target_path filesep];
 end
+
+%% more elegant (but untested) solution
+%pathfields_tmp={'source_path','target_path'};
+%for k=1:lengt(pathfields_tmp)
+%    if(isfield(opt,pathfields_tmp{k}))
+%        opt.(pathfields_tmp{k}) =fullfile(opt.localroot,path_tmp,pathfields{k},filesep);
+%    else
+%        warning(['SM_getOptions: no ' pathfields_tmp{k} ' specified in ' runinputfile '.']) 
+%        opt.(pathfields_tmp{k}) =fullfile(opt.localroot,path_tmp,filesep);
+%        disp(['Using runinput file location' opt.(pathfields_tmp{k})])
+%    end
+%end
+
+
 
 % remove fields created in this file
 opt=rmfield(opt,{'path_tmp','name_tmp','ext_tmp'});
