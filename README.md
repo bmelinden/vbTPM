@@ -3,9 +3,10 @@ data, using a variational Bayes approach to Hidden Markov models. The
 program runs on Matlab, but uses compiled C-code to speed up the most
 computer intensive loops.
 
-This a beta version; the code is complete and useable, but the
-documentation is still in progress, in parallel with a scientific
-paper describing the algorithm and performance on real data.
+2014-02-02: Release of beta version. Both code and documentation are
+fully useable, but the accompanying scientific paper describing the
+algorithm and performance on real data is not yet accepted for
+publication.
 
 ======================================================================
 Copyright (C) 2014 Martin Lindén, bmelinden@gmail.com
