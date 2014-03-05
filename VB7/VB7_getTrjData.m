@@ -3,8 +3,8 @@
 % retrieve looping and calibration data trajectory k,b for the analysis
 % specified in runinput file. The objects trjdat,caldat have fields
 %
-% name      : name of data file
-% data      : preprocessed data object, as used in the analysis
+% name      : name of runinput file
+% trjdat,caldat      : preprocessed data objects for trajectory and calibration, as used in the analysis
 % x         : position trajectory
 % RMS       : RMS trace
 %
@@ -50,7 +50,7 @@ opt=VB7_getOptions(runinputfile);
 %% calibration data
 % determine data file names and load data
 caldat=struct;
-if(include_calibration)
+if(opt.include_calibration)
     caldat.name=[opt.source_path opt.calibration_filename{k}];
     caldat=load(caldat.name);
     % rename the coordinate field to 'x'
