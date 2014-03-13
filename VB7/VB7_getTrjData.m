@@ -1,16 +1,22 @@
 % [trjdat,caldat]=VB7_getTrjData(runinputfile,k,b)
 %
 % retrieve looping and calibration data trajectory k,b for the analysis
-% specified in runinput file. The objects trjdat,caldat have fields
+% specified in runinput file, i.e., from looping_filename{k}{b} and
+% calibration_filename{k}. An options structure generated from a runinpit
+% file can also be used as input.
+
+% The objects trjdat,caldat have fields
 %
 % name      : name of runinput file
-% trjdat,caldat      : preprocessed data objects for trajectory and calibration, as used in the analysis
+% data      : preprocessed data object, as used by the analysis routines of
+%             vbTPM.
 % x         : position trajectory
-% RMS       : RMS trace
-%
+% RMS       : RMS trace, filtered as specified in the runinput file
+% various additional parameters
 
 % change-log
 % ML 2012-06-01 : handle runinput filenames ending with .m
+% ML 2014-03-13 : handle options structure input as well
 
 %% copyright notice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -41,11 +47,15 @@
 %% start of actual code
 function [trjdat,caldat]=VB7_getTrjData(runinputfile,k,b)
 
-% get settings for this runinput file
-if(strcmp(runinputfile(end-1:end),'.m'))
-    runinputfile=runinputfile(1:end-2);
+if(isstruct(runinputfile))
+    opt=runinputfile;
+else
+    % get settings for this runinput file
+    if(strcmp(runinputfile(end-1:end),'.m'))
+        runinputfile=runinputfile(1:end-2);
+    end
+    opt=VB7_getOptions(runinputfile);
 end
-opt=VB7_getOptions(runinputfile);
 %eval(runinputfile);
 %% calibration data
 % determine data file names and load data
