@@ -2,6 +2,8 @@
 %
 % manage the results files from the analysis jobs described by
 % runinputfile, by performing actions a1,a2,... 
+% If the results are saved, the file they are written to are returned in
+% resultFile.
 % 
 % actions:
 % 'reconverge'      : reconverge all models before saving results, and also
@@ -16,10 +18,13 @@
 % 'autoclean'       : do not ask before deleting files in the cleanup
 %                     action (use w caution...).
 % 'save',bool       : save results to file or not (default true)
-% 'file',string     : file name to write results to. [] for 
-%                     default name, constructed from runinput file.
-% 'path','string'   : path to write results to. [] default is target_path,
-%                     from the runinput file. 
+% 'file',string     : Specify file name to write results to (resultName).
+%                     The default is to put the results in the target_path
+%                     of the runinput file, ending with ..._results.mat.
+%                     Using a non-default name will mean that the results
+%                     cannot be found by subsequent analysis tools.
+% 'path','string'   : path to write results to. Default is target_path,
+%                     as specified in the runinput file. 
 % 'saveall'         : save everything, not only the calibration and looping
 %                     structures, to the resultFile. For debugging.
 % 'displaylevel',d  : controls the amount of information output
