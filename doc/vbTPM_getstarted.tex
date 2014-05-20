@@ -37,6 +37,38 @@ beads. Using the runinput2.m and runscript2.sh files as described
 below, this data set takes less than 30 min to analyze on the above
 machine (running all five trajectories in parallel).
 
+\subsection{vbTPM workflow}
+\begin{figure}[!t]
+\begin{center}
+  \includegraphics[width=2.5in]{figures/analysisflow2.eps}
+  \end{center}
+  \caption{Work flow for TPM analysis using vbTPM. The yellow boxes
+    indicate the three main tools of the vbTPM toolbox and their
+    functions, as described in the text. Solid lines indicate that a
+    file is written by another file, or passed as argument to
+    it. Dashed lines indicate flow of information handled internally
+    by reference to the runinput file.}\label{sifig:analysisflow}
+\end{figure}
+
+The workflow of vbTPM, summarized in \Fig{sifig:analysisflow}, is
+based on runinput files that contain all analysis parameters,
+including information about where the TPM data files are located, and
+where various results should be written to. These files can therefore
+be used as handles to an ongoing analysis and to intermediate results.
+
+The three main tools for handling the analysis, marked in yellow in
+\Fig{sifig:analysisflow}, are \\
+\noindent{\bf VB7\_batch\_run.m}, which manages the VB analysis of raw
+position traces using the simple HMM model,\\
+\noindent{\bf VB7\_batch\_manage.m}, a tool to collect the analysis
+results, and also to clean up and reset intermediate result files in
+case the analysis is interrupted, and finally\\
+\noindent{\bf VB7\_batch\_postprocess.m}, a graphical tool to aid the
+manual state classifcation and construct factorial models based on
+this classification.
+
+More advanced analysis beyond this step, including the EB procedure,
+requires custom matlab scripting.
 \subsection{Runinput files} 
 Runinput files contain all parameters to run the analysis and access
 the results. The meaning of the parameters are documented below, and
