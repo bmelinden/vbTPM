@@ -1,4 +1,4 @@
-% VB7_runAnalysis(ri)
+% VB7_batch_run(ri)
 % start a new analysis job based on he runinput file ri. Runinput
 % parameters are explained in the runinput file examples in example1/ 
 %
@@ -6,6 +6,7 @@
 % running consecutive trajectories (using one_at_a_time=true; in the
 % runinput file), since Matlab tends to hoard memory while loading and
 % clearing long data sets. 
+%
 %% copyright notice
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % VB7_batch_run.m, analysis manager for the vbTPM package
