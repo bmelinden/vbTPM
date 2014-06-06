@@ -6,7 +6,7 @@ computer intensive loops.
 2014-02-02: Release of beta version. Both code and documentation are
 fully useable, but the accompanying scientific paper describing the
 algorithm and performance on real data is not yet accepted for
-publication.
+publication. see vbtpm.sourceforge.net
 
 ======================================================================
 Copyright (C) 2014 Martin Lindén, bmelinden@gmail.com
